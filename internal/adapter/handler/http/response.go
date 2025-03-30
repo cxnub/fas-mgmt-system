@@ -62,6 +62,7 @@ func newApplicantsResponse(applicants []domain.Applicant) ApplicantsResponse {
 
 // SchemeBenefitListResponse represents a response structure containing benefit details like name and amount for a scheme.
 type SchemeBenefitListResponse struct {
+	ID     string  `json:"id" example:"00000000-0000-0000-0000-000000000000"`
 	Name   string  `json:"name" example:"CDC Vouchers"`
 	Amount float64 `json:"amount" example:"1000000"`
 }
@@ -71,6 +72,7 @@ func newSchemeBenefitListResponse(benefit []domain.Benefit) []SchemeBenefitListR
 
 	for _, b := range benefit {
 		schemeBenefitListResponses = append(schemeBenefitListResponses, SchemeBenefitListResponse{
+			ID:     b.ID.String(),
 			Name:   *b.Name,
 			Amount: *b.Amount,
 		})
@@ -102,6 +104,7 @@ func newSchemebenefitResponse(benefit domain.Benefit) SchemeBenefitResponse {
 
 // SchemeCriteriaListResponse represents a response containing a criterion's name and value associated with a scheme.
 type SchemeCriteriaListResponse struct {
+	ID    string `json:"id" example:"00000000-0000-0000-0000-000000000000"`
 	Name  string `json:"name" example:"employment_status"`
 	Value string `json:"value" example:"unemployed"`
 }
@@ -111,6 +114,7 @@ func newSchemeCriteriaListResponse(criteria []domain.SchemeCriteria) []SchemeCri
 
 	for _, sc := range criteria {
 		schemeCriteriaListResponses = append(schemeCriteriaListResponses, SchemeCriteriaListResponse{
+			ID:    sc.ID.String(),
 			Name:  *sc.Name,
 			Value: *sc.Value,
 		})
