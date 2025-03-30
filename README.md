@@ -41,25 +41,25 @@ builders.
     go mod download
    ```
 
-1. Create a Postgres Server using Docker
+3. Create a Postgres Server using Docker
    ```bash
    docker run --name fas-mgmt-system -e POSTGRES_PASSWORD=password -d -p 5432:5432 postgres
    ```
 
-2. Create the database
+4. Create the database
 
    Use [pgAdmin](https://www.pgadmin.org/) or any other preferred method to connect to the Postgres server and create a database named
    `fas_mgmt_system`.
 
    
-3. Run database migrations
+5. Run database migrations
    ```bash
    migrate -source file://internal/adapter/storage/postgres/migrations -database postgres://postgres:password@localhost/fas_mgmt_system?sslmode=disable up
    ```
    Edit the database connection details if needed.
 
 
-4. Create a copy of the .env.example file and rename it to .env
+6. Create a copy of the .env.example file and rename it to .env
 
    ```bash
    cp .env.example .env
@@ -68,7 +68,7 @@ builders.
    Update the values if neccessary.
 
 
-5. Run the API Server.
+7. Start the API Server.
    ```bash
    go run .\cmd\api\main.go
    ```
