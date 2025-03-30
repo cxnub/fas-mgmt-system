@@ -31,6 +31,16 @@ builders.
 
 ## Getting Started
 
+1. Clone this repository
+   ```bash
+   git clone https://github.com/cxnub/fas-mgmt-system.git
+   ```
+   
+2. Install Dependencies
+    ```bash
+    go mod download
+   ```
+
 1. Create a Postgres Server using Docker
    ```bash
    docker run --name fas-mgmt-system -e POSTGRES_PASSWORD=password -d -p 5432:5432 postgres
