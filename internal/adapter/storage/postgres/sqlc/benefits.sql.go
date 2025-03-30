@@ -119,6 +119,40 @@ func (q *Queries) GetBenefitsByScheme(ctx context.Context, schemeID uuid.UUID) (
 	return items, nil
 }
 
+const listBenefits = `-- name: ListBenefits :many
+SELECT id, created_at, updated_at, deleted_at, scheme_id, name, amount FROM benefits
+WHERE deleted_at is NULL
+`
+
+// Used to get a list of all scheme benefits
+func (q *Queries) ListBenefits(ctx context.Context) ([]Benefit, error) {
+	rows, err := q.db.Query(ctx, listBenefits)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Benefit
+	for rows.Next() {
+		var i Benefit
+		if err := rows.Scan(
+			&i.ID,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+			&i.DeletedAt,
+			&i.SchemeID,
+			&i.Name,
+			&i.Amount,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const updateBenefit = `-- name: UpdateBenefit :one
 UPDATE benefits
 SET

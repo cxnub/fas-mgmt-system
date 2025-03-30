@@ -12,6 +12,11 @@ SELECT * FROM benefits
 WHERE id = $1 AND deleted_at IS NULL
 LIMIT 1;
 
+-- name: ListBenefits :many
+-- Used to get a list of all scheme benefits
+SELECT * FROM benefits
+WHERE deleted_at is NULL;
+
 -- name: CreateBenefit :one
 -- Used when creating a scheme with benefits
 INSERT INTO benefits (

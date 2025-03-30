@@ -2,7 +2,6 @@ package repository
 
 import (
 	"context"
-	sql2 "database/sql"
 	"errors"
 	"fmt"
 	"github.com/cxnub/fas-mgmt-system/internal/adapter/storage/postgres"
@@ -22,56 +21,29 @@ func NewSchemeRepository(db *postgres.DB, q pg.Querier) *SchemeRepository {
 	return &SchemeRepository{db: db, q: q}
 }
 
-// fetchBenefitsForScheme fetches benefits for a specific scheme
+// fetchBenefitsForSchemes fetches benefits for a specific scheme
 func (r *SchemeRepository) fetchBenefitsForSchemes(ctx context.Context, schemeMap map[uuid.UUID]*domain.Scheme, schemeID *uuid.UUID) error {
-	var benefitsQuery interface {
-		ToSql() (string, []interface{}, error)
-	}
+	var err error
+	var benefitArray []pg.Benefit
 
 	if schemeID != nil {
-		// Query for a specific scheme
-		benefitsQuery = r.db.QueryBuilder.
-			Select("id", "name", "amount", "scheme_id").
-			From("benefits").
-			Where("scheme_id = ? AND deleted_at IS NULL", *schemeID)
+		// Query for a specific benefit
+		benefitArray, err = r.q.GetBenefitsByScheme(ctx, *schemeID)
 	} else {
-		// Query for all schemes
-		benefitsQuery = r.db.QueryBuilder.
-			Select("id", "name", "amount", "scheme_id").
-			From("benefits").
-			Where("deleted_at IS NULL")
+		// Query for all benefits
+		benefitArray, err = r.q.ListBenefits(ctx)
 	}
 
-	sql, args, err := benefitsQuery.ToSql()
-	if err != nil {
-		return fmt.Errorf("failed to build benefits query: %w", err)
-	}
-
-	rows, err := r.db.Query(ctx, sql, args...)
 	if err != nil {
 		return err
 	}
-	defer rows.Close()
 
-	for rows.Next() {
-		var benefit domain.Benefit
-		var schemeID uuid.UUID
-		var amount sql2.NullFloat64
+	for _, benefit := range benefitArray {
+		schemeBenefit := benefit.ToEntity()
 
-		err = rows.Scan(&benefit.ID, &benefit.Name, &amount, &schemeID)
-		if err != nil {
-			return err
+		if scheme, exists := schemeMap[benefit.SchemeID]; exists {
+			*scheme.Benefits = append(*scheme.Benefits, *schemeBenefit)
 		}
-
-		benefit.Amount = &amount.Float64
-
-		if scheme, exists := schemeMap[schemeID]; exists {
-			*scheme.Benefits = append(*scheme.Benefits, benefit)
-		}
-	}
-
-	if rows.Err() != nil {
-		return rows.Err()
 	}
 
 	return nil
@@ -79,51 +51,27 @@ func (r *SchemeRepository) fetchBenefitsForSchemes(ctx context.Context, schemeMa
 
 // fetchCriteriaForSchemes fetches criteria for specified schemes
 func (r *SchemeRepository) fetchCriteriaForSchemes(ctx context.Context, schemeMap map[uuid.UUID]*domain.Scheme, schemeID *uuid.UUID) error {
-	var criteriaQuery interface {
-		ToSql() (string, []interface{}, error)
-	}
+	var err error
+	var criteriaArray []pg.SchemeCriterium
 
 	if schemeID != nil {
 		// Query for a specific scheme
-		criteriaQuery = r.db.QueryBuilder.
-			Select("id", "name", "value", "scheme_id").
-			From("scheme_criteria").
-			Where("scheme_id = ? AND deleted_at IS NULL", *schemeID)
+		criteriaArray, err = r.q.GetSchemeCriteria(ctx, *schemeID)
 	} else {
 		// Query for all schemes
-		criteriaQuery = r.db.QueryBuilder.
-			Select("id", "name", "value", "scheme_id").
-			From("scheme_criteria").
-			Where("deleted_at IS NULL")
+		criteriaArray, err = r.q.ListSchemeCriteria(ctx)
 	}
 
-	sql, args, err := criteriaQuery.ToSql()
-	if err != nil {
-		return fmt.Errorf("failed to build criteria query: %w", err)
-	}
-
-	rows, err := r.db.Query(ctx, sql, args...)
 	if err != nil {
 		return err
 	}
-	defer rows.Close()
 
-	for rows.Next() {
-		var criterion domain.SchemeCriteria
-		var schemeID uuid.UUID
+	for _, criteria := range criteriaArray {
+		schemeCriteria := criteria.ToEntity()
 
-		err = rows.Scan(&criterion.ID, &criterion.Name, &criterion.Value, &schemeID)
-		if err != nil {
-			return err
+		if scheme, exists := schemeMap[criteria.SchemeID]; exists {
+			*scheme.Criteria = append(*scheme.Criteria, *schemeCriteria)
 		}
-
-		if scheme, exists := schemeMap[schemeID]; exists {
-			*scheme.Criteria = append(*scheme.Criteria, criterion)
-		}
-	}
-
-	if rows.Err() != nil {
-		return rows.Err()
 	}
 
 	return nil

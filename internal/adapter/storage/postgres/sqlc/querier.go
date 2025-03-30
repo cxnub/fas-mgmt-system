@@ -57,7 +57,7 @@ type Querier interface {
 	// Used for GET /api/schemes/{id}
 	GetScheme(ctx context.Context, id uuid.UUID) (Scheme, error)
 	// db/query/scheme_criteria.sql
-	// Used for getting criteria for a scheme
+	// Used for getting all criteria for a scheme
 	GetSchemeCriteria(ctx context.Context, schemeID uuid.UUID) ([]SchemeCriterium, error)
 	// Used for getting scheme criteria by ID
 	GetSchemeCriteriaByID(ctx context.Context, id uuid.UUID) (SchemeCriterium, error)
@@ -69,6 +69,10 @@ type Querier interface {
 	ListApplicants(ctx context.Context) ([]Applicant, error)
 	// Used for GET /api/applications
 	ListApplications(ctx context.Context) ([]Application, error)
+	// Used to get a list of all scheme benefits
+	ListBenefits(ctx context.Context) ([]Benefit, error)
+	// Used to get a list of all scheme criteria
+	ListSchemeCriteria(ctx context.Context) ([]SchemeCriterium, error)
 	// Used for GET /api/schemes
 	ListSchemes(ctx context.Context) ([]Scheme, error)
 	// Used for PUT /api/applicants/{id}
