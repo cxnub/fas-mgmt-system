@@ -1,0 +1,725 @@
+basePath: /api
+definitions:
+  domain.EmploymentStatus:
+    enum:
+    - employed
+    - unemployed
+    type: string
+    x-enum-varnames:
+    - EmploymentStatusEmployed
+    - EmploymentStatusUnemployed
+  domain.MaritalStatus:
+    enum:
+    - single
+    - married
+    - widowed
+    - divorce
+    type: string
+    x-enum-varnames:
+    - MaritalStatusSingle
+    - MaritalStatusMarried
+    - MaritalStatusWidowed
+    - MaritalStatusDivorce
+  domain.Sex:
+    enum:
+    - male
+    - female
+    type: string
+    x-enum-varnames:
+    - SexMale
+    - SexFemale
+  http.ApplicantResponse:
+    properties:
+      created_at:
+        example: "2021-01-01T00:00:00Z"
+        type: string
+      date_of_birth:
+        example: "2000-01-01"
+        type: string
+      employment_status:
+        example: employed
+        type: string
+      id:
+        example: 00000000-0000-0000-0000-000000000000
+        type: string
+      marital_status:
+        example: married
+        type: string
+      name:
+        example: John Doe
+        type: string
+      sex:
+        example: male
+        type: string
+      updated_at:
+        example: "2021-01-01T00:00:00Z"
+        type: string
+    type: object
+  http.ApplicationResponse:
+    properties:
+      applicant_id:
+        example: 00000000-0000-0000-0000-000000000000
+        type: string
+      created_at:
+        example: "2021-01-01T00:00:00Z"
+        type: string
+      id:
+        example: 00000000-0000-0000-0000-000000000000
+        type: string
+      scheme_id:
+        example: 00000000-0000-0000-0000-000000000000
+        type: string
+      updated_at:
+        example: "2021-01-01T00:00:00Z"
+        type: string
+    type: object
+  http.ApplicationsResponse:
+    properties:
+      applications:
+        items:
+          $ref: '#/definitions/http.ApplicationResponse'
+        type: array
+    type: object
+  http.CreateApplicantRequest:
+    properties:
+      date_of_birth:
+        type: string
+      employment_status:
+        $ref: '#/definitions/domain.EmploymentStatus'
+      marital_status:
+        $ref: '#/definitions/domain.MaritalStatus'
+      name:
+        type: string
+      sex:
+        $ref: '#/definitions/domain.Sex'
+    required:
+    - date_of_birth
+    - employment_status
+    - marital_status
+    - name
+    - sex
+    type: object
+  http.CreateApplicationRequest:
+    properties:
+      applicant_id:
+        type: string
+      scheme_id:
+        type: string
+    required:
+    - applicant_id
+    - scheme_id
+    type: object
+  http.CreateSchemeRequest:
+    properties:
+      name:
+        type: string
+    required:
+    - name
+    type: object
+  http.ErrorResponse:
+    properties:
+      errors:
+        additionalProperties:
+          type: string
+        example:
+          field: error description
+        type: object
+      message:
+        example: Error message
+        type: string
+      success:
+        example: false
+        type: boolean
+    type: object
+  http.Response:
+    properties:
+      data: {}
+      message:
+        example: Success
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  http.SchemeBenefitResponse:
+    properties:
+      amount:
+        example: 1000000
+        type: number
+      name:
+        example: CDC Vouchers
+        type: string
+    type: object
+  http.SchemeCriteriaResponse:
+    properties:
+      name:
+        example: employment_status
+        type: string
+      value:
+        example: unemployed
+        type: string
+    type: object
+  http.SchemeResponse:
+    properties:
+      benefits:
+        items:
+          $ref: '#/definitions/http.SchemeBenefitResponse'
+        type: array
+      criteria:
+        items:
+          $ref: '#/definitions/http.SchemeCriteriaResponse'
+        type: array
+      id:
+        example: 00000000-0000-0000-0000-000000000000
+        type: string
+      name:
+        example: Retrenchment Assistance Scheme
+        type: string
+    type: object
+  http.UpdateApplicantRequest:
+    properties:
+      date_of_birth:
+        type: string
+      employment_status:
+        $ref: '#/definitions/domain.EmploymentStatus'
+      id:
+        type: string
+      marital_status:
+        $ref: '#/definitions/domain.MaritalStatus'
+      name:
+        type: string
+      sex:
+        $ref: '#/definitions/domain.Sex'
+    required:
+    - id
+    type: object
+  http.UpdateApplicationRequest:
+    properties:
+      applicant_id:
+        type: string
+      id:
+        type: string
+      scheme_id:
+        type: string
+    required:
+    - id
+    type: object
+  http.UpdateSchemeRequest:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    required:
+    - id
+    type: object
+host: http://localhost:8080
+info:
+  contact: {}
+  description: This is the API documentation for FAS Management System.
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  title: FAS Management System API
+  version: "1.0"
+paths:
+  /applicants:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves and returns a list of all registered applicants.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully retrieved list of applicants.
+          schema:
+            items:
+              $ref: '#/definitions/http.ApplicantResponse'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+      summary: List All Applicants
+      tags:
+      - Applicants
+    post:
+      consumes:
+      - application/json
+      description: Handles the creation of a new applicant by accepting necessary
+        data and storing it in the system.
+      parameters:
+      - description: Payload for creating a new applicant
+        in: body
+        name: CreateApplicantRequest
+        required: true
+        schema:
+          $ref: '#/definitions/http.CreateApplicantRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successfully created applicant.
+          schema:
+            $ref: '#/definitions/http.ApplicantResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+      summary: Create a new Applicant
+      tags:
+      - Applicants
+  /applicants/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes the applicant with the specified ID from the system.
+      parameters:
+      - description: Applicant ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully deleted applicant.
+          schema:
+            $ref: '#/definitions/http.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+        "404":
+          description: Applicant Not Found
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+      summary: Delete an Applicant
+      tags:
+      - Applicants
+    get:
+      consumes:
+      - application/json
+      description: Retrieves the details of a single applicant using their unique
+        identifier.
+      parameters:
+      - description: Applicant ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully retrieved applicant.
+          schema:
+            $ref: '#/definitions/http.ApplicantResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+        "404":
+          description: Applicant Not Found
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+      summary: Retrieve Applicant by ID
+      tags:
+      - Applicants
+    put:
+      consumes:
+      - application/json
+      description: Updates the specified applicant's details based on the provided
+        payload.
+      parameters:
+      - description: Applicant ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Payload for updating an applicant
+        in: body
+        name: UpdateApplicantRequest
+        required: true
+        schema:
+          $ref: '#/definitions/http.UpdateApplicantRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully updated applicant.
+          schema:
+            $ref: '#/definitions/http.ApplicantResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+        "404":
+          description: Applicant Not Found
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+      summary: Update an Applicant
+      tags:
+      - Applicants
+  /applications:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve all applications present in the system.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Applications retrieved successfully.
+          schema:
+            items:
+              $ref: '#/definitions/http.ApplicationsResponse'
+            type: array
+        "500":
+          description: Internal server error.
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+      summary: List all applications
+      tags:
+      - Applications
+    post:
+      consumes:
+      - application/json
+      description: Create a new application using the specified applicant ID and scheme
+        ID.
+      parameters:
+      - description: Application creation payload
+        in: body
+        name: CreateApplicationRequest
+        required: true
+        schema:
+          $ref: '#/definitions/http.CreateApplicationRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Application created successfully.
+          schema:
+            $ref: '#/definitions/http.ApplicationResponse'
+        "400":
+          description: Invalid input data.
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+        "500":
+          description: Internal server error.
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+      summary: Create a new application
+      tags:
+      - Applications
+  /applications/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove an application from the system using its unique ID.
+      parameters:
+      - description: Application ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Application deleted successfully.
+          schema:
+            $ref: '#/definitions/http.Response'
+        "400":
+          description: Invalid UUID or bad input.
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+        "404":
+          description: Application not found.
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+        "500":
+          description: Internal server error.
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+      summary: Delete an application by ID
+      tags:
+      - Applications
+    get:
+      consumes:
+      - application/json
+      description: Get details of an application by its unique ID.
+      parameters:
+      - description: Application ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Application retrieved successfully.
+          schema:
+            $ref: '#/definitions/http.ApplicationResponse'
+        "400":
+          description: Invalid UUID or bad input.
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+        "404":
+          description: Application not found.
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+      summary: Retrieve application by ID
+      tags:
+      - Applications
+    put:
+      consumes:
+      - application/json
+      description: Update an application's details such as ApplicantID or SchemeID.
+      parameters:
+      - description: Application ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Application update payload
+        in: body
+        name: UpdateApplicationRequest
+        required: true
+        schema:
+          $ref: '#/definitions/http.UpdateApplicationRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Application updated successfully.
+          schema:
+            $ref: '#/definitions/http.ApplicationResponse'
+        "400":
+          description: Invalid input data.
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+        "404":
+          description: Application not found.
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+        "500":
+          description: Internal server error.
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+      summary: Update an application by ID
+      tags:
+      - Applications
+  /schemes:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a comprehensive list of all available schemes.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully retrieved list of schemes
+          schema:
+            items:
+              $ref: '#/definitions/http.SchemeResponse'
+            type: array
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+      summary: List all schemes
+      tags:
+      - schemes
+    post:
+      consumes:
+      - application/json
+      description: Add a new scheme with the provided details.
+      parameters:
+      - description: JSON object containing new scheme details
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/http.CreateSchemeRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successfully created scheme
+          schema:
+            $ref: '#/definitions/http.SchemeResponse'
+        "400":
+          description: Validation error occurred
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+      summary: Create a new scheme
+      tags:
+      - schemes
+  /schemes/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove a scheme from the system using its unique identifier.
+      parameters:
+      - description: Scheme ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully deleted scheme
+          schema:
+            $ref: '#/definitions/http.Response'
+        "400":
+          description: Validation error occurred
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+        "404":
+          description: Scheme not found
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+      summary: Delete a scheme
+      tags:
+      - schemes
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a scheme using its unique identifier.
+      parameters:
+      - description: Scheme ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully retrieved scheme
+          schema:
+            $ref: '#/definitions/http.SchemeResponse'
+        "400":
+          description: Validation error occurred
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+        "404":
+          description: Scheme not found
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+      summary: Get Scheme by ID
+      tags:
+      - schemes
+    put:
+      consumes:
+      - application/json
+      description: Modify the details of an existing scheme using its unique identifier.
+      parameters:
+      - description: Scheme ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: JSON object with updates to the scheme
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/http.UpdateSchemeRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully updated scheme
+          schema:
+            $ref: '#/definitions/http.SchemeResponse'
+        "400":
+          description: Validation error occurred
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+        "404":
+          description: Scheme not found
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+      summary: Update an existing scheme
+      tags:
+      - schemes
+  /schemes/applicant:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a list of schemes available for a specific applicant using
+        their unique identifier.
+      parameters:
+      - description: Applicant ID
+        format: uuid
+        in: query
+        name: applicant
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully retrieved available schemes
+          schema:
+            items:
+              $ref: '#/definitions/http.SchemeResponse'
+            type: array
+        "400":
+          description: Validation error occurred
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+        "404":
+          description: Applicant not found
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/http.ErrorResponse'
+      summary: List Applicant Available Schemes
+      tags:
+      - schemes
+swagger: "2.0"

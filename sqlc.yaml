@@ -1,0 +1,21 @@
+version: "2"
+sql:
+  - schema: "internal/adapter/storage/postgres/migrations"
+    queries: "internal/adapter/storage/postgres/queries"
+    engine: "postgresql"
+    gen:
+      go:
+        package: "pg"
+        out: "internal/adapter/storage/postgres/sqlc"
+        sql_package: "pgx/v5"
+        emit_interface: true
+        overrides:
+          - db_type: "uuid"
+            go_type:
+              import: "github.com/google/uuid"
+              type: "UUID"
+          - db_type: "uuid"
+            go_type:
+              import: "github.com/google/uuid"
+              type: "NullUUID"
+              null: true
