@@ -35,15 +35,18 @@ builders.
    ```bash
    docker run --name fas-mgmt-system -e POSTGRES_PASSWORD=password -d -p 5432:5432 postgres
    ```
+
+2. Create the database
+   Connect to the Postgres server and reate a database named `fas_mgmt_system`.
    
-2. Run database migrations
+4. Run database migrations
    ```bash
    migrate -source file://internal/adapter/storage/postgres/migrations -database postgres://postgres:password@localhost/fas_mgmt_system?sslmode=disable up
    ```
    Edit the database connection details if needed.
 
 
-3. Create a copy of the .env.example file and rename it to .env
+5. Create a copy of the .env.example file and rename it to .env
 
    ```bash
    cp .env.example .env
@@ -52,7 +55,7 @@ builders.
    Update the values if neccessary.
 
 
-4. Run the API Server.
+6. Run the API Server.
    ```bash
    go run .\cmd\api\main.go
    ```
