@@ -12,8 +12,10 @@ builders.
 
 ## Table of Contents
 
-- [Usage](#usage)
-- [Features](#features)
+- [Requirements](#requirements)
+- [Getting Started](#getting-started)
+- [API Documentation](#api-documentation)
+- [File Structure](#file-structure)
 - [ER Diagram](#er-diagram)
 - [License](#license)
 
@@ -53,14 +55,58 @@ builders.
    go run .\cmd\api\main.go
    ```
 
-## ER Diagram
-![ERD.png](ERD.png)
-
 ## API Documentation
 
 The API documentation is located in the `docs/` directory. To access it, open your browser and navigate to
 `http://localhost:8080/docs/index.html`. This documentation is generated using [swaggo](https://github.com/swaggo/swag/)
 in combination with the [gin-swagger](https://github.com/swaggo/gin-swagger/) middleware.
+
+| Method | Path                                 | Purpose                                                                                                       |
+|--------|--------------------------------------|---------------------------------------------------------------------------------------------------------------|
+| GET    | /api/applicants                      | Get all applicants.                                                                                           |
+| POST   | /api/applicants                      | Create a new applicant.                                                                                       |
+| GET    | /api/schemes                         | Get all schemes.                                                                                              |
+| GET    | /api/schemes/eligible?applicant={id} | Get all schemes that an applicant (represented by applicant query string parameter) is eligible to apply for. |
+| GET    | /api/applications                    | Get all applications.                                                                                         |
+| POST   | /api/applications                    | Create a new application.                                                                                     |
+| PUT    | /api/applicants/{id}                 | Update an applicant’s details.                                                                                |
+| DELETE | /api/applicants/{id}                 | Delete an applicant.                                                                                          |
+| POST   | /api/schemes                         | Create a new scheme.                                                                                          |
+| PUT    | /api/schemes/{id}                    | Update scheme details.                                                                                        |
+| DELETE | /api/schemes/{id}                    | Delete a scheme.                                                                                              |
+| PUT    | /api/applications/{id}               | Update application details.                                                                                   |
+| DELETE | /api/applications/{id}               | Delete an application.                                                                                        |
+
+Additional routes are displayed in `http://localhost:8080/docs/index.html`. 
+
+   
+## File Structure
+   ```
+   fas-mgmt-system
+   ├───cmd
+   │   └───api
+   ├───docs
+   └───internal
+       ├───adapter
+       │   ├───config
+       │   ├───handler
+       │   │   └───http
+       │   └───storage
+       │       └───postgres
+       │           ├───migrations
+       │           ├───queries
+       │           ├───repository
+       │           └───sqlc
+       └───core
+           ├───domain
+           ├───port
+           ├───service
+           └───util
+
+   ```
+
+## ER Diagram
+![ERD.png](ERD.png)
 
 ## License
 
