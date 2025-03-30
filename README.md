@@ -22,6 +22,9 @@ builders.
 1. [Golang-migrate CLI](https://github.com/golang-migrate/migrate)
    - Used for database migrations.
 
+2. [Postgres Database](https://www.postgresql.org/)
+   - Used for persistent storage.
+
 ## Getting Started
 
 1. Create a Postgres Server using Docker
