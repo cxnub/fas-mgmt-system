@@ -26,8 +26,8 @@ builders.
 1. [Golang-migrate CLI](https://github.com/golang-migrate/migrate)
    - Used for database migrations.
 
-2. [Postgres Database](https://www.postgresql.org/)
-   - Used for persistent storage.
+2. [Docker](https://www.docker.com/)
+   - Used for creating a Postgres Server for persistent storage.
 
 ## Getting Started
 
@@ -38,16 +38,18 @@ builders.
 
 2. Create the database
 
-   Connect to the Postgres server and create a database named `fas_mgmt_system`.
+   Use [pgAdmin](https://www.pgadmin.org/) or any other preferred method to connect to the Postgres server and create a database called
+   `fas_mgmt_system`.
+
    
-4. Run database migrations
+3. Run database migrations
    ```bash
    migrate -source file://internal/adapter/storage/postgres/migrations -database postgres://postgres:password@localhost/fas_mgmt_system?sslmode=disable up
    ```
    Edit the database connection details if needed.
 
 
-5. Create a copy of the .env.example file and rename it to .env
+4. Create a copy of the .env.example file and rename it to .env
 
    ```bash
    cp .env.example .env
@@ -56,7 +58,7 @@ builders.
    Update the values if neccessary.
 
 
-6. Run the API Server.
+5. Run the API Server.
    ```bash
    go run .\cmd\api\main.go
    ```
