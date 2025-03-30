@@ -37,6 +37,7 @@ builders.
    ```
 
 2. Create the database
+
    Connect to the Postgres server and create a database named `fas_mgmt_system`.
    
 4. Run database migrations
