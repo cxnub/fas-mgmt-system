@@ -5,6 +5,12 @@
 SELECT * FROM scheme_criteria
 WHERE scheme_id = $1 AND deleted_at IS NULL;
 
+-- name: GetSchemeCriteriaByID :one
+-- Used for getting scheme criteria by ID
+SELECT * FROM scheme_criteria
+WHERE id = $1 AND deleted_at IS NULL
+LIMIT 1;
+
 -- name: CreateSchemeCriteria :one
 -- Used when creating a scheme with criteria
 INSERT INTO scheme_criteria (

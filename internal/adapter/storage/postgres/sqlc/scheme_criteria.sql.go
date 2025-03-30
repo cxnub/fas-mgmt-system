@@ -96,6 +96,28 @@ func (q *Queries) GetSchemeCriteria(ctx context.Context, schemeID uuid.UUID) ([]
 	return items, nil
 }
 
+const getSchemeCriteriaByID = `-- name: GetSchemeCriteriaByID :one
+SELECT id, created_at, updated_at, deleted_at, name, value, scheme_id FROM scheme_criteria
+WHERE id = $1 AND deleted_at IS NULL
+LIMIT 1
+`
+
+// Used for getting scheme criteria by ID
+func (q *Queries) GetSchemeCriteriaByID(ctx context.Context, id uuid.UUID) (SchemeCriterium, error) {
+	row := q.db.QueryRow(ctx, getSchemeCriteriaByID, id)
+	var i SchemeCriterium
+	err := row.Scan(
+		&i.ID,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.DeletedAt,
+		&i.Name,
+		&i.Value,
+		&i.SchemeID,
+	)
+	return i, err
+}
+
 const updateSchemeCriteria = `-- name: UpdateSchemeCriteria :one
 UPDATE scheme_criteria
 SET

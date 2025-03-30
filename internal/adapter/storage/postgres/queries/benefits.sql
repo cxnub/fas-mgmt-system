@@ -6,6 +6,12 @@ SELECT * FROM benefits
 WHERE scheme_id = $1 AND deleted_at IS NULL
 ORDER BY created_at DESC;
 
+-- name: GetBenefitByID :one
+-- Used for getting benefits by id
+SELECT * FROM benefits
+WHERE id = $1 AND deleted_at IS NULL
+LIMIT 1;
+
 -- name: CreateBenefit :one
 -- Used when creating a scheme with benefits
 INSERT INTO benefits (

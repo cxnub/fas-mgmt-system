@@ -77,7 +77,7 @@ func (q *Queries) GetAllBenefitCriteria(ctx context.Context) ([]BenefitCriterium
 const getBenefitCriteriaByBenefitID = `-- name: GetBenefitCriteriaByBenefitID :many
 SELECT id, created_at, updated_at, deleted_at, name, value, benefit_id
 FROM benefit_criteria
-WHERE benefit_id = $1
+WHERE benefit_id = $1 AND deleted_at IS NULL
 `
 
 func (q *Queries) GetBenefitCriteriaByBenefitID(ctx context.Context, benefitID uuid.UUID) ([]BenefitCriterium, error) {
@@ -111,7 +111,7 @@ func (q *Queries) GetBenefitCriteriaByBenefitID(ctx context.Context, benefitID u
 const getBenefitCriteriaByID = `-- name: GetBenefitCriteriaByID :one
 SELECT id, created_at, updated_at, deleted_at, name, value, benefit_id
 FROM benefit_criteria
-WHERE id = $1
+WHERE id = $1 AND deleted_at IS NULL
 LIMIT 1
 `
 
@@ -134,7 +134,7 @@ const updateBenefitCriteria = `-- name: UpdateBenefitCriteria :exec
 UPDATE benefit_criteria
 SET name       = $1,
     value      = $2
-WHERE id = $3
+WHERE id = $3 AND deleted_at IS NULL
 `
 
 type UpdateBenefitCriteriaParams struct {

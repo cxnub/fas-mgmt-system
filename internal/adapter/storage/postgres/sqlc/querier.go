@@ -46,6 +46,8 @@ type Querier interface {
 	GetApplicationsByApplicant(ctx context.Context, applicantID uuid.UUID) ([]Application, error)
 	// Used for getting applications with applicant and scheme details
 	GetApplicationsWithDetails(ctx context.Context, arg GetApplicationsWithDetailsParams) ([]GetApplicationsWithDetailsRow, error)
+	// Used for getting benefits by id
+	GetBenefitByID(ctx context.Context, id uuid.UUID) (Benefit, error)
 	GetBenefitCriteriaByBenefitID(ctx context.Context, benefitID uuid.UUID) ([]BenefitCriterium, error)
 	GetBenefitCriteriaByID(ctx context.Context, id uuid.UUID) (BenefitCriterium, error)
 	// db/query/benefits.sql
@@ -57,10 +59,12 @@ type Querier interface {
 	// db/query/scheme_criteria.sql
 	// Used for getting criteria for a scheme
 	GetSchemeCriteria(ctx context.Context, schemeID uuid.UUID) ([]SchemeCriterium, error)
+	// Used for getting scheme criteria by ID
+	GetSchemeCriteriaByID(ctx context.Context, id uuid.UUID) (SchemeCriterium, error)
 	// Used for getting a scheme with its benefits
 	GetSchemeWithBenefits(ctx context.Context, id uuid.UUID) ([]GetSchemeWithBenefitsRow, error)
 	// Used for getting a scheme with its criteria
-	GetSchemeWithCriteria(ctx context.Context, id uuid.UUID) ([]GetSchemeWithCriteriaRow, error)
+	GetSchemeWithCriteriaAndBenefits(ctx context.Context, id uuid.UUID) ([]GetSchemeWithCriteriaAndBenefitsRow, error)
 	// Used for GET /api/applicants
 	ListApplicants(ctx context.Context) ([]Applicant, error)
 	// Used for GET /api/applications

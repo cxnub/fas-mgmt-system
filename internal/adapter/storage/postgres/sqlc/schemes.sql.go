@@ -123,7 +123,7 @@ func (q *Queries) GetSchemeWithBenefits(ctx context.Context, id uuid.UUID) ([]Ge
 	return items, nil
 }
 
-const getSchemeWithCriteria = `-- name: GetSchemeWithCriteria :many
+const getSchemeWithCriteriaAndBenefits = `-- name: GetSchemeWithCriteriaAndBenefits :many
 SELECT
     s.id, s.created_at, s.updated_at, s.deleted_at, s.name,
     sc.id as criteria_id,
@@ -134,7 +134,7 @@ FROM schemes s
 WHERE s.id = $1 AND s.deleted_at IS NULL
 `
 
-type GetSchemeWithCriteriaRow struct {
+type GetSchemeWithCriteriaAndBenefitsRow struct {
 	ID            uuid.UUID
 	CreatedAt     pgtype.Timestamp
 	UpdatedAt     pgtype.Timestamp
@@ -146,15 +146,15 @@ type GetSchemeWithCriteriaRow struct {
 }
 
 // Used for getting a scheme with its criteria
-func (q *Queries) GetSchemeWithCriteria(ctx context.Context, id uuid.UUID) ([]GetSchemeWithCriteriaRow, error) {
-	rows, err := q.db.Query(ctx, getSchemeWithCriteria, id)
+func (q *Queries) GetSchemeWithCriteriaAndBenefits(ctx context.Context, id uuid.UUID) ([]GetSchemeWithCriteriaAndBenefitsRow, error) {
+	rows, err := q.db.Query(ctx, getSchemeWithCriteriaAndBenefits, id)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	var items []GetSchemeWithCriteriaRow
+	var items []GetSchemeWithCriteriaAndBenefitsRow
 	for rows.Next() {
-		var i GetSchemeWithCriteriaRow
+		var i GetSchemeWithCriteriaAndBenefitsRow
 		if err := rows.Scan(
 			&i.ID,
 			&i.CreatedAt,

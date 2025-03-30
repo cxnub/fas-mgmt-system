@@ -60,6 +60,28 @@ func (q *Queries) DeleteBenefit(ctx context.Context, id uuid.UUID) error {
 	return err
 }
 
+const getBenefitByID = `-- name: GetBenefitByID :one
+SELECT id, created_at, updated_at, deleted_at, scheme_id, name, amount FROM benefits
+WHERE id = $1 AND deleted_at IS NULL
+LIMIT 1
+`
+
+// Used for getting benefits by id
+func (q *Queries) GetBenefitByID(ctx context.Context, id uuid.UUID) (Benefit, error) {
+	row := q.db.QueryRow(ctx, getBenefitByID, id)
+	var i Benefit
+	err := row.Scan(
+		&i.ID,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.DeletedAt,
+		&i.SchemeID,
+		&i.Name,
+		&i.Amount,
+	)
+	return i, err
+}
+
 const getBenefitsByScheme = `-- name: GetBenefitsByScheme :many
 
 SELECT id, created_at, updated_at, deleted_at, scheme_id, name, amount FROM benefits
