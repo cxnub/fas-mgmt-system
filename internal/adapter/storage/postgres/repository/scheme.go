@@ -241,6 +241,42 @@ func (r *SchemeRepository) CreateScheme(ctx context.Context, scheme *domain.Sche
 	return a.ToEntity(), nil
 }
 
+// AddSchemeBenefit inserts a new benefit into a specific scheme and returns the created benefit or an error if one occurs.
+func (r *SchemeRepository) AddSchemeBenefit(ctx context.Context, schemeID uuid.UUID, benefit *domain.Benefit) (newBenefit *domain.Benefit, err error) {
+	dbBenefit := pg.BenefitFromEntity(benefit)
+
+	params := pg.CreateBenefitParams{
+		SchemeID: dbBenefit.SchemeID,
+		Name:     dbBenefit.Name,
+		Amount:   dbBenefit.Amount,
+	}
+
+	b, err := r.q.CreateBenefit(ctx, params)
+	if err != nil {
+		return nil, err
+	}
+
+	return b.ToEntity(), nil
+}
+
+// AddSchemeCriteria adds a new criteria to a specific scheme and returns the created criteria or an error if one occurs.
+func (r *SchemeRepository) AddSchemeCriteria(ctx context.Context, schemeID uuid.UUID, criteria *domain.SchemeCriteria) (newCriteria *domain.SchemeCriteria, err error) {
+	dbSchemeCriteria := pg.SchemeCriteriumFromEntity(criteria)
+
+	params := pg.CreateSchemeCriteriaParams{
+		SchemeID: dbSchemeCriteria.SchemeID,
+		Name:     dbSchemeCriteria.Name,
+		Value:    dbSchemeCriteria.Value,
+	}
+
+	c, err := r.q.CreateSchemeCriteria(ctx, params)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.ToEntity(), nil
+}
+
 // UpdateScheme updates an existing scheme's details in the database and returns the updated scheme or an error.
 func (r *SchemeRepository) UpdateScheme(ctx context.Context, scheme *domain.Scheme) (updatedScheme *domain.Scheme, err error) {
 	var updatedDbScheme pg.Scheme
