@@ -48,7 +48,7 @@ builders.
 
 2. Create the database
 
-   Use [pgAdmin](https://www.pgadmin.org/) or any other preferred method to connect to the Postgres server and create a database called
+   Use [pgAdmin](https://www.pgadmin.org/) or any other preferred method to connect to the Postgres server and create a database named
    `fas_mgmt_system`.
 
    
