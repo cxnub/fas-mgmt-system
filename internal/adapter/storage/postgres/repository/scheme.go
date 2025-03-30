@@ -21,64 +21,12 @@ func NewSchemeRepository(db *postgres.DB, q pg.Querier) *SchemeRepository {
 	return &SchemeRepository{db: db, q: q}
 }
 
-// fetchBenefitsForSchemes fetches benefits for a specific scheme
-func (r *SchemeRepository) fetchBenefitsForSchemes(ctx context.Context, schemeMap map[uuid.UUID]*domain.Scheme, schemeID *uuid.UUID) error {
-	var err error
-	var benefitArray []pg.Benefit
+// =======================================================
+// =================== Scheme Functions ==================
+// =======================================================
 
-	if schemeID != nil {
-		// Query for a specific benefit
-		benefitArray, err = r.q.GetBenefitsByScheme(ctx, *schemeID)
-	} else {
-		// Query for all benefits
-		benefitArray, err = r.q.ListBenefits(ctx)
-	}
-
-	if err != nil {
-		return err
-	}
-
-	for _, benefit := range benefitArray {
-		schemeBenefit := benefit.ToEntity()
-
-		if scheme, exists := schemeMap[benefit.SchemeID]; exists {
-			*scheme.Benefits = append(*scheme.Benefits, *schemeBenefit)
-		}
-	}
-
-	return nil
-}
-
-// fetchCriteriaForSchemes fetches criteria for specified schemes
-func (r *SchemeRepository) fetchCriteriaForSchemes(ctx context.Context, schemeMap map[uuid.UUID]*domain.Scheme, schemeID *uuid.UUID) error {
-	var err error
-	var criteriaArray []pg.SchemeCriterium
-
-	if schemeID != nil {
-		// Query for a specific scheme
-		criteriaArray, err = r.q.GetSchemeCriteria(ctx, *schemeID)
-	} else {
-		// Query for all schemes
-		criteriaArray, err = r.q.ListSchemeCriteria(ctx)
-	}
-
-	if err != nil {
-		return err
-	}
-
-	for _, criteria := range criteriaArray {
-		schemeCriteria := criteria.ToEntity()
-
-		if scheme, exists := schemeMap[criteria.SchemeID]; exists {
-			*scheme.Criteria = append(*scheme.Criteria, *schemeCriteria)
-		}
-	}
-
-	return nil
-}
-
-// GetSchemeById retrieves a scheme by its ID, including its benefits and criteria, or returns an error if not found.
-func (r *SchemeRepository) GetSchemeById(ctx context.Context, id uuid.UUID) (*domain.Scheme, error) {
+// GetSchemeByID retrieves a scheme by its ID, including its benefits and criteria, or returns an error if not found.
+func (r *SchemeRepository) GetSchemeByID(ctx context.Context, id uuid.UUID) (*domain.Scheme, error) {
 	// Get the scheme by ID
 	schemesQuery := r.db.QueryBuilder.
 		Select("id", "name", "created_at", "updated_at").
@@ -189,42 +137,6 @@ func (r *SchemeRepository) CreateScheme(ctx context.Context, scheme *domain.Sche
 	return a.ToEntity(), nil
 }
 
-// AddSchemeBenefit inserts a new benefit into a specific scheme and returns the created benefit or an error if one occurs.
-func (r *SchemeRepository) AddSchemeBenefit(ctx context.Context, schemeID uuid.UUID, benefit *domain.Benefit) (newBenefit *domain.Benefit, err error) {
-	dbBenefit := pg.BenefitFromEntity(benefit)
-
-	params := pg.CreateBenefitParams{
-		SchemeID: dbBenefit.SchemeID,
-		Name:     dbBenefit.Name,
-		Amount:   dbBenefit.Amount,
-	}
-
-	b, err := r.q.CreateBenefit(ctx, params)
-	if err != nil {
-		return nil, err
-	}
-
-	return b.ToEntity(), nil
-}
-
-// AddSchemeCriteria adds a new criteria to a specific scheme and returns the created criteria or an error if one occurs.
-func (r *SchemeRepository) AddSchemeCriteria(ctx context.Context, schemeID uuid.UUID, criteria *domain.SchemeCriteria) (newCriteria *domain.SchemeCriteria, err error) {
-	dbSchemeCriteria := pg.SchemeCriteriumFromEntity(criteria)
-
-	params := pg.CreateSchemeCriteriaParams{
-		SchemeID: dbSchemeCriteria.SchemeID,
-		Name:     dbSchemeCriteria.Name,
-		Value:    dbSchemeCriteria.Value,
-	}
-
-	c, err := r.q.CreateSchemeCriteria(ctx, params)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.ToEntity(), nil
-}
-
 // UpdateScheme updates an existing scheme's details in the database and returns the updated scheme or an error.
 func (r *SchemeRepository) UpdateScheme(ctx context.Context, scheme *domain.Scheme) (updatedScheme *domain.Scheme, err error) {
 	var updatedDbScheme pg.Scheme
@@ -285,6 +197,266 @@ func (r *SchemeRepository) DeleteScheme(ctx context.Context, id uuid.UUID) (err 
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return domain.SchemeNotFoundError
+		}
+
+		return err
+	}
+
+	return nil
+}
+
+// =======================================================
+// ============== Scheme Benefits Functions ==============
+// =======================================================
+
+// fetchBenefitsForSchemes fetches benefits for a specific scheme
+func (r *SchemeRepository) fetchBenefitsForSchemes(ctx context.Context, schemeMap map[uuid.UUID]*domain.Scheme, schemeID *uuid.UUID) error {
+	var err error
+	var benefitArray []pg.Benefit
+
+	if schemeID != nil {
+		// Query for a specific benefit
+		benefitArray, err = r.q.GetBenefitsByScheme(ctx, *schemeID)
+	} else {
+		// Query for all benefits
+		benefitArray, err = r.q.ListBenefits(ctx)
+	}
+
+	if err != nil {
+		return err
+	}
+
+	for _, benefit := range benefitArray {
+		schemeBenefit := benefit.ToEntity()
+
+		if scheme, exists := schemeMap[benefit.SchemeID]; exists {
+			*scheme.Benefits = append(*scheme.Benefits, *schemeBenefit)
+		}
+	}
+
+	return nil
+}
+
+// GetBenefitByID retrieves a benefit by its unique identifier and converts it to the domain representation. Returns an error on failure.
+func (r *SchemeRepository) GetBenefitByID(ctx context.Context, benefitID uuid.UUID) (*domain.Benefit, error) {
+	benefit, err := r.q.GetBenefitByID(ctx, benefitID)
+
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, domain.BenefitNotFoundError
+		}
+
+		return nil, err
+	}
+
+	return benefit.ToEntity(), nil
+}
+
+// AddSchemeBenefit inserts a new benefit into a specific scheme and returns the created benefit or an error if one occurs.
+func (r *SchemeRepository) AddSchemeBenefit(ctx context.Context, benefit *domain.Benefit) (newBenefit *domain.Benefit, err error) {
+	dbBenefit := pg.BenefitFromEntity(benefit)
+
+	params := pg.CreateBenefitParams{
+		SchemeID: dbBenefit.SchemeID,
+		Name:     dbBenefit.Name,
+		Amount:   dbBenefit.Amount,
+	}
+
+	b, err := r.q.CreateBenefit(ctx, params)
+	if err != nil {
+		return nil, err
+	}
+
+	return b.ToEntity(), nil
+}
+
+// UpdateSchemeBenefit updates an existing benefit in the specified scheme and returns the updated benefit or an error if one occurs.
+func (r *SchemeRepository) UpdateSchemeBenefit(ctx context.Context, benefit *domain.Benefit) (updatedBenefit *domain.Benefit, err error) {
+	if benefit.ID == nil {
+		return nil, fmt.Errorf("benefit ID cannot be nil")
+	}
+
+	query := r.db.QueryBuilder.Update("benefits").Where("id = ? AND scheme_id = ?", *benefit.ID, benefit.SchemeID)
+
+	setFields := false
+
+	if benefit.Name != nil {
+		query = query.Set("name", *benefit.Name)
+		setFields = true
+	}
+
+	if benefit.Amount != nil {
+		query = query.Set("amount", *benefit.Amount)
+		setFields = true
+	}
+
+	if !setFields {
+		return nil, domain.NoUpdateFieldsError
+	}
+
+	sql, args, err := query.ToSql()
+	if err != nil {
+		return nil, fmt.Errorf("failed to build query: %w", err)
+	}
+
+	_, err = r.db.Exec(ctx, sql, args...)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, domain.BenefitNotFoundError
+		}
+
+		return nil, err
+	}
+
+	updatedBenefitEntity, err := r.q.GetBenefitByID(ctx, *benefit.ID)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, domain.BenefitNotFoundError
+		}
+		return nil, err
+	}
+
+	return updatedBenefitEntity.ToEntity(), nil
+}
+
+// DeleteSchemeBenefit deletes a benefit from the specified scheme by its ID.
+// Returns an error if the operation fails.
+func (r *SchemeRepository) DeleteSchemeBenefit(ctx context.Context, benefitID uuid.UUID) (err error) {
+	err = r.q.DeleteBenefit(ctx, benefitID)
+
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return domain.BenefitNotFoundError
+		}
+
+		return err
+	}
+
+	return nil
+}
+
+// =======================================================
+// ============== Scheme Criteria Functions ==============
+// =======================================================
+
+// fetchCriteriaForSchemes fetches criteria for specified schemes
+func (r *SchemeRepository) fetchCriteriaForSchemes(ctx context.Context, schemeMap map[uuid.UUID]*domain.Scheme, schemeID *uuid.UUID) error {
+	var err error
+	var criteriaArray []pg.SchemeCriterium
+
+	if schemeID != nil {
+		// Query for a specific scheme
+		criteriaArray, err = r.q.GetSchemeCriteria(ctx, *schemeID)
+	} else {
+		// Query for all schemes
+		criteriaArray, err = r.q.ListSchemeCriteria(ctx)
+	}
+
+	if err != nil {
+		return err
+	}
+
+	for _, criteria := range criteriaArray {
+		schemeCriteria := criteria.ToEntity()
+
+		if scheme, exists := schemeMap[criteria.SchemeID]; exists {
+			*scheme.Criteria = append(*scheme.Criteria, *schemeCriteria)
+		}
+	}
+
+	return nil
+}
+
+// GetSchemeCriteriaByID retrieves the criteria of a specific scheme by its ID or returns an error if not found.
+func (r *SchemeRepository) GetSchemeCriteriaByID(ctx context.Context, schemeID uuid.UUID) (*domain.SchemeCriteria, error) {
+	criteria, err := r.q.GetSchemeCriteriaByID(ctx, schemeID)
+
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, domain.SchemeCriteriaNotFoundError
+		}
+
+		return nil, err
+	}
+
+	return criteria.ToEntity(), nil
+}
+
+// AddSchemeCriteria adds a new criteria to a specific scheme and returns the created criteria or an error if one occurs.
+func (r *SchemeRepository) AddSchemeCriteria(ctx context.Context, criteria *domain.SchemeCriteria) (newCriteria *domain.SchemeCriteria, err error) {
+	dbSchemeCriteria := pg.SchemeCriteriumFromEntity(criteria)
+
+	params := pg.CreateSchemeCriteriaParams{
+		SchemeID: dbSchemeCriteria.SchemeID,
+		Name:     dbSchemeCriteria.Name,
+		Value:    dbSchemeCriteria.Value,
+	}
+
+	c, err := r.q.CreateSchemeCriteria(ctx, params)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.ToEntity(), nil
+}
+
+// UpdateSchemeCriteria updates existing criteria in the specified scheme and returns the updated criteria or an error if one occurs.
+func (r *SchemeRepository) UpdateSchemeCriteria(ctx context.Context, criteria *domain.SchemeCriteria) (updatedCriteria *domain.SchemeCriteria, err error) {
+	if criteria.ID == nil {
+		return nil, fmt.Errorf("criteria ID cannot be nil")
+	}
+
+	query := r.db.QueryBuilder.Update("scheme_criteria").Where("id = ? AND scheme_id = ?", *criteria.ID, criteria.SchemeID)
+
+	setFields := false
+
+	if criteria.Name != nil {
+		query = query.Set("name", *criteria.Name)
+		setFields = true
+	}
+
+	if criteria.Value != nil {
+		query = query.Set("value", *criteria.Value)
+		setFields = true
+	}
+
+	if !setFields {
+		return nil, domain.NoUpdateFieldsError
+	}
+
+	sql, args, err := query.ToSql()
+	if err != nil {
+		return nil, fmt.Errorf("failed to build query: %w", err)
+	}
+
+	_, err = r.db.Exec(ctx, sql, args...)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, domain.SchemeCriteriaNotFoundError
+		}
+
+		return nil, err
+	}
+
+	updatedCriteriaEntity, err := r.q.GetSchemeCriteriaByID(ctx, *criteria.ID)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, domain.SchemeCriteriaNotFoundError
+		}
+		return nil, err
+	}
+
+	return updatedCriteriaEntity.ToEntity(), nil
+}
+
+// DeleteSchemeCriteria deletes a criteria from the specified scheme by its ID.
+// Returns an error if the operation fails.
+func (r *SchemeRepository) DeleteSchemeCriteria(ctx context.Context, criteriaID uuid.UUID) (err error) {
+	err = r.q.DeleteSchemeCriteria(ctx, criteriaID)
+
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return domain.SchemeCriteriaNotFoundError
 		}
 
 		return err

@@ -57,12 +57,33 @@ func NewRouter(
 		// Scheme routes
 		schemes := api.Group("/schemes")
 		{
-			schemes.GET("/:id", schemeHandler.GetScheme)
+			schemeIdRoutes := schemes.Group("/:scheme_id")
+			{
+				schemeIdRoutes.GET("/", schemeHandler.GetScheme)
+				schemeIdRoutes.PUT("/", schemeHandler.UpdateScheme)
+				schemeIdRoutes.DELETE("/", schemeHandler.DeleteScheme)
+
+				schemeIdRoutes.POST("/benefits", schemeHandler.AddSchemeBenefit)
+
+				schemeIdRoutes.POST("/criteria", schemeHandler.AddSchemeCriteria)
+
+			}
+
+			benefitsRoutes := schemes.Group("/benefits")
+			{
+				benefitsRoutes.PUT("/:id", schemeHandler.UpdateSchemeBenefit)
+				benefitsRoutes.DELETE("/:id", schemeHandler.DeleteSchemeBenefit)
+			}
+
+			schemeCriteriaRoutes := schemes.Group("/criteria")
+			{
+				schemeCriteriaRoutes.PUT("/:id", schemeHandler.UpdateSchemeCriteria)
+				schemeCriteriaRoutes.DELETE("/:id", schemeHandler.DeleteSchemeCriteria)
+			}
+
 			schemes.GET("/", schemeHandler.ListSchemes)
 			schemes.GET("/eligible", schemeHandler.ListApplicantAvailableSchemes)
 			schemes.POST("/", schemeHandler.CreateScheme)
-			schemes.PUT("/:id", schemeHandler.UpdateScheme)
-			schemes.DELETE("/:id", schemeHandler.DeleteScheme)
 		}
 
 		// Application routes

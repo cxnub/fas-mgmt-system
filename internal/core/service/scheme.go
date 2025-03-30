@@ -18,7 +18,7 @@ func NewSchemeService(sr port.SchemeRepository, ar port.ApplicantRepository) *Sc
 }
 
 func (s *SchemeService) GetSchemeById(ctx context.Context, id uuid.UUID) (*domain.Scheme, error) {
-	return s.SchemeRepository.GetSchemeById(ctx, id)
+	return s.SchemeRepository.GetSchemeByID(ctx, id)
 }
 
 func (s *SchemeService) ListSchemes(ctx context.Context) ([]domain.Scheme, error) {
@@ -68,4 +68,76 @@ func (s *SchemeService) ListApplicantAvailableSchemes(ctx context.Context, appli
 	}
 
 	return result, nil
+}
+
+func (s *SchemeService) AddSchemeBenefit(ctx context.Context, benefit *domain.Benefit) (newBenefit *domain.Benefit, err error) {
+	// Check if scheme exists
+	_, err = s.SchemeRepository.GetSchemeByID(ctx, *benefit.SchemeID)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.SchemeRepository.AddSchemeBenefit(ctx, benefit)
+}
+
+func (s *SchemeService) UpdateSchemeBenefit(ctx context.Context, benefit *domain.Benefit) (newBenefit *domain.Benefit, err error) {
+	// Check if scheme exists
+	_, err = s.SchemeRepository.GetSchemeByID(ctx, *benefit.SchemeID)
+	if err != nil {
+		return nil, err
+	}
+
+	// Check if benefit exists
+	_, err = s.SchemeRepository.GetBenefitByID(ctx, *benefit.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.SchemeRepository.UpdateSchemeBenefit(ctx, benefit)
+}
+
+func (s *SchemeService) DeleteSchemeBenefit(ctx context.Context, benefitID uuid.UUID) error {
+	// Check if benefit exists
+	_, err := s.SchemeRepository.GetBenefitByID(ctx, benefitID)
+	if err != nil {
+		return err
+	}
+
+	return s.SchemeRepository.DeleteSchemeBenefit(ctx, benefitID)
+}
+
+func (s *SchemeService) AddSchemeCriteria(ctx context.Context, criteria *domain.SchemeCriteria) (newCriteria *domain.SchemeCriteria, err error) {
+	// Check if scheme exists
+	_, err = s.SchemeRepository.GetSchemeByID(ctx, *criteria.SchemeID)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.SchemeRepository.AddSchemeCriteria(ctx, criteria)
+}
+
+func (s *SchemeService) UpdateSchemeCriteria(ctx context.Context, criteria *domain.SchemeCriteria) (newCriteria *domain.SchemeCriteria, err error) {
+	// Check if scheme exists
+	_, err = s.SchemeRepository.GetSchemeByID(ctx, *criteria.SchemeID)
+	if err != nil {
+		return nil, err
+	}
+
+	// Check if criteria exists
+	_, err = s.SchemeRepository.GetSchemeCriteriaByID(ctx, *criteria.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.SchemeRepository.UpdateSchemeCriteria(ctx, criteria)
+}
+
+func (s *SchemeService) DeleteSchemeCriteria(ctx context.Context, criteriaID uuid.UUID) error {
+	// Check if criteria exists
+	_, err := s.SchemeRepository.GetSchemeCriteriaByID(ctx, criteriaID)
+	if err != nil {
+		return err
+	}
+
+	return s.SchemeRepository.DeleteSchemeCriteria(ctx, criteriaID)
 }

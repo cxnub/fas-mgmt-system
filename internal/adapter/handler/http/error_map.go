@@ -18,6 +18,14 @@ var errorMap = map[error]struct {
 		StatusCode: http.StatusBadRequest,
 		Message:    "Invalid scheme id.",
 	},
+	domain.InvalidBenefitError: {
+		StatusCode: http.StatusBadRequest,
+		Message:    "Invalid benefit id.",
+	},
+	domain.InvalidSchemeCriteriaError: {
+		StatusCode: http.StatusBadRequest,
+		Message:    "Invalid scheme criteria id.",
+	},
 	domain.InvalidApplicationError: {
 		StatusCode: http.StatusBadRequest,
 		Message:    "Invalid application id.",
@@ -33,6 +41,14 @@ var errorMap = map[error]struct {
 	domain.SchemeNotFoundError: {
 		StatusCode: http.StatusNotFound,
 		Message:    "Scheme not found.",
+	},
+	domain.SchemeCriteriaNotFoundError: {
+		StatusCode: http.StatusNotFound,
+		Message:    "Scheme criteria not found.",
+	},
+	domain.BenefitNotFoundError: {
+		StatusCode: http.StatusNotFound,
+		Message:    "Benefit not found.",
 	},
 	domain.ApplicationNotFoundError: {
 		StatusCode: http.StatusNotFound,

@@ -60,58 +60,100 @@ func newApplicantsResponse(applicants []domain.Applicant) ApplicantsResponse {
 	}
 }
 
-// SchemeBenefitResponse represents a response structure containing benefit details like name and amount for a scheme.
-type SchemeBenefitResponse struct {
+// SchemeBenefitListResponse represents a response structure containing benefit details like name and amount for a scheme.
+type SchemeBenefitListResponse struct {
 	Name   string  `json:"name" example:"CDC Vouchers"`
 	Amount float64 `json:"amount" example:"1000000"`
 }
 
-func newSchemeBenefitResponse(benefit []domain.Benefit) []SchemeBenefitResponse {
-	var schemeBenefitResponses []SchemeBenefitResponse
+func newSchemeBenefitListResponse(benefit []domain.Benefit) []SchemeBenefitListResponse {
+	var schemeBenefitListResponses []SchemeBenefitListResponse
 
 	for _, b := range benefit {
-		schemeBenefitResponses = append(schemeBenefitResponses, SchemeBenefitResponse{
+		schemeBenefitListResponses = append(schemeBenefitListResponses, SchemeBenefitListResponse{
 			Name:   *b.Name,
 			Amount: *b.Amount,
 		})
 	}
 
-	return schemeBenefitResponses
+	return schemeBenefitListResponses
 }
 
-// SchemeCriteriaResponse represents a response containing a criterion's name and value associated with a scheme.
-type SchemeCriteriaResponse struct {
+// SchemeBenefitResponse represents a response structure encapsulating scheme benefit details with associated metadata.
+type SchemeBenefitResponse struct {
+	ID        string  `json:"id" example:"00000000-0000-0000-0000-000000000000"`
+	SchemeID  string  `json:"scheme_id" example:"00000000-0000-0000-0000-000000000000"`
+	Name      string  `json:"name" example:"CDC Vouchers"`
+	Amount    float64 `json:"amount" example:"1000000"`
+	CreatedAt string  `json:"created_at" example:"2021-01-01T00:00:00Z"`
+	UpdatedAt string  `json:"updated_at" example:"2021-01-01T00:00:00Z"`
+}
+
+func newSchemebenefitResponse(benefit domain.Benefit) SchemeBenefitResponse {
+	return SchemeBenefitResponse{
+		Name:      *benefit.Name,
+		Amount:    *benefit.Amount,
+		ID:        benefit.ID.String(),
+		SchemeID:  benefit.SchemeID.String(),
+		CreatedAt: benefit.CreatedAt.String(),
+		UpdatedAt: benefit.UpdatedAt.String(),
+	}
+}
+
+// SchemeCriteriaListResponse represents a response containing a criterion's name and value associated with a scheme.
+type SchemeCriteriaListResponse struct {
 	Name  string `json:"name" example:"employment_status"`
 	Value string `json:"value" example:"unemployed"`
 }
 
-func newSchemeCriteriaResponse(criteria []domain.SchemeCriteria) []SchemeCriteriaResponse {
-	var schemeCriteriaResponses []SchemeCriteriaResponse
+func newSchemeCriteriaListResponse(criteria []domain.SchemeCriteria) []SchemeCriteriaListResponse {
+	var schemeCriteriaListResponses []SchemeCriteriaListResponse
 
 	for _, sc := range criteria {
-		schemeCriteriaResponses = append(schemeCriteriaResponses, SchemeCriteriaResponse{
+		schemeCriteriaListResponses = append(schemeCriteriaListResponses, SchemeCriteriaListResponse{
 			Name:  *sc.Name,
 			Value: *sc.Value,
 		})
 	}
 
-	return schemeCriteriaResponses
+	return schemeCriteriaListResponses
+}
+
+// SchemeCriteriaResponse represents the response structure for creating a scheme criteria in the system.
+type SchemeCriteriaResponse struct {
+	ID        string `json:"id" example:"00000000-0000-0000-0000-000000000000"`
+	SchemeID  string `json:"scheme_id" example:"00000000-0000-0000-0000-000000000000"`
+	Name      string `json:"name" example:"employment_status"`
+	Value     string `json:"value" example:"unemployed"`
+	CreatedAt string `json:"created_at" example:"2021-01-01T00:00:00Z"`
+	UpdatedAt string `json:"updated_at" example:"2021-01-01T00:00:00Z"`
+}
+
+func newSchemeCriteriaResponse(criteria domain.SchemeCriteria) SchemeCriteriaResponse {
+	return SchemeCriteriaResponse{
+		Name:      *criteria.Name,
+		Value:     *criteria.Value,
+		ID:        criteria.ID.String(),
+		SchemeID:  criteria.SchemeID.String(),
+		CreatedAt: criteria.CreatedAt.String(),
+		UpdatedAt: criteria.UpdatedAt.String(),
+	}
 }
 
 // SchemeResponse represents the response structure containing details of a scheme, including ID, name, criteria, and benefits.
 type SchemeResponse struct {
-	ID       string                   `json:"id" example:"00000000-0000-0000-0000-000000000000"`
-	Name     string                   `json:"name" example:"Retrenchment Assistance Scheme"`
-	Criteria []SchemeCriteriaResponse `json:"criteria"`
-	Benefits []SchemeBenefitResponse  `json:"benefits"`
+	ID       string                       `json:"id" example:"00000000-0000-0000-0000-000000000000"`
+	Name     string                       `json:"name" example:"Retrenchment Assistance Scheme"`
+	Criteria []SchemeCriteriaListResponse `json:"criteria"`
+	Benefits []SchemeBenefitListResponse  `json:"benefits"`
 }
 
 func newSchemeResponse(scheme domain.Scheme) SchemeResponse {
 	return SchemeResponse{
 		ID:       scheme.ID.String(),
 		Name:     *scheme.Name,
-		Criteria: newSchemeCriteriaResponse(*scheme.Criteria),
-		Benefits: newSchemeBenefitResponse(*scheme.Benefits),
+		Criteria: newSchemeCriteriaListResponse(*scheme.Criteria),
+		Benefits: newSchemeBenefitListResponse(*scheme.Benefits),
 	}
 }
 

@@ -5,6 +5,8 @@ import "errors"
 var (
 	InvalidApplicantError       = errors.New("invalid applicant id")
 	InvalidSchemeError          = errors.New("invalid scheme id")
+	InvalidBenefitError         = errors.New("invalid benefit id")
+	InvalidSchemeCriteriaError  = errors.New("invalid benefit criteria id")
 	InvalidApplicationError     = errors.New("invalid application id")
 	NotFoundError               = errors.New("data not found")
 	NoUpdateFieldsError         = errors.New("no fields to update")

@@ -38,14 +38,14 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/http.ApplicantResponse"
+                                "$ref": "#/definitions/internal_adapter_handler_http.ApplicantResponse"
                             }
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/http.ErrorResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
                         }
                     }
                 }
@@ -69,7 +69,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/http.CreateApplicantRequest"
+                            "$ref": "#/definitions/internal_adapter_handler_http.CreateApplicantRequest"
                         }
                     }
                 ],
@@ -77,19 +77,19 @@ const docTemplate = `{
                     "201": {
                         "description": "Successfully created applicant.",
                         "schema": {
-                            "$ref": "#/definitions/http.ApplicantResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ApplicantResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/http.ErrorResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/http.ErrorResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
                         }
                     }
                 }
@@ -121,25 +121,25 @@ const docTemplate = `{
                     "200": {
                         "description": "Successfully retrieved applicant.",
                         "schema": {
-                            "$ref": "#/definitions/http.ApplicantResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ApplicantResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/http.ErrorResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Applicant Not Found",
                         "schema": {
-                            "$ref": "#/definitions/http.ErrorResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/http.ErrorResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
                         }
                     }
                 }
@@ -170,7 +170,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/http.UpdateApplicantRequest"
+                            "$ref": "#/definitions/internal_adapter_handler_http.UpdateApplicantRequest"
                         }
                     }
                 ],
@@ -178,25 +178,25 @@ const docTemplate = `{
                     "200": {
                         "description": "Successfully updated applicant.",
                         "schema": {
-                            "$ref": "#/definitions/http.ApplicantResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ApplicantResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/http.ErrorResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Applicant Not Found",
                         "schema": {
-                            "$ref": "#/definitions/http.ErrorResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/http.ErrorResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
                         }
                     }
                 }
@@ -232,19 +232,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/http.ErrorResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Applicant Not Found",
                         "schema": {
-                            "$ref": "#/definitions/http.ErrorResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/http.ErrorResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
                         }
                     }
                 }
@@ -269,14 +269,14 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/http.ApplicationsResponse"
+                                "$ref": "#/definitions/internal_adapter_handler_http.ApplicationsResponse"
                             }
                         }
                     },
                     "500": {
                         "description": "Internal server error.",
                         "schema": {
-                            "$ref": "#/definitions/http.ErrorResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
                         }
                     }
                 }
@@ -300,7 +300,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/http.CreateApplicationRequest"
+                            "$ref": "#/definitions/internal_adapter_handler_http.CreateApplicationRequest"
                         }
                     }
                 ],
@@ -308,19 +308,19 @@ const docTemplate = `{
                     "201": {
                         "description": "Application created successfully.",
                         "schema": {
-                            "$ref": "#/definitions/http.ApplicationResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ApplicationResponse"
                         }
                     },
                     "400": {
                         "description": "Invalid input data.",
                         "schema": {
-                            "$ref": "#/definitions/http.ErrorResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal server error.",
                         "schema": {
-                            "$ref": "#/definitions/http.ErrorResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
                         }
                     }
                 }
@@ -352,19 +352,19 @@ const docTemplate = `{
                     "200": {
                         "description": "Application retrieved successfully.",
                         "schema": {
-                            "$ref": "#/definitions/http.ApplicationResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ApplicationResponse"
                         }
                     },
                     "400": {
                         "description": "Invalid UUID or bad input.",
                         "schema": {
-                            "$ref": "#/definitions/http.ErrorResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Application not found.",
                         "schema": {
-                            "$ref": "#/definitions/http.ErrorResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
                         }
                     }
                 }
@@ -395,7 +395,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/http.UpdateApplicationRequest"
+                            "$ref": "#/definitions/internal_adapter_handler_http.UpdateApplicationRequest"
                         }
                     }
                 ],
@@ -403,25 +403,25 @@ const docTemplate = `{
                     "200": {
                         "description": "Application updated successfully.",
                         "schema": {
-                            "$ref": "#/definitions/http.ApplicationResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ApplicationResponse"
                         }
                     },
                     "400": {
                         "description": "Invalid input data.",
                         "schema": {
-                            "$ref": "#/definitions/http.ErrorResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Application not found.",
                         "schema": {
-                            "$ref": "#/definitions/http.ErrorResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal server error.",
                         "schema": {
-                            "$ref": "#/definitions/http.ErrorResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
                         }
                     }
                 }
@@ -457,19 +457,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid UUID or bad input.",
                         "schema": {
-                            "$ref": "#/definitions/http.ErrorResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Application not found.",
                         "schema": {
-                            "$ref": "#/definitions/http.ErrorResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal server error.",
                         "schema": {
-                            "$ref": "#/definitions/http.ErrorResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
                         }
                     }
                 }
@@ -494,14 +494,14 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/http.SchemeResponse"
+                                "$ref": "#/definitions/internal_adapter_handler_http.SchemeResponse"
                             }
                         }
                     },
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/http.ErrorResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
                         }
                     }
                 }
@@ -521,11 +521,11 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "description": "JSON object containing new scheme details",
-                        "name": "body",
+                        "name": "CreateSchemeRequest",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/http.CreateSchemeRequest"
+                            "$ref": "#/definitions/internal_adapter_handler_http.CreateSchemeRequest"
                         }
                     }
                 ],
@@ -533,25 +533,243 @@ const docTemplate = `{
                     "201": {
                         "description": "Successfully created scheme",
                         "schema": {
-                            "$ref": "#/definitions/http.SchemeResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.SchemeResponse"
                         }
                     },
                     "400": {
                         "description": "Validation error occurred",
                         "schema": {
-                            "$ref": "#/definitions/http.ErrorResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/http.ErrorResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
                         }
                     }
                 }
             }
         },
-        "/schemes/applicant": {
+        "/schemes/benefits/{id}": {
+            "put": {
+                "description": "Modify an existing benefit of a scheme by specifying the scheme ID and benefit ID.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "schemes"
+                ],
+                "summary": "Update a benefit of a scheme",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Benefit ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "JSON object with updated benefit details",
+                        "name": "UpdateSchemeBenefitRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_adapter_handler_http.UpdateSchemeBenefitRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully updated benefit",
+                        "schema": {
+                            "$ref": "#/definitions/internal_adapter_handler_http.SchemeBenefitResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error occurred",
+                        "schema": {
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Benefit or Scheme not found",
+                        "schema": {
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Remove a benefit from a scheme using its unique identifier.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "schemes"
+                ],
+                "summary": "Delete a benefit from a scheme",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Benefit ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully deleted benefit",
+                        "schema": {
+                            "$ref": "#/definitions/http.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error occurred",
+                        "schema": {
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Benefit not found",
+                        "schema": {
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/schemes/criteria/{id}": {
+            "put": {
+                "description": "Modify an existing criteria of a scheme by specifying the scheme ID and criteria ID.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "schemes"
+                ],
+                "summary": "Update a criteria of a scheme",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Criteria ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "JSON object with updated criteria details",
+                        "name": "UpdateSchemeCriteriaRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_adapter_handler_http.UpdateSchemeCriteriaRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully updated criteria",
+                        "schema": {
+                            "$ref": "#/definitions/internal_adapter_handler_http.SchemeCriteriaResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error occurred",
+                        "schema": {
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Criteria or Scheme not found",
+                        "schema": {
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Remove a criteria from a scheme using its unique identifier.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "schemes"
+                ],
+                "summary": "Delete a criteria from a scheme",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Criteria ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully deleted criteria",
+                        "schema": {
+                            "$ref": "#/definitions/http.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error occurred",
+                        "schema": {
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Criteria not found",
+                        "schema": {
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/schemes/eligible": {
             "get": {
                 "description": "Retrieve a list of schemes available for a specific applicant using their unique identifier.",
                 "consumes": [
@@ -570,7 +788,7 @@ const docTemplate = `{
                         "format": "uuid",
                         "description": "Applicant ID",
                         "name": "applicant",
-                        "in": "query",
+                        "in": "path",
                         "required": true
                     }
                 ],
@@ -580,26 +798,26 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/http.SchemeResponse"
+                                "$ref": "#/definitions/internal_adapter_handler_http.SchemeResponse"
                             }
                         }
                     },
                     "400": {
                         "description": "Validation error occurred",
                         "schema": {
-                            "$ref": "#/definitions/http.ErrorResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Applicant not found",
                         "schema": {
-                            "$ref": "#/definitions/http.ErrorResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/http.ErrorResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
                         }
                     }
                 }
@@ -623,7 +841,7 @@ const docTemplate = `{
                         "type": "string",
                         "format": "uuid",
                         "description": "Scheme ID",
-                        "name": "id",
+                        "name": "scheme_id",
                         "in": "path",
                         "required": true
                     }
@@ -632,25 +850,25 @@ const docTemplate = `{
                     "200": {
                         "description": "Successfully retrieved scheme",
                         "schema": {
-                            "$ref": "#/definitions/http.SchemeResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.SchemeResponse"
                         }
                     },
                     "400": {
                         "description": "Validation error occurred",
                         "schema": {
-                            "$ref": "#/definitions/http.ErrorResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Scheme not found",
                         "schema": {
-                            "$ref": "#/definitions/http.ErrorResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/http.ErrorResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
                         }
                     }
                 }
@@ -682,7 +900,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/http.UpdateSchemeRequest"
+                            "$ref": "#/definitions/internal_adapter_handler_http.UpdateSchemeRequest"
                         }
                     }
                 ],
@@ -690,25 +908,25 @@ const docTemplate = `{
                     "200": {
                         "description": "Successfully updated scheme",
                         "schema": {
-                            "$ref": "#/definitions/http.SchemeResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.SchemeResponse"
                         }
                     },
                     "400": {
                         "description": "Validation error occurred",
                         "schema": {
-                            "$ref": "#/definitions/http.ErrorResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Scheme not found",
                         "schema": {
-                            "$ref": "#/definitions/http.ErrorResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/http.ErrorResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
                         }
                     }
                 }
@@ -745,19 +963,139 @@ const docTemplate = `{
                     "400": {
                         "description": "Validation error occurred",
                         "schema": {
-                            "$ref": "#/definitions/http.ErrorResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Scheme not found",
                         "schema": {
-                            "$ref": "#/definitions/http.ErrorResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal server error",
                         "schema": {
-                            "$ref": "#/definitions/http.ErrorResponse"
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/schemes/{scheme_id}/benefits": {
+            "post": {
+                "description": "Attach a new benefit to an existing scheme by specifying the scheme ID.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "schemes"
+                ],
+                "summary": "Add a benefit to a scheme",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Scheme ID",
+                        "name": "scheme_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "JSON object with benefit details",
+                        "name": "AddSchemeBenefitRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_adapter_handler_http.AddSchemeBenefitRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Successfully added benefit to scheme",
+                        "schema": {
+                            "$ref": "#/definitions/internal_adapter_handler_http.SchemeBenefitResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error occurred",
+                        "schema": {
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Scheme not found",
+                        "schema": {
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/schemes/{scheme_id}/criteria": {
+            "post": {
+                "description": "Add a new criteria to an existing scheme by specifying the scheme ID.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "schemes"
+                ],
+                "summary": "Add a criteria to a scheme",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Scheme ID",
+                        "name": "scheme_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "JSON object with criteria details",
+                        "name": "AddSchemeCriteriaRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_adapter_handler_http.AddSchemeCriteriaRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Successfully added criteria to scheme",
+                        "schema": {
+                            "$ref": "#/definitions/internal_adapter_handler_http.SchemeCriteriaResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error occurred",
+                        "schema": {
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Scheme not found",
+                        "schema": {
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/internal_adapter_handler_http.ErrorResponse"
                         }
                     }
                 }
@@ -765,7 +1103,10 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "domain.EmploymentStatus": {
+        "big.Int": {
+            "type": "object"
+        },
+        "github_com_cxnub_fas-mgmt-system_internal_core_domain.EmploymentStatus": {
             "type": "string",
             "enum": [
                 "employed",
@@ -776,7 +1117,7 @@ const docTemplate = `{
                 "EmploymentStatusUnemployed"
             ]
         },
-        "domain.MaritalStatus": {
+        "github_com_cxnub_fas-mgmt-system_internal_core_domain.MaritalStatus": {
             "type": "string",
             "enum": [
                 "single",
@@ -791,7 +1132,7 @@ const docTemplate = `{
                 "MaritalStatusDivorce"
             ]
         },
-        "domain.Sex": {
+        "github_com_cxnub_fas-mgmt-system_internal_core_domain.Sex": {
             "type": "string",
             "enum": [
                 "male",
@@ -802,7 +1143,259 @@ const docTemplate = `{
                 "SexFemale"
             ]
         },
-        "http.ApplicantResponse": {
+        "http.Header": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "array",
+                "items": {
+                    "type": "string"
+                }
+            }
+        },
+        "http.Request": {
+            "type": "object",
+            "properties": {
+                "body": {
+                    "description": "Body is the request's body.\n\nFor client requests, a nil body means the request has no\nbody, such as a GET request. The HTTP Client's Transport\nis responsible for calling the Close method.\n\nFor server requests, the Request Body is always non-nil\nbut will return EOF immediately when no body is present.\nThe Server will close the request body. The ServeHTTP\nHandler does not need to.\n\nBody must allow Read to be called concurrently with Close.\nIn particular, calling Close should unblock a Read waiting\nfor input."
+                },
+                "cancel": {
+                    "description": "Cancel is an optional channel whose closure indicates that the client\nrequest should be regarded as canceled. Not all implementations of\nRoundTripper may support Cancel.\n\nFor server requests, this field is not applicable.\n\nDeprecated: Set the Request's context with NewRequestWithContext\ninstead. If a Request's Cancel field and context are both\nset, it is undefined whether Cancel is respected.",
+                    "type": "object"
+                },
+                "close": {
+                    "description": "Close indicates whether to close the connection after\nreplying to this request (for servers) or after sending this\nrequest and reading its response (for clients).\n\nFor server requests, the HTTP server handles this automatically\nand this field is not needed by Handlers.\n\nFor client requests, setting this field prevents re-use of\nTCP connections between requests to the same hosts, as if\nTransport.DisableKeepAlives were set.",
+                    "type": "boolean"
+                },
+                "contentLength": {
+                    "description": "ContentLength records the length of the associated content.\nThe value -1 indicates that the length is unknown.\nValues \u003e= 0 indicate that the given number of bytes may\nbe read from Body.\n\nFor client requests, a value of 0 with a non-nil Body is\nalso treated as unknown.",
+                    "type": "integer"
+                },
+                "form": {
+                    "description": "Form contains the parsed form data, including both the URL\nfield's query parameters and the PATCH, POST, or PUT form data.\nThis field is only available after ParseForm is called.\nThe HTTP client ignores Form and uses Body instead.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/url.Values"
+                        }
+                    ]
+                },
+                "header": {
+                    "description": "Header contains the request header fields either received\nby the server or to be sent by the client.\n\nIf a server received a request with header lines,\n\n\tHost: example.com\n\taccept-encoding: gzip, deflate\n\tAccept-Language: en-us\n\tfOO: Bar\n\tfoo: two\n\nthen\n\n\tHeader = map[string][]string{\n\t\t\"Accept-Encoding\": {\"gzip, deflate\"},\n\t\t\"Accept-Language\": {\"en-us\"},\n\t\t\"Foo\": {\"Bar\", \"two\"},\n\t}\n\nFor incoming requests, the Host header is promoted to the\nRequest.Host field and removed from the Header map.\n\nHTTP defines that header names are case-insensitive. The\nrequest parser implements this by using CanonicalHeaderKey,\nmaking the first character and any characters following a\nhyphen uppercase and the rest lowercase.\n\nFor client requests, certain headers such as Content-Length\nand Connection are automatically written when needed and\nvalues in Header may be ignored. See the documentation\nfor the Request.Write method.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/http.Header"
+                        }
+                    ]
+                },
+                "host": {
+                    "description": "For server requests, Host specifies the host on which the\nURL is sought. For HTTP/1 (per RFC 7230, section 5.4), this\nis either the value of the \"Host\" header or the host name\ngiven in the URL itself. For HTTP/2, it is the value of the\n\":authority\" pseudo-header field.\nIt may be of the form \"host:port\". For international domain\nnames, Host may be in Punycode or Unicode form. Use\ngolang.org/x/net/idna to convert it to either format if\nneeded.\nTo prevent DNS rebinding attacks, server Handlers should\nvalidate that the Host header has a value for which the\nHandler considers itself authoritative. The included\nServeMux supports patterns registered to particular host\nnames and thus protects its registered Handlers.\n\nFor client requests, Host optionally overrides the Host\nheader to send. If empty, the Request.Write method uses\nthe value of URL.Host. Host may contain an international\ndomain name.",
+                    "type": "string"
+                },
+                "method": {
+                    "description": "Method specifies the HTTP method (GET, POST, PUT, etc.).\nFor client requests, an empty string means GET.",
+                    "type": "string"
+                },
+                "multipartForm": {
+                    "description": "MultipartForm is the parsed multipart form, including file uploads.\nThis field is only available after ParseMultipartForm is called.\nThe HTTP client ignores MultipartForm and uses Body instead.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/multipart.Form"
+                        }
+                    ]
+                },
+                "pattern": {
+                    "description": "Pattern is the [ServeMux] pattern that matched the request.\nIt is empty if the request was not matched against a pattern.",
+                    "type": "string"
+                },
+                "postForm": {
+                    "description": "PostForm contains the parsed form data from PATCH, POST\nor PUT body parameters.\n\nThis field is only available after ParseForm is called.\nThe HTTP client ignores PostForm and uses Body instead.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/url.Values"
+                        }
+                    ]
+                },
+                "proto": {
+                    "description": "The protocol version for incoming server requests.\n\nFor client requests, these fields are ignored. The HTTP\nclient code always uses either HTTP/1.1 or HTTP/2.\nSee the docs on Transport for details.",
+                    "type": "string"
+                },
+                "protoMajor": {
+                    "description": "1",
+                    "type": "integer"
+                },
+                "protoMinor": {
+                    "description": "0",
+                    "type": "integer"
+                },
+                "remoteAddr": {
+                    "description": "RemoteAddr allows HTTP servers and other software to record\nthe network address that sent the request, usually for\nlogging. This field is not filled in by ReadRequest and\nhas no defined format. The HTTP server in this package\nsets RemoteAddr to an \"IP:port\" address before invoking a\nhandler.\nThis field is ignored by the HTTP client.",
+                    "type": "string"
+                },
+                "requestURI": {
+                    "description": "RequestURI is the unmodified request-target of the\nRequest-Line (RFC 7230, Section 3.1.1) as sent by the client\nto a server. Usually the URL field should be used instead.\nIt is an error to set this field in an HTTP client request.",
+                    "type": "string"
+                },
+                "response": {
+                    "description": "Response is the redirect response which caused this request\nto be created. This field is only populated during client\nredirects.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/http.Response"
+                        }
+                    ]
+                },
+                "tls": {
+                    "description": "TLS allows HTTP servers and other software to record\ninformation about the TLS connection on which the request\nwas received. This field is not filled in by ReadRequest.\nThe HTTP server in this package sets the field for\nTLS-enabled connections before invoking a handler;\notherwise it leaves the field nil.\nThis field is ignored by the HTTP client.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/tls.ConnectionState"
+                        }
+                    ]
+                },
+                "trailer": {
+                    "description": "Trailer specifies additional headers that are sent after the request\nbody.\n\nFor server requests, the Trailer map initially contains only the\ntrailer keys, with nil values. (The client declares which trailers it\nwill later send.)  While the handler is reading from Body, it must\nnot reference Trailer. After reading from Body returns EOF, Trailer\ncan be read again and will contain non-nil values, if they were sent\nby the client.\n\nFor client requests, Trailer must be initialized to a map containing\nthe trailer keys to later send. The values may be nil or their final\nvalues. The ContentLength must be 0 or -1, to send a chunked request.\nAfter the HTTP request is sent the map values can be updated while\nthe request body is read. Once the body returns EOF, the caller must\nnot mutate Trailer.\n\nFew HTTP clients, servers, or proxies support HTTP trailers.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/http.Header"
+                        }
+                    ]
+                },
+                "transferEncoding": {
+                    "description": "TransferEncoding lists the transfer encodings from outermost to\ninnermost. An empty list denotes the \"identity\" encoding.\nTransferEncoding can usually be ignored; chunked encoding is\nautomatically added and removed as necessary when sending and\nreceiving requests.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "url": {
+                    "description": "URL specifies either the URI being requested (for server\nrequests) or the URL to access (for client requests).\n\nFor server requests, the URL is parsed from the URI\nsupplied on the Request-Line as stored in RequestURI.  For\nmost requests, fields other than Path and RawQuery will be\nempty. (See RFC 7230, Section 5.3)\n\nFor client requests, the URL's Host specifies the server to\nconnect to, while the Request's Host field optionally\nspecifies the Host header value to send in the HTTP\nrequest.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/url.URL"
+                        }
+                    ]
+                }
+            }
+        },
+        "http.Response": {
+            "type": "object",
+            "properties": {
+                "body": {
+                    "description": "Body represents the response body.\n\nThe response body is streamed on demand as the Body field\nis read. If the network connection fails or the server\nterminates the response, Body.Read calls return an error.\n\nThe http Client and Transport guarantee that Body is always\nnon-nil, even on responses without a body or responses with\na zero-length body. It is the caller's responsibility to\nclose Body. The default HTTP client's Transport may not\nreuse HTTP/1.x \"keep-alive\" TCP connections if the Body is\nnot read to completion and closed.\n\nThe Body is automatically dechunked if the server replied\nwith a \"chunked\" Transfer-Encoding.\n\nAs of Go 1.12, the Body will also implement io.Writer\non a successful \"101 Switching Protocols\" response,\nas used by WebSockets and HTTP/2's \"h2c\" mode."
+                },
+                "close": {
+                    "description": "Close records whether the header directed that the connection be\nclosed after reading Body. The value is advice for clients: neither\nReadResponse nor Response.Write ever closes a connection.",
+                    "type": "boolean"
+                },
+                "contentLength": {
+                    "description": "ContentLength records the length of the associated content. The\nvalue -1 indicates that the length is unknown. Unless Request.Method\nis \"HEAD\", values \u003e= 0 indicate that the given number of bytes may\nbe read from Body.",
+                    "type": "integer"
+                },
+                "header": {
+                    "description": "Header maps header keys to values. If the response had multiple\nheaders with the same key, they may be concatenated, with comma\ndelimiters.  (RFC 7230, section 3.2.2 requires that multiple headers\nbe semantically equivalent to a comma-delimited sequence.) When\nHeader values are duplicated by other fields in this struct (e.g.,\nContentLength, TransferEncoding, Trailer), the field values are\nauthoritative.\n\nKeys in the map are canonicalized (see CanonicalHeaderKey).",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/http.Header"
+                        }
+                    ]
+                },
+                "proto": {
+                    "description": "e.g. \"HTTP/1.0\"",
+                    "type": "string"
+                },
+                "protoMajor": {
+                    "description": "e.g. 1",
+                    "type": "integer"
+                },
+                "protoMinor": {
+                    "description": "e.g. 0",
+                    "type": "integer"
+                },
+                "request": {
+                    "description": "Request is the request that was sent to obtain this Response.\nRequest's Body is nil (having already been consumed).\nThis is only populated for Client requests.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/http.Request"
+                        }
+                    ]
+                },
+                "status": {
+                    "description": "e.g. \"200 OK\"",
+                    "type": "string"
+                },
+                "statusCode": {
+                    "description": "e.g. 200",
+                    "type": "integer"
+                },
+                "tls": {
+                    "description": "TLS contains information about the TLS connection on which the\nresponse was received. It is nil for unencrypted responses.\nThe pointer is shared between responses and should not be\nmodified.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/tls.ConnectionState"
+                        }
+                    ]
+                },
+                "trailer": {
+                    "description": "Trailer maps trailer keys to values in the same\nformat as Header.\n\nThe Trailer initially contains only nil values, one for\neach key specified in the server's \"Trailer\" header\nvalue. Those values are not added to Header.\n\nTrailer must not be accessed concurrently with Read calls\non the Body.\n\nAfter Body.Read has returned io.EOF, Trailer will contain\nany trailer values sent by the server.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/http.Header"
+                        }
+                    ]
+                },
+                "transferEncoding": {
+                    "description": "Contains transfer encodings from outer-most to inner-most. Value is\nnil, means that \"identity\" encoding is used.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "uncompressed": {
+                    "description": "Uncompressed reports whether the response was sent compressed but\nwas decompressed by the http package. When true, reading from\nBody yields the uncompressed content instead of the compressed\ncontent actually set from the server, ContentLength is set to -1,\nand the \"Content-Length\" and \"Content-Encoding\" fields are deleted\nfrom the responseHeader. To get the original response from\nthe server, set Transport.DisableCompression to true.",
+                    "type": "boolean"
+                }
+            }
+        },
+        "internal_adapter_handler_http.AddSchemeBenefitRequest": {
+            "type": "object",
+            "required": [
+                "amount",
+                "name"
+            ],
+            "properties": {
+                "amount": {
+                    "type": "number",
+                    "example": 100
+                },
+                "name": {
+                    "type": "string",
+                    "example": "CDC Vouchers"
+                },
+                "schemeID": {
+                    "type": "string"
+                }
+            }
+        },
+        "internal_adapter_handler_http.AddSchemeCriteriaRequest": {
+            "type": "object",
+            "required": [
+                "name",
+                "schemeID",
+                "value"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "Age Limit"
+                },
+                "schemeID": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string",
+                    "example": "18-50"
+                }
+            }
+        },
+        "internal_adapter_handler_http.ApplicantResponse": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -839,7 +1432,7 @@ const docTemplate = `{
                 }
             }
         },
-        "http.ApplicationResponse": {
+        "internal_adapter_handler_http.ApplicationResponse": {
             "type": "object",
             "properties": {
                 "applicant_id": {
@@ -864,18 +1457,18 @@ const docTemplate = `{
                 }
             }
         },
-        "http.ApplicationsResponse": {
+        "internal_adapter_handler_http.ApplicationsResponse": {
             "type": "object",
             "properties": {
                 "applications": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/http.ApplicationResponse"
+                        "$ref": "#/definitions/internal_adapter_handler_http.ApplicationResponse"
                     }
                 }
             }
         },
-        "http.CreateApplicantRequest": {
+        "internal_adapter_handler_http.CreateApplicantRequest": {
             "type": "object",
             "required": [
                 "date_of_birth",
@@ -886,23 +1479,40 @@ const docTemplate = `{
             ],
             "properties": {
                 "date_of_birth": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "1990-01-01"
                 },
                 "employment_status": {
-                    "$ref": "#/definitions/domain.EmploymentStatus"
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_cxnub_fas-mgmt-system_internal_core_domain.EmploymentStatus"
+                        }
+                    ],
+                    "example": "employed"
                 },
                 "marital_status": {
-                    "$ref": "#/definitions/domain.MaritalStatus"
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_cxnub_fas-mgmt-system_internal_core_domain.MaritalStatus"
+                        }
+                    ],
+                    "example": "married"
                 },
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "John Doe"
                 },
                 "sex": {
-                    "$ref": "#/definitions/domain.Sex"
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_cxnub_fas-mgmt-system_internal_core_domain.Sex"
+                        }
+                    ],
+                    "example": "male"
                 }
             }
         },
-        "http.CreateApplicationRequest": {
+        "internal_adapter_handler_http.CreateApplicationRequest": {
             "type": "object",
             "required": [
                 "applicant_id",
@@ -917,7 +1527,7 @@ const docTemplate = `{
                 }
             }
         },
-        "http.CreateSchemeRequest": {
+        "internal_adapter_handler_http.CreateSchemeRequest": {
             "type": "object",
             "required": [
                 "name"
@@ -928,7 +1538,7 @@ const docTemplate = `{
                 }
             }
         },
-        "http.ErrorResponse": {
+        "internal_adapter_handler_http.ErrorResponse": {
             "type": "object",
             "properties": {
                 "errors": {
@@ -950,21 +1560,7 @@ const docTemplate = `{
                 }
             }
         },
-        "http.Response": {
-            "type": "object",
-            "properties": {
-                "data": {},
-                "message": {
-                    "type": "string",
-                    "example": "Success"
-                },
-                "success": {
-                    "type": "boolean",
-                    "example": true
-                }
-            }
-        },
-        "http.SchemeBenefitResponse": {
+        "internal_adapter_handler_http.SchemeBenefitListResponse": {
             "type": "object",
             "properties": {
                 "amount": {
@@ -977,7 +1573,36 @@ const docTemplate = `{
                 }
             }
         },
-        "http.SchemeCriteriaResponse": {
+        "internal_adapter_handler_http.SchemeBenefitResponse": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "number",
+                    "example": 1000000
+                },
+                "created_at": {
+                    "type": "string",
+                    "example": "2021-01-01T00:00:00Z"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "00000000-0000-0000-0000-000000000000"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "CDC Vouchers"
+                },
+                "scheme_id": {
+                    "type": "string",
+                    "example": "00000000-0000-0000-0000-000000000000"
+                },
+                "updated_at": {
+                    "type": "string",
+                    "example": "2021-01-01T00:00:00Z"
+                }
+            }
+        },
+        "internal_adapter_handler_http.SchemeCriteriaListResponse": {
             "type": "object",
             "properties": {
                 "name": {
@@ -990,19 +1615,48 @@ const docTemplate = `{
                 }
             }
         },
-        "http.SchemeResponse": {
+        "internal_adapter_handler_http.SchemeCriteriaResponse": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string",
+                    "example": "2021-01-01T00:00:00Z"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "00000000-0000-0000-0000-000000000000"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "employment_status"
+                },
+                "scheme_id": {
+                    "type": "string",
+                    "example": "00000000-0000-0000-0000-000000000000"
+                },
+                "updated_at": {
+                    "type": "string",
+                    "example": "2021-01-01T00:00:00Z"
+                },
+                "value": {
+                    "type": "string",
+                    "example": "unemployed"
+                }
+            }
+        },
+        "internal_adapter_handler_http.SchemeResponse": {
             "type": "object",
             "properties": {
                 "benefits": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/http.SchemeBenefitResponse"
+                        "$ref": "#/definitions/internal_adapter_handler_http.SchemeBenefitListResponse"
                     }
                 },
                 "criteria": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/http.SchemeCriteriaResponse"
+                        "$ref": "#/definitions/internal_adapter_handler_http.SchemeCriteriaListResponse"
                     }
                 },
                 "id": {
@@ -1015,33 +1669,51 @@ const docTemplate = `{
                 }
             }
         },
-        "http.UpdateApplicantRequest": {
+        "internal_adapter_handler_http.UpdateApplicantRequest": {
             "type": "object",
             "required": [
                 "id"
             ],
             "properties": {
                 "date_of_birth": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "1990-01-01"
                 },
                 "employment_status": {
-                    "$ref": "#/definitions/domain.EmploymentStatus"
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_cxnub_fas-mgmt-system_internal_core_domain.EmploymentStatus"
+                        }
+                    ],
+                    "example": "unemployed"
                 },
                 "id": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "b6c29c96-024b-4e70-834b-8e0dd2c66645"
                 },
                 "marital_status": {
-                    "$ref": "#/definitions/domain.MaritalStatus"
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_cxnub_fas-mgmt-system_internal_core_domain.MaritalStatus"
+                        }
+                    ],
+                    "example": "married"
                 },
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "John Doe"
                 },
                 "sex": {
-                    "$ref": "#/definitions/domain.Sex"
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_cxnub_fas-mgmt-system_internal_core_domain.Sex"
+                        }
+                    ],
+                    "example": "male"
                 }
             }
         },
-        "http.UpdateApplicationRequest": {
+        "internal_adapter_handler_http.UpdateApplicationRequest": {
             "type": "object",
             "required": [
                 "id"
@@ -1058,7 +1730,47 @@ const docTemplate = `{
                 }
             }
         },
-        "http.UpdateSchemeRequest": {
+        "internal_adapter_handler_http.UpdateSchemeBenefitRequest": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "amount": {
+                    "type": "number"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "scheme_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "internal_adapter_handler_http.UpdateSchemeCriteriaRequest": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "scheme_id": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string"
+                }
+            }
+        },
+        "internal_adapter_handler_http.UpdateSchemeRequest": {
             "type": "object",
             "required": [
                 "id"
@@ -1071,6 +1783,628 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
+        },
+        "multipart.FileHeader": {
+            "type": "object",
+            "properties": {
+                "filename": {
+                    "type": "string"
+                },
+                "header": {
+                    "$ref": "#/definitions/textproto.MIMEHeader"
+                },
+                "size": {
+                    "type": "integer"
+                }
+            }
+        },
+        "multipart.Form": {
+            "type": "object",
+            "properties": {
+                "file": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/multipart.FileHeader"
+                        }
+                    }
+                },
+                "value": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "net.IPNet": {
+            "type": "object",
+            "properties": {
+                "ip": {
+                    "description": "network number",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "mask": {
+                    "description": "network mask",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "pkix.AttributeTypeAndValue": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "value": {}
+            }
+        },
+        "pkix.Extension": {
+            "type": "object",
+            "properties": {
+                "critical": {
+                    "type": "boolean"
+                },
+                "id": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "value": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "pkix.Name": {
+            "type": "object",
+            "properties": {
+                "commonName": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "extraNames": {
+                    "description": "ExtraNames contains attributes to be copied, raw, into any marshaled\ndistinguished names. Values override any attributes with the same OID.\nThe ExtraNames field is not populated when parsing, see Names.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/pkix.AttributeTypeAndValue"
+                    }
+                },
+                "locality": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "names": {
+                    "description": "Names contains all parsed attributes. When parsing distinguished names,\nthis can be used to extract non-standard attributes that are not parsed\nby this package. When marshaling to RDNSequences, the Names field is\nignored, see ExtraNames.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/pkix.AttributeTypeAndValue"
+                    }
+                },
+                "organization": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "organizationalUnit": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "postalCode": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "province": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "serialNumber": {
+                    "type": "string"
+                },
+                "streetAddress": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "textproto.MIMEHeader": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "array",
+                "items": {
+                    "type": "string"
+                }
+            }
+        },
+        "tls.ConnectionState": {
+            "type": "object",
+            "properties": {
+                "cipherSuite": {
+                    "description": "CipherSuite is the cipher suite negotiated for the connection (e.g.\nTLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, TLS_AES_128_GCM_SHA256).",
+                    "type": "integer"
+                },
+                "didResume": {
+                    "description": "DidResume is true if this connection was successfully resumed from a\nprevious session with a session ticket or similar mechanism.",
+                    "type": "boolean"
+                },
+                "echaccepted": {
+                    "description": "ECHAccepted indicates if Encrypted Client Hello was offered by the client\nand accepted by the server. Currently, ECH is supported only on the\nclient side.",
+                    "type": "boolean"
+                },
+                "handshakeComplete": {
+                    "description": "HandshakeComplete is true if the handshake has concluded.",
+                    "type": "boolean"
+                },
+                "negotiatedProtocol": {
+                    "description": "NegotiatedProtocol is the application protocol negotiated with ALPN.",
+                    "type": "string"
+                },
+                "negotiatedProtocolIsMutual": {
+                    "description": "NegotiatedProtocolIsMutual used to indicate a mutual NPN negotiation.\n\nDeprecated: this value is always true.",
+                    "type": "boolean"
+                },
+                "ocspresponse": {
+                    "description": "OCSPResponse is a stapled Online Certificate Status Protocol (OCSP)\nresponse provided by the peer for the leaf certificate, if any.",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "peerCertificates": {
+                    "description": "PeerCertificates are the parsed certificates sent by the peer, in the\norder in which they were sent. The first element is the leaf certificate\nthat the connection is verified against.\n\nOn the client side, it can't be empty. On the server side, it can be\nempty if Config.ClientAuth is not RequireAnyClientCert or\nRequireAndVerifyClientCert.\n\nPeerCertificates and its contents should not be modified.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/x509.Certificate"
+                    }
+                },
+                "serverName": {
+                    "description": "ServerName is the value of the Server Name Indication extension sent by\nthe client. It's available both on the server and on the client side.",
+                    "type": "string"
+                },
+                "signedCertificateTimestamps": {
+                    "description": "SignedCertificateTimestamps is a list of SCTs provided by the peer\nthrough the TLS handshake for the leaf certificate, if any.",
+                    "type": "array",
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "tlsunique": {
+                    "description": "TLSUnique contains the \"tls-unique\" channel binding value (see RFC 5929,\nSection 3). This value will be nil for TLS 1.3 connections and for\nresumed connections that don't support Extended Master Secret (RFC 7627).",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "verifiedChains": {
+                    "description": "VerifiedChains is a list of one or more chains where the first element is\nPeerCertificates[0] and the last element is from Config.RootCAs (on the\nclient side) or Config.ClientCAs (on the server side).\n\nOn the client side, it's set if Config.InsecureSkipVerify is false. On\nthe server side, it's set if Config.ClientAuth is VerifyClientCertIfGiven\n(and the peer provided a certificate) or RequireAndVerifyClientCert.\n\nVerifiedChains and its contents should not be modified.",
+                    "type": "array",
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/x509.Certificate"
+                        }
+                    }
+                },
+                "version": {
+                    "description": "Version is the TLS version used by the connection (e.g. VersionTLS12).",
+                    "type": "integer"
+                }
+            }
+        },
+        "url.URL": {
+            "type": "object",
+            "properties": {
+                "forceQuery": {
+                    "description": "append a query ('?') even if RawQuery is empty",
+                    "type": "boolean"
+                },
+                "fragment": {
+                    "description": "fragment for references, without '#'",
+                    "type": "string"
+                },
+                "host": {
+                    "description": "host or host:port (see Hostname and Port methods)",
+                    "type": "string"
+                },
+                "omitHost": {
+                    "description": "do not emit empty host (authority)",
+                    "type": "boolean"
+                },
+                "opaque": {
+                    "description": "encoded opaque data",
+                    "type": "string"
+                },
+                "path": {
+                    "description": "path (relative paths may omit leading slash)",
+                    "type": "string"
+                },
+                "rawFragment": {
+                    "description": "encoded fragment hint (see EscapedFragment method)",
+                    "type": "string"
+                },
+                "rawPath": {
+                    "description": "encoded path hint (see EscapedPath method)",
+                    "type": "string"
+                },
+                "rawQuery": {
+                    "description": "encoded query values, without '?'",
+                    "type": "string"
+                },
+                "scheme": {
+                    "type": "string"
+                },
+                "user": {
+                    "description": "username and password information",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/url.Userinfo"
+                        }
+                    ]
+                }
+            }
+        },
+        "url.Userinfo": {
+            "type": "object"
+        },
+        "url.Values": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "array",
+                "items": {
+                    "type": "string"
+                }
+            }
+        },
+        "x509.Certificate": {
+            "type": "object",
+            "properties": {
+                "authorityKeyId": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "basicConstraintsValid": {
+                    "description": "BasicConstraintsValid indicates whether IsCA, MaxPathLen,\nand MaxPathLenZero are valid.",
+                    "type": "boolean"
+                },
+                "crldistributionPoints": {
+                    "description": "CRL Distribution Points",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "dnsnames": {
+                    "description": "Subject Alternate Name values. (Note that these values may not be valid\nif invalid values were contained within a parsed certificate. For\nexample, an element of DNSNames may not be a valid DNS domain name.)",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "emailAddresses": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "excludedDNSDomains": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "excludedEmailAddresses": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "excludedIPRanges": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/net.IPNet"
+                    }
+                },
+                "excludedURIDomains": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "extKeyUsage": {
+                    "description": "Sequence of extended key usages.",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "extensions": {
+                    "description": "Extensions contains raw X.509 extensions. When parsing certificates,\nthis can be used to extract non-critical extensions that are not\nparsed by this package. When marshaling certificates, the Extensions\nfield is ignored, see ExtraExtensions.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/pkix.Extension"
+                    }
+                },
+                "extraExtensions": {
+                    "description": "ExtraExtensions contains extensions to be copied, raw, into any\nmarshaled certificates. Values override any extensions that would\notherwise be produced based on the other fields. The ExtraExtensions\nfield is not populated when parsing certificates, see Extensions.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/pkix.Extension"
+                    }
+                },
+                "inhibitAnyPolicy": {
+                    "description": "InhibitAnyPolicy and InhibitAnyPolicyZero indicate the presence and value\nof the inhibitAnyPolicy extension.\n\nThe value of InhibitAnyPolicy indicates the number of additional\ncertificates in the path after this certificate that may use the\nanyPolicy policy OID to indicate a match with any other policy.\n\nWhen parsing a certificate, a positive non-zero InhibitAnyPolicy means\nthat the field was specified, -1 means it was unset, and\nInhibitAnyPolicyZero being true mean that the field was explicitly set to\nzero. The case of InhibitAnyPolicy==0 with InhibitAnyPolicyZero==false\nshould be treated equivalent to -1 (unset).",
+                    "type": "integer"
+                },
+                "inhibitAnyPolicyZero": {
+                    "description": "InhibitAnyPolicyZero indicates that InhibitAnyPolicy==0 should be\ninterpreted as an actual maximum path length of zero. Otherwise, that\ncombination is interpreted as InhibitAnyPolicy not being set.",
+                    "type": "boolean"
+                },
+                "inhibitPolicyMapping": {
+                    "description": "InhibitPolicyMapping and InhibitPolicyMappingZero indicate the presence\nand value of the inhibitPolicyMapping field of the policyConstraints\nextension.\n\nThe value of InhibitPolicyMapping indicates the number of additional\ncertificates in the path after this certificate that may use policy\nmapping.\n\nWhen parsing a certificate, a positive non-zero InhibitPolicyMapping\nmeans that the field was specified, -1 means it was unset, and\nInhibitPolicyMappingZero being true mean that the field was explicitly\nset to zero. The case of InhibitPolicyMapping==0 with\nInhibitPolicyMappingZero==false should be treated equivalent to -1\n(unset).",
+                    "type": "integer"
+                },
+                "inhibitPolicyMappingZero": {
+                    "description": "InhibitPolicyMappingZero indicates that InhibitPolicyMapping==0 should be\ninterpreted as an actual maximum path length of zero. Otherwise, that\ncombination is interpreted as InhibitAnyPolicy not being set.",
+                    "type": "boolean"
+                },
+                "ipaddresses": {
+                    "type": "array",
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "isCA": {
+                    "type": "boolean"
+                },
+                "issuer": {
+                    "$ref": "#/definitions/pkix.Name"
+                },
+                "issuingCertificateURL": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "keyUsage": {
+                    "type": "integer"
+                },
+                "maxPathLen": {
+                    "description": "MaxPathLen and MaxPathLenZero indicate the presence and\nvalue of the BasicConstraints' \"pathLenConstraint\".\n\nWhen parsing a certificate, a positive non-zero MaxPathLen\nmeans that the field was specified, -1 means it was unset,\nand MaxPathLenZero being true mean that the field was\nexplicitly set to zero. The case of MaxPathLen==0 with MaxPathLenZero==false\nshould be treated equivalent to -1 (unset).\n\nWhen generating a certificate, an unset pathLenConstraint\ncan be requested with either MaxPathLen == -1 or using the\nzero value for both MaxPathLen and MaxPathLenZero.",
+                    "type": "integer"
+                },
+                "maxPathLenZero": {
+                    "description": "MaxPathLenZero indicates that BasicConstraintsValid==true\nand MaxPathLen==0 should be interpreted as an actual\nmaximum path length of zero. Otherwise, that combination is\ninterpreted as MaxPathLen not being set.",
+                    "type": "boolean"
+                },
+                "notAfter": {
+                    "description": "Validity bounds.",
+                    "type": "string"
+                },
+                "notBefore": {
+                    "description": "Validity bounds.",
+                    "type": "string"
+                },
+                "ocspserver": {
+                    "description": "RFC 5280, 4.2.2.1 (Authority Information Access)",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "permittedDNSDomains": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "permittedDNSDomainsCritical": {
+                    "description": "Name constraints",
+                    "type": "boolean"
+                },
+                "permittedEmailAddresses": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "permittedIPRanges": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/net.IPNet"
+                    }
+                },
+                "permittedURIDomains": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "policies": {
+                    "description": "Policies contains all policy identifiers included in the certificate.\nSee CreateCertificate for context about how this field and the PolicyIdentifiers field\ninteract.\nIn Go 1.22, encoding/gob cannot handle and ignores this field.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/x509.OID"
+                    }
+                },
+                "policyIdentifiers": {
+                    "description": "PolicyIdentifiers contains asn1.ObjectIdentifiers, the components\nof which are limited to int32. If a certificate contains a policy which\ncannot be represented by asn1.ObjectIdentifier, it will not be included in\nPolicyIdentifiers, but will be present in Policies, which contains all parsed\npolicy OIDs.\nSee CreateCertificate for context about how this field and the Policies field\ninteract.",
+                    "type": "array",
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "policyMappings": {
+                    "description": "PolicyMappings contains a list of policy mappings included in the certificate.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/x509.PolicyMapping"
+                    }
+                },
+                "publicKey": {},
+                "publicKeyAlgorithm": {
+                    "type": "integer"
+                },
+                "raw": {
+                    "description": "Complete ASN.1 DER content (certificate, signature algorithm and signature).",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "rawIssuer": {
+                    "description": "DER encoded Issuer",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "rawSubject": {
+                    "description": "DER encoded Subject",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "rawSubjectPublicKeyInfo": {
+                    "description": "DER encoded SubjectPublicKeyInfo.",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "rawTBSCertificate": {
+                    "description": "Certificate part of raw ASN.1 DER content.",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "requireExplicitPolicy": {
+                    "description": "RequireExplicitPolicy and RequireExplicitPolicyZero indicate the presence\nand value of the requireExplicitPolicy field of the policyConstraints\nextension.\n\nThe value of RequireExplicitPolicy indicates the number of additional\ncertificates in the path after this certificate before an explicit policy\nis required for the rest of the path. When an explicit policy is required,\neach subsequent certificate in the path must contain a required policy OID,\nor a policy OID which has been declared as equivalent through the policy\nmapping extension.\n\nWhen parsing a certificate, a positive non-zero RequireExplicitPolicy\nmeans that the field was specified, -1 means it was unset, and\nRequireExplicitPolicyZero being true mean that the field was explicitly\nset to zero. The case of RequireExplicitPolicy==0 with\nRequireExplicitPolicyZero==false should be treated equivalent to -1\n(unset).",
+                    "type": "integer"
+                },
+                "requireExplicitPolicyZero": {
+                    "description": "RequireExplicitPolicyZero indicates that RequireExplicitPolicy==0 should be\ninterpreted as an actual maximum path length of zero. Otherwise, that\ncombination is interpreted as InhibitAnyPolicy not being set.",
+                    "type": "boolean"
+                },
+                "serialNumber": {
+                    "$ref": "#/definitions/big.Int"
+                },
+                "signature": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "signatureAlgorithm": {
+                    "type": "integer"
+                },
+                "subject": {
+                    "$ref": "#/definitions/pkix.Name"
+                },
+                "subjectKeyId": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "unhandledCriticalExtensions": {
+                    "description": "UnhandledCriticalExtensions contains a list of extension IDs that\nwere not (fully) processed when parsing. Verify will fail if this\nslice is non-empty, unless verification is delegated to an OS\nlibrary which understands all the critical extensions.\n\nUsers can access these extensions using Extensions and can remove\nelements from this slice if they believe that they have been\nhandled.",
+                    "type": "array",
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "unknownExtKeyUsage": {
+                    "description": "Encountered extended key usages unknown to this package.",
+                    "type": "array",
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "uris": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/url.URL"
+                    }
+                },
+                "version": {
+                    "type": "integer"
+                }
+            }
+        },
+        "x509.OID": {
+            "type": "object"
+        },
+        "x509.PolicyMapping": {
+            "type": "object",
+            "properties": {
+                "issuerDomainPolicy": {
+                    "description": "IssuerDomainPolicy contains a policy OID the issuing certificate considers\nequivalent to SubjectDomainPolicy in the subject certificate.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/x509.OID"
+                        }
+                    ]
+                },
+                "subjectDomainPolicy": {
+                    "description": "SubjectDomainPolicy contains a OID the issuing certificate considers\nequivalent to IssuerDomainPolicy in the subject certificate.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/x509.OID"
+                        }
+                    ]
+                }
+            }
         }
     }
 }`
@@ -1078,7 +2412,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "http://localhost:8080",
+	Host:             "localhost:8080",
 	BasePath:         "/api",
 	Schemes:          []string{},
 	Title:            "FAS Management System API",

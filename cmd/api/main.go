@@ -22,7 +22,7 @@ import (
 // @description This is the API documentation for FAS Management System.
 // @license.name MIT
 // @license.url https://opensource.org/licenses/MIT
-// @host http://localhost:8080
+// @host localhost:8080
 // @BasePath /api
 func main() {
 	cfg := config.New()

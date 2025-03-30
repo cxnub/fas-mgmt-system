@@ -1,6 +1,8 @@
 basePath: /api
 definitions:
-  domain.EmploymentStatus:
+  big.Int:
+    type: object
+  github_com_cxnub_fas-mgmt-system_internal_core_domain.EmploymentStatus:
     enum:
     - employed
     - unemployed
@@ -8,7 +10,7 @@ definitions:
     x-enum-varnames:
     - EmploymentStatusEmployed
     - EmploymentStatusUnemployed
-  domain.MaritalStatus:
+  github_com_cxnub_fas-mgmt-system_internal_core_domain.MaritalStatus:
     enum:
     - single
     - married
@@ -20,7 +22,7 @@ definitions:
     - MaritalStatusMarried
     - MaritalStatusWidowed
     - MaritalStatusDivorce
-  domain.Sex:
+  github_com_cxnub_fas-mgmt-system_internal_core_domain.Sex:
     enum:
     - male
     - female
@@ -28,7 +30,378 @@ definitions:
     x-enum-varnames:
     - SexMale
     - SexFemale
-  http.ApplicantResponse:
+  http.Header:
+    additionalProperties:
+      items:
+        type: string
+      type: array
+    type: object
+  http.Request:
+    properties:
+      body:
+        description: |-
+          Body is the request's body.
+
+          For client requests, a nil body means the request has no
+          body, such as a GET request. The HTTP Client's Transport
+          is responsible for calling the Close method.
+
+          For server requests, the Request Body is always non-nil
+          but will return EOF immediately when no body is present.
+          The Server will close the request body. The ServeHTTP
+          Handler does not need to.
+
+          Body must allow Read to be called concurrently with Close.
+          In particular, calling Close should unblock a Read waiting
+          for input.
+      cancel:
+        description: |-
+          Cancel is an optional channel whose closure indicates that the client
+          request should be regarded as canceled. Not all implementations of
+          RoundTripper may support Cancel.
+
+          For server requests, this field is not applicable.
+
+          Deprecated: Set the Request's context with NewRequestWithContext
+          instead. If a Request's Cancel field and context are both
+          set, it is undefined whether Cancel is respected.
+        type: object
+      close:
+        description: |-
+          Close indicates whether to close the connection after
+          replying to this request (for servers) or after sending this
+          request and reading its response (for clients).
+
+          For server requests, the HTTP server handles this automatically
+          and this field is not needed by Handlers.
+
+          For client requests, setting this field prevents re-use of
+          TCP connections between requests to the same hosts, as if
+          Transport.DisableKeepAlives were set.
+        type: boolean
+      contentLength:
+        description: |-
+          ContentLength records the length of the associated content.
+          The value -1 indicates that the length is unknown.
+          Values >= 0 indicate that the given number of bytes may
+          be read from Body.
+
+          For client requests, a value of 0 with a non-nil Body is
+          also treated as unknown.
+        type: integer
+      form:
+        allOf:
+        - $ref: '#/definitions/url.Values'
+        description: |-
+          Form contains the parsed form data, including both the URL
+          field's query parameters and the PATCH, POST, or PUT form data.
+          This field is only available after ParseForm is called.
+          The HTTP client ignores Form and uses Body instead.
+      header:
+        allOf:
+        - $ref: '#/definitions/http.Header'
+        description: "Header contains the request header fields either received\nby
+          the server or to be sent by the client.\n\nIf a server received a request
+          with header lines,\n\n\tHost: example.com\n\taccept-encoding: gzip, deflate\n\tAccept-Language:
+          en-us\n\tfOO: Bar\n\tfoo: two\n\nthen\n\n\tHeader = map[string][]string{\n\t\t\"Accept-Encoding\":
+          {\"gzip, deflate\"},\n\t\t\"Accept-Language\": {\"en-us\"},\n\t\t\"Foo\":
+          {\"Bar\", \"two\"},\n\t}\n\nFor incoming requests, the Host header is promoted
+          to the\nRequest.Host field and removed from the Header map.\n\nHTTP defines
+          that header names are case-insensitive. The\nrequest parser implements this
+          by using CanonicalHeaderKey,\nmaking the first character and any characters
+          following a\nhyphen uppercase and the rest lowercase.\n\nFor client requests,
+          certain headers such as Content-Length\nand Connection are automatically
+          written when needed and\nvalues in Header may be ignored. See the documentation\nfor
+          the Request.Write method."
+      host:
+        description: |-
+          For server requests, Host specifies the host on which the
+          URL is sought. For HTTP/1 (per RFC 7230, section 5.4), this
+          is either the value of the "Host" header or the host name
+          given in the URL itself. For HTTP/2, it is the value of the
+          ":authority" pseudo-header field.
+          It may be of the form "host:port". For international domain
+          names, Host may be in Punycode or Unicode form. Use
+          golang.org/x/net/idna to convert it to either format if
+          needed.
+          To prevent DNS rebinding attacks, server Handlers should
+          validate that the Host header has a value for which the
+          Handler considers itself authoritative. The included
+          ServeMux supports patterns registered to particular host
+          names and thus protects its registered Handlers.
+
+          For client requests, Host optionally overrides the Host
+          header to send. If empty, the Request.Write method uses
+          the value of URL.Host. Host may contain an international
+          domain name.
+        type: string
+      method:
+        description: |-
+          Method specifies the HTTP method (GET, POST, PUT, etc.).
+          For client requests, an empty string means GET.
+        type: string
+      multipartForm:
+        allOf:
+        - $ref: '#/definitions/multipart.Form'
+        description: |-
+          MultipartForm is the parsed multipart form, including file uploads.
+          This field is only available after ParseMultipartForm is called.
+          The HTTP client ignores MultipartForm and uses Body instead.
+      pattern:
+        description: |-
+          Pattern is the [ServeMux] pattern that matched the request.
+          It is empty if the request was not matched against a pattern.
+        type: string
+      postForm:
+        allOf:
+        - $ref: '#/definitions/url.Values'
+        description: |-
+          PostForm contains the parsed form data from PATCH, POST
+          or PUT body parameters.
+
+          This field is only available after ParseForm is called.
+          The HTTP client ignores PostForm and uses Body instead.
+      proto:
+        description: |-
+          The protocol version for incoming server requests.
+
+          For client requests, these fields are ignored. The HTTP
+          client code always uses either HTTP/1.1 or HTTP/2.
+          See the docs on Transport for details.
+        type: string
+      protoMajor:
+        description: "1"
+        type: integer
+      protoMinor:
+        description: "0"
+        type: integer
+      remoteAddr:
+        description: |-
+          RemoteAddr allows HTTP servers and other software to record
+          the network address that sent the request, usually for
+          logging. This field is not filled in by ReadRequest and
+          has no defined format. The HTTP server in this package
+          sets RemoteAddr to an "IP:port" address before invoking a
+          handler.
+          This field is ignored by the HTTP client.
+        type: string
+      requestURI:
+        description: |-
+          RequestURI is the unmodified request-target of the
+          Request-Line (RFC 7230, Section 3.1.1) as sent by the client
+          to a server. Usually the URL field should be used instead.
+          It is an error to set this field in an HTTP client request.
+        type: string
+      response:
+        allOf:
+        - $ref: '#/definitions/http.Response'
+        description: |-
+          Response is the redirect response which caused this request
+          to be created. This field is only populated during client
+          redirects.
+      tls:
+        allOf:
+        - $ref: '#/definitions/tls.ConnectionState'
+        description: |-
+          TLS allows HTTP servers and other software to record
+          information about the TLS connection on which the request
+          was received. This field is not filled in by ReadRequest.
+          The HTTP server in this package sets the field for
+          TLS-enabled connections before invoking a handler;
+          otherwise it leaves the field nil.
+          This field is ignored by the HTTP client.
+      trailer:
+        allOf:
+        - $ref: '#/definitions/http.Header'
+        description: |-
+          Trailer specifies additional headers that are sent after the request
+          body.
+
+          For server requests, the Trailer map initially contains only the
+          trailer keys, with nil values. (The client declares which trailers it
+          will later send.)  While the handler is reading from Body, it must
+          not reference Trailer. After reading from Body returns EOF, Trailer
+          can be read again and will contain non-nil values, if they were sent
+          by the client.
+
+          For client requests, Trailer must be initialized to a map containing
+          the trailer keys to later send. The values may be nil or their final
+          values. The ContentLength must be 0 or -1, to send a chunked request.
+          After the HTTP request is sent the map values can be updated while
+          the request body is read. Once the body returns EOF, the caller must
+          not mutate Trailer.
+
+          Few HTTP clients, servers, or proxies support HTTP trailers.
+      transferEncoding:
+        description: |-
+          TransferEncoding lists the transfer encodings from outermost to
+          innermost. An empty list denotes the "identity" encoding.
+          TransferEncoding can usually be ignored; chunked encoding is
+          automatically added and removed as necessary when sending and
+          receiving requests.
+        items:
+          type: string
+        type: array
+      url:
+        allOf:
+        - $ref: '#/definitions/url.URL'
+        description: |-
+          URL specifies either the URI being requested (for server
+          requests) or the URL to access (for client requests).
+
+          For server requests, the URL is parsed from the URI
+          supplied on the Request-Line as stored in RequestURI.  For
+          most requests, fields other than Path and RawQuery will be
+          empty. (See RFC 7230, Section 5.3)
+
+          For client requests, the URL's Host specifies the server to
+          connect to, while the Request's Host field optionally
+          specifies the Host header value to send in the HTTP
+          request.
+    type: object
+  http.Response:
+    properties:
+      body:
+        description: |-
+          Body represents the response body.
+
+          The response body is streamed on demand as the Body field
+          is read. If the network connection fails or the server
+          terminates the response, Body.Read calls return an error.
+
+          The http Client and Transport guarantee that Body is always
+          non-nil, even on responses without a body or responses with
+          a zero-length body. It is the caller's responsibility to
+          close Body. The default HTTP client's Transport may not
+          reuse HTTP/1.x "keep-alive" TCP connections if the Body is
+          not read to completion and closed.
+
+          The Body is automatically dechunked if the server replied
+          with a "chunked" Transfer-Encoding.
+
+          As of Go 1.12, the Body will also implement io.Writer
+          on a successful "101 Switching Protocols" response,
+          as used by WebSockets and HTTP/2's "h2c" mode.
+      close:
+        description: |-
+          Close records whether the header directed that the connection be
+          closed after reading Body. The value is advice for clients: neither
+          ReadResponse nor Response.Write ever closes a connection.
+        type: boolean
+      contentLength:
+        description: |-
+          ContentLength records the length of the associated content. The
+          value -1 indicates that the length is unknown. Unless Request.Method
+          is "HEAD", values >= 0 indicate that the given number of bytes may
+          be read from Body.
+        type: integer
+      header:
+        allOf:
+        - $ref: '#/definitions/http.Header'
+        description: |-
+          Header maps header keys to values. If the response had multiple
+          headers with the same key, they may be concatenated, with comma
+          delimiters.  (RFC 7230, section 3.2.2 requires that multiple headers
+          be semantically equivalent to a comma-delimited sequence.) When
+          Header values are duplicated by other fields in this struct (e.g.,
+          ContentLength, TransferEncoding, Trailer), the field values are
+          authoritative.
+
+          Keys in the map are canonicalized (see CanonicalHeaderKey).
+      proto:
+        description: e.g. "HTTP/1.0"
+        type: string
+      protoMajor:
+        description: e.g. 1
+        type: integer
+      protoMinor:
+        description: e.g. 0
+        type: integer
+      request:
+        allOf:
+        - $ref: '#/definitions/http.Request'
+        description: |-
+          Request is the request that was sent to obtain this Response.
+          Request's Body is nil (having already been consumed).
+          This is only populated for Client requests.
+      status:
+        description: e.g. "200 OK"
+        type: string
+      statusCode:
+        description: e.g. 200
+        type: integer
+      tls:
+        allOf:
+        - $ref: '#/definitions/tls.ConnectionState'
+        description: |-
+          TLS contains information about the TLS connection on which the
+          response was received. It is nil for unencrypted responses.
+          The pointer is shared between responses and should not be
+          modified.
+      trailer:
+        allOf:
+        - $ref: '#/definitions/http.Header'
+        description: |-
+          Trailer maps trailer keys to values in the same
+          format as Header.
+
+          The Trailer initially contains only nil values, one for
+          each key specified in the server's "Trailer" header
+          value. Those values are not added to Header.
+
+          Trailer must not be accessed concurrently with Read calls
+          on the Body.
+
+          After Body.Read has returned io.EOF, Trailer will contain
+          any trailer values sent by the server.
+      transferEncoding:
+        description: |-
+          Contains transfer encodings from outer-most to inner-most. Value is
+          nil, means that "identity" encoding is used.
+        items:
+          type: string
+        type: array
+      uncompressed:
+        description: |-
+          Uncompressed reports whether the response was sent compressed but
+          was decompressed by the http package. When true, reading from
+          Body yields the uncompressed content instead of the compressed
+          content actually set from the server, ContentLength is set to -1,
+          and the "Content-Length" and "Content-Encoding" fields are deleted
+          from the responseHeader. To get the original response from
+          the server, set Transport.DisableCompression to true.
+        type: boolean
+    type: object
+  internal_adapter_handler_http.AddSchemeBenefitRequest:
+    properties:
+      amount:
+        example: 100
+        type: number
+      name:
+        example: CDC Vouchers
+        type: string
+      schemeID:
+        type: string
+    required:
+    - amount
+    - name
+    type: object
+  internal_adapter_handler_http.AddSchemeCriteriaRequest:
+    properties:
+      name:
+        example: Age Limit
+        type: string
+      schemeID:
+        type: string
+      value:
+        example: 18-50
+        type: string
+    required:
+    - name
+    - schemeID
+    - value
+    type: object
+  internal_adapter_handler_http.ApplicantResponse:
     properties:
       created_at:
         example: "2021-01-01T00:00:00Z"
@@ -55,7 +428,7 @@ definitions:
         example: "2021-01-01T00:00:00Z"
         type: string
     type: object
-  http.ApplicationResponse:
+  internal_adapter_handler_http.ApplicationResponse:
     properties:
       applicant_id:
         example: 00000000-0000-0000-0000-000000000000
@@ -73,25 +446,33 @@ definitions:
         example: "2021-01-01T00:00:00Z"
         type: string
     type: object
-  http.ApplicationsResponse:
+  internal_adapter_handler_http.ApplicationsResponse:
     properties:
       applications:
         items:
-          $ref: '#/definitions/http.ApplicationResponse'
+          $ref: '#/definitions/internal_adapter_handler_http.ApplicationResponse'
         type: array
     type: object
-  http.CreateApplicantRequest:
+  internal_adapter_handler_http.CreateApplicantRequest:
     properties:
       date_of_birth:
+        example: "1990-01-01"
         type: string
       employment_status:
-        $ref: '#/definitions/domain.EmploymentStatus'
+        allOf:
+        - $ref: '#/definitions/github_com_cxnub_fas-mgmt-system_internal_core_domain.EmploymentStatus'
+        example: employed
       marital_status:
-        $ref: '#/definitions/domain.MaritalStatus'
+        allOf:
+        - $ref: '#/definitions/github_com_cxnub_fas-mgmt-system_internal_core_domain.MaritalStatus'
+        example: married
       name:
+        example: John Doe
         type: string
       sex:
-        $ref: '#/definitions/domain.Sex'
+        allOf:
+        - $ref: '#/definitions/github_com_cxnub_fas-mgmt-system_internal_core_domain.Sex'
+        example: male
     required:
     - date_of_birth
     - employment_status
@@ -99,7 +480,7 @@ definitions:
     - name
     - sex
     type: object
-  http.CreateApplicationRequest:
+  internal_adapter_handler_http.CreateApplicationRequest:
     properties:
       applicant_id:
         type: string
@@ -109,14 +490,14 @@ definitions:
     - applicant_id
     - scheme_id
     type: object
-  http.CreateSchemeRequest:
+  internal_adapter_handler_http.CreateSchemeRequest:
     properties:
       name:
         type: string
     required:
     - name
     type: object
-  http.ErrorResponse:
+  internal_adapter_handler_http.ErrorResponse:
     properties:
       errors:
         additionalProperties:
@@ -131,17 +512,7 @@ definitions:
         example: false
         type: boolean
     type: object
-  http.Response:
-    properties:
-      data: {}
-      message:
-        example: Success
-        type: string
-      success:
-        example: true
-        type: boolean
-    type: object
-  http.SchemeBenefitResponse:
+  internal_adapter_handler_http.SchemeBenefitListResponse:
     properties:
       amount:
         example: 1000000
@@ -150,7 +521,28 @@ definitions:
         example: CDC Vouchers
         type: string
     type: object
-  http.SchemeCriteriaResponse:
+  internal_adapter_handler_http.SchemeBenefitResponse:
+    properties:
+      amount:
+        example: 1000000
+        type: number
+      created_at:
+        example: "2021-01-01T00:00:00Z"
+        type: string
+      id:
+        example: 00000000-0000-0000-0000-000000000000
+        type: string
+      name:
+        example: CDC Vouchers
+        type: string
+      scheme_id:
+        example: 00000000-0000-0000-0000-000000000000
+        type: string
+      updated_at:
+        example: "2021-01-01T00:00:00Z"
+        type: string
+    type: object
+  internal_adapter_handler_http.SchemeCriteriaListResponse:
     properties:
       name:
         example: employment_status
@@ -159,15 +551,36 @@ definitions:
         example: unemployed
         type: string
     type: object
-  http.SchemeResponse:
+  internal_adapter_handler_http.SchemeCriteriaResponse:
+    properties:
+      created_at:
+        example: "2021-01-01T00:00:00Z"
+        type: string
+      id:
+        example: 00000000-0000-0000-0000-000000000000
+        type: string
+      name:
+        example: employment_status
+        type: string
+      scheme_id:
+        example: 00000000-0000-0000-0000-000000000000
+        type: string
+      updated_at:
+        example: "2021-01-01T00:00:00Z"
+        type: string
+      value:
+        example: unemployed
+        type: string
+    type: object
+  internal_adapter_handler_http.SchemeResponse:
     properties:
       benefits:
         items:
-          $ref: '#/definitions/http.SchemeBenefitResponse'
+          $ref: '#/definitions/internal_adapter_handler_http.SchemeBenefitListResponse'
         type: array
       criteria:
         items:
-          $ref: '#/definitions/http.SchemeCriteriaResponse'
+          $ref: '#/definitions/internal_adapter_handler_http.SchemeCriteriaListResponse'
         type: array
       id:
         example: 00000000-0000-0000-0000-000000000000
@@ -176,24 +589,33 @@ definitions:
         example: Retrenchment Assistance Scheme
         type: string
     type: object
-  http.UpdateApplicantRequest:
+  internal_adapter_handler_http.UpdateApplicantRequest:
     properties:
       date_of_birth:
+        example: "1990-01-01"
         type: string
       employment_status:
-        $ref: '#/definitions/domain.EmploymentStatus'
+        allOf:
+        - $ref: '#/definitions/github_com_cxnub_fas-mgmt-system_internal_core_domain.EmploymentStatus'
+        example: unemployed
       id:
+        example: b6c29c96-024b-4e70-834b-8e0dd2c66645
         type: string
       marital_status:
-        $ref: '#/definitions/domain.MaritalStatus'
+        allOf:
+        - $ref: '#/definitions/github_com_cxnub_fas-mgmt-system_internal_core_domain.MaritalStatus'
+        example: married
       name:
+        example: John Doe
         type: string
       sex:
-        $ref: '#/definitions/domain.Sex'
+        allOf:
+        - $ref: '#/definitions/github_com_cxnub_fas-mgmt-system_internal_core_domain.Sex'
+        example: male
     required:
     - id
     type: object
-  http.UpdateApplicationRequest:
+  internal_adapter_handler_http.UpdateApplicationRequest:
     properties:
       applicant_id:
         type: string
@@ -204,7 +626,33 @@ definitions:
     required:
     - id
     type: object
-  http.UpdateSchemeRequest:
+  internal_adapter_handler_http.UpdateSchemeBenefitRequest:
+    properties:
+      amount:
+        type: number
+      id:
+        type: string
+      name:
+        type: string
+      scheme_id:
+        type: string
+    required:
+    - id
+    type: object
+  internal_adapter_handler_http.UpdateSchemeCriteriaRequest:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      scheme_id:
+        type: string
+      value:
+        type: string
+    required:
+    - id
+    type: object
+  internal_adapter_handler_http.UpdateSchemeRequest:
     properties:
       id:
         type: string
@@ -213,7 +661,584 @@ definitions:
     required:
     - id
     type: object
-host: http://localhost:8080
+  multipart.FileHeader:
+    properties:
+      filename:
+        type: string
+      header:
+        $ref: '#/definitions/textproto.MIMEHeader'
+      size:
+        type: integer
+    type: object
+  multipart.Form:
+    properties:
+      file:
+        additionalProperties:
+          items:
+            $ref: '#/definitions/multipart.FileHeader'
+          type: array
+        type: object
+      value:
+        additionalProperties:
+          items:
+            type: string
+          type: array
+        type: object
+    type: object
+  net.IPNet:
+    properties:
+      ip:
+        description: network number
+        items:
+          type: integer
+        type: array
+      mask:
+        description: network mask
+        items:
+          type: integer
+        type: array
+    type: object
+  pkix.AttributeTypeAndValue:
+    properties:
+      type:
+        items:
+          type: integer
+        type: array
+      value: {}
+    type: object
+  pkix.Extension:
+    properties:
+      critical:
+        type: boolean
+      id:
+        items:
+          type: integer
+        type: array
+      value:
+        items:
+          type: integer
+        type: array
+    type: object
+  pkix.Name:
+    properties:
+      commonName:
+        type: string
+      country:
+        items:
+          type: string
+        type: array
+      extraNames:
+        description: |-
+          ExtraNames contains attributes to be copied, raw, into any marshaled
+          distinguished names. Values override any attributes with the same OID.
+          The ExtraNames field is not populated when parsing, see Names.
+        items:
+          $ref: '#/definitions/pkix.AttributeTypeAndValue'
+        type: array
+      locality:
+        items:
+          type: string
+        type: array
+      names:
+        description: |-
+          Names contains all parsed attributes. When parsing distinguished names,
+          this can be used to extract non-standard attributes that are not parsed
+          by this package. When marshaling to RDNSequences, the Names field is
+          ignored, see ExtraNames.
+        items:
+          $ref: '#/definitions/pkix.AttributeTypeAndValue'
+        type: array
+      organization:
+        items:
+          type: string
+        type: array
+      organizationalUnit:
+        items:
+          type: string
+        type: array
+      postalCode:
+        items:
+          type: string
+        type: array
+      province:
+        items:
+          type: string
+        type: array
+      serialNumber:
+        type: string
+      streetAddress:
+        items:
+          type: string
+        type: array
+    type: object
+  textproto.MIMEHeader:
+    additionalProperties:
+      items:
+        type: string
+      type: array
+    type: object
+  tls.ConnectionState:
+    properties:
+      cipherSuite:
+        description: |-
+          CipherSuite is the cipher suite negotiated for the connection (e.g.
+          TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, TLS_AES_128_GCM_SHA256).
+        type: integer
+      didResume:
+        description: |-
+          DidResume is true if this connection was successfully resumed from a
+          previous session with a session ticket or similar mechanism.
+        type: boolean
+      echaccepted:
+        description: |-
+          ECHAccepted indicates if Encrypted Client Hello was offered by the client
+          and accepted by the server. Currently, ECH is supported only on the
+          client side.
+        type: boolean
+      handshakeComplete:
+        description: HandshakeComplete is true if the handshake has concluded.
+        type: boolean
+      negotiatedProtocol:
+        description: NegotiatedProtocol is the application protocol negotiated with
+          ALPN.
+        type: string
+      negotiatedProtocolIsMutual:
+        description: |-
+          NegotiatedProtocolIsMutual used to indicate a mutual NPN negotiation.
+
+          Deprecated: this value is always true.
+        type: boolean
+      ocspresponse:
+        description: |-
+          OCSPResponse is a stapled Online Certificate Status Protocol (OCSP)
+          response provided by the peer for the leaf certificate, if any.
+        items:
+          type: integer
+        type: array
+      peerCertificates:
+        description: |-
+          PeerCertificates are the parsed certificates sent by the peer, in the
+          order in which they were sent. The first element is the leaf certificate
+          that the connection is verified against.
+
+          On the client side, it can't be empty. On the server side, it can be
+          empty if Config.ClientAuth is not RequireAnyClientCert or
+          RequireAndVerifyClientCert.
+
+          PeerCertificates and its contents should not be modified.
+        items:
+          $ref: '#/definitions/x509.Certificate'
+        type: array
+      serverName:
+        description: |-
+          ServerName is the value of the Server Name Indication extension sent by
+          the client. It's available both on the server and on the client side.
+        type: string
+      signedCertificateTimestamps:
+        description: |-
+          SignedCertificateTimestamps is a list of SCTs provided by the peer
+          through the TLS handshake for the leaf certificate, if any.
+        items:
+          items:
+            type: integer
+          type: array
+        type: array
+      tlsunique:
+        description: |-
+          TLSUnique contains the "tls-unique" channel binding value (see RFC 5929,
+          Section 3). This value will be nil for TLS 1.3 connections and for
+          resumed connections that don't support Extended Master Secret (RFC 7627).
+        items:
+          type: integer
+        type: array
+      verifiedChains:
+        description: |-
+          VerifiedChains is a list of one or more chains where the first element is
+          PeerCertificates[0] and the last element is from Config.RootCAs (on the
+          client side) or Config.ClientCAs (on the server side).
+
+          On the client side, it's set if Config.InsecureSkipVerify is false. On
+          the server side, it's set if Config.ClientAuth is VerifyClientCertIfGiven
+          (and the peer provided a certificate) or RequireAndVerifyClientCert.
+
+          VerifiedChains and its contents should not be modified.
+        items:
+          items:
+            $ref: '#/definitions/x509.Certificate'
+          type: array
+        type: array
+      version:
+        description: Version is the TLS version used by the connection (e.g. VersionTLS12).
+        type: integer
+    type: object
+  url.URL:
+    properties:
+      forceQuery:
+        description: append a query ('?') even if RawQuery is empty
+        type: boolean
+      fragment:
+        description: fragment for references, without '#'
+        type: string
+      host:
+        description: host or host:port (see Hostname and Port methods)
+        type: string
+      omitHost:
+        description: do not emit empty host (authority)
+        type: boolean
+      opaque:
+        description: encoded opaque data
+        type: string
+      path:
+        description: path (relative paths may omit leading slash)
+        type: string
+      rawFragment:
+        description: encoded fragment hint (see EscapedFragment method)
+        type: string
+      rawPath:
+        description: encoded path hint (see EscapedPath method)
+        type: string
+      rawQuery:
+        description: encoded query values, without '?'
+        type: string
+      scheme:
+        type: string
+      user:
+        allOf:
+        - $ref: '#/definitions/url.Userinfo'
+        description: username and password information
+    type: object
+  url.Userinfo:
+    type: object
+  url.Values:
+    additionalProperties:
+      items:
+        type: string
+      type: array
+    type: object
+  x509.Certificate:
+    properties:
+      authorityKeyId:
+        items:
+          type: integer
+        type: array
+      basicConstraintsValid:
+        description: |-
+          BasicConstraintsValid indicates whether IsCA, MaxPathLen,
+          and MaxPathLenZero are valid.
+        type: boolean
+      crldistributionPoints:
+        description: CRL Distribution Points
+        items:
+          type: string
+        type: array
+      dnsnames:
+        description: |-
+          Subject Alternate Name values. (Note that these values may not be valid
+          if invalid values were contained within a parsed certificate. For
+          example, an element of DNSNames may not be a valid DNS domain name.)
+        items:
+          type: string
+        type: array
+      emailAddresses:
+        items:
+          type: string
+        type: array
+      excludedDNSDomains:
+        items:
+          type: string
+        type: array
+      excludedEmailAddresses:
+        items:
+          type: string
+        type: array
+      excludedIPRanges:
+        items:
+          $ref: '#/definitions/net.IPNet'
+        type: array
+      excludedURIDomains:
+        items:
+          type: string
+        type: array
+      extKeyUsage:
+        description: Sequence of extended key usages.
+        items:
+          type: integer
+        type: array
+      extensions:
+        description: |-
+          Extensions contains raw X.509 extensions. When parsing certificates,
+          this can be used to extract non-critical extensions that are not
+          parsed by this package. When marshaling certificates, the Extensions
+          field is ignored, see ExtraExtensions.
+        items:
+          $ref: '#/definitions/pkix.Extension'
+        type: array
+      extraExtensions:
+        description: |-
+          ExtraExtensions contains extensions to be copied, raw, into any
+          marshaled certificates. Values override any extensions that would
+          otherwise be produced based on the other fields. The ExtraExtensions
+          field is not populated when parsing certificates, see Extensions.
+        items:
+          $ref: '#/definitions/pkix.Extension'
+        type: array
+      inhibitAnyPolicy:
+        description: |-
+          InhibitAnyPolicy and InhibitAnyPolicyZero indicate the presence and value
+          of the inhibitAnyPolicy extension.
+
+          The value of InhibitAnyPolicy indicates the number of additional
+          certificates in the path after this certificate that may use the
+          anyPolicy policy OID to indicate a match with any other policy.
+
+          When parsing a certificate, a positive non-zero InhibitAnyPolicy means
+          that the field was specified, -1 means it was unset, and
+          InhibitAnyPolicyZero being true mean that the field was explicitly set to
+          zero. The case of InhibitAnyPolicy==0 with InhibitAnyPolicyZero==false
+          should be treated equivalent to -1 (unset).
+        type: integer
+      inhibitAnyPolicyZero:
+        description: |-
+          InhibitAnyPolicyZero indicates that InhibitAnyPolicy==0 should be
+          interpreted as an actual maximum path length of zero. Otherwise, that
+          combination is interpreted as InhibitAnyPolicy not being set.
+        type: boolean
+      inhibitPolicyMapping:
+        description: |-
+          InhibitPolicyMapping and InhibitPolicyMappingZero indicate the presence
+          and value of the inhibitPolicyMapping field of the policyConstraints
+          extension.
+
+          The value of InhibitPolicyMapping indicates the number of additional
+          certificates in the path after this certificate that may use policy
+          mapping.
+
+          When parsing a certificate, a positive non-zero InhibitPolicyMapping
+          means that the field was specified, -1 means it was unset, and
+          InhibitPolicyMappingZero being true mean that the field was explicitly
+          set to zero. The case of InhibitPolicyMapping==0 with
+          InhibitPolicyMappingZero==false should be treated equivalent to -1
+          (unset).
+        type: integer
+      inhibitPolicyMappingZero:
+        description: |-
+          InhibitPolicyMappingZero indicates that InhibitPolicyMapping==0 should be
+          interpreted as an actual maximum path length of zero. Otherwise, that
+          combination is interpreted as InhibitAnyPolicy not being set.
+        type: boolean
+      ipaddresses:
+        items:
+          items:
+            type: integer
+          type: array
+        type: array
+      isCA:
+        type: boolean
+      issuer:
+        $ref: '#/definitions/pkix.Name'
+      issuingCertificateURL:
+        items:
+          type: string
+        type: array
+      keyUsage:
+        type: integer
+      maxPathLen:
+        description: |-
+          MaxPathLen and MaxPathLenZero indicate the presence and
+          value of the BasicConstraints' "pathLenConstraint".
+
+          When parsing a certificate, a positive non-zero MaxPathLen
+          means that the field was specified, -1 means it was unset,
+          and MaxPathLenZero being true mean that the field was
+          explicitly set to zero. The case of MaxPathLen==0 with MaxPathLenZero==false
+          should be treated equivalent to -1 (unset).
+
+          When generating a certificate, an unset pathLenConstraint
+          can be requested with either MaxPathLen == -1 or using the
+          zero value for both MaxPathLen and MaxPathLenZero.
+        type: integer
+      maxPathLenZero:
+        description: |-
+          MaxPathLenZero indicates that BasicConstraintsValid==true
+          and MaxPathLen==0 should be interpreted as an actual
+          maximum path length of zero. Otherwise, that combination is
+          interpreted as MaxPathLen not being set.
+        type: boolean
+      notAfter:
+        description: Validity bounds.
+        type: string
+      notBefore:
+        description: Validity bounds.
+        type: string
+      ocspserver:
+        description: RFC 5280, 4.2.2.1 (Authority Information Access)
+        items:
+          type: string
+        type: array
+      permittedDNSDomains:
+        items:
+          type: string
+        type: array
+      permittedDNSDomainsCritical:
+        description: Name constraints
+        type: boolean
+      permittedEmailAddresses:
+        items:
+          type: string
+        type: array
+      permittedIPRanges:
+        items:
+          $ref: '#/definitions/net.IPNet'
+        type: array
+      permittedURIDomains:
+        items:
+          type: string
+        type: array
+      policies:
+        description: |-
+          Policies contains all policy identifiers included in the certificate.
+          See CreateCertificate for context about how this field and the PolicyIdentifiers field
+          interact.
+          In Go 1.22, encoding/gob cannot handle and ignores this field.
+        items:
+          $ref: '#/definitions/x509.OID'
+        type: array
+      policyIdentifiers:
+        description: |-
+          PolicyIdentifiers contains asn1.ObjectIdentifiers, the components
+          of which are limited to int32. If a certificate contains a policy which
+          cannot be represented by asn1.ObjectIdentifier, it will not be included in
+          PolicyIdentifiers, but will be present in Policies, which contains all parsed
+          policy OIDs.
+          See CreateCertificate for context about how this field and the Policies field
+          interact.
+        items:
+          items:
+            type: integer
+          type: array
+        type: array
+      policyMappings:
+        description: PolicyMappings contains a list of policy mappings included in
+          the certificate.
+        items:
+          $ref: '#/definitions/x509.PolicyMapping'
+        type: array
+      publicKey: {}
+      publicKeyAlgorithm:
+        type: integer
+      raw:
+        description: Complete ASN.1 DER content (certificate, signature algorithm
+          and signature).
+        items:
+          type: integer
+        type: array
+      rawIssuer:
+        description: DER encoded Issuer
+        items:
+          type: integer
+        type: array
+      rawSubject:
+        description: DER encoded Subject
+        items:
+          type: integer
+        type: array
+      rawSubjectPublicKeyInfo:
+        description: DER encoded SubjectPublicKeyInfo.
+        items:
+          type: integer
+        type: array
+      rawTBSCertificate:
+        description: Certificate part of raw ASN.1 DER content.
+        items:
+          type: integer
+        type: array
+      requireExplicitPolicy:
+        description: |-
+          RequireExplicitPolicy and RequireExplicitPolicyZero indicate the presence
+          and value of the requireExplicitPolicy field of the policyConstraints
+          extension.
+
+          The value of RequireExplicitPolicy indicates the number of additional
+          certificates in the path after this certificate before an explicit policy
+          is required for the rest of the path. When an explicit policy is required,
+          each subsequent certificate in the path must contain a required policy OID,
+          or a policy OID which has been declared as equivalent through the policy
+          mapping extension.
+
+          When parsing a certificate, a positive non-zero RequireExplicitPolicy
+          means that the field was specified, -1 means it was unset, and
+          RequireExplicitPolicyZero being true mean that the field was explicitly
+          set to zero. The case of RequireExplicitPolicy==0 with
+          RequireExplicitPolicyZero==false should be treated equivalent to -1
+          (unset).
+        type: integer
+      requireExplicitPolicyZero:
+        description: |-
+          RequireExplicitPolicyZero indicates that RequireExplicitPolicy==0 should be
+          interpreted as an actual maximum path length of zero. Otherwise, that
+          combination is interpreted as InhibitAnyPolicy not being set.
+        type: boolean
+      serialNumber:
+        $ref: '#/definitions/big.Int'
+      signature:
+        items:
+          type: integer
+        type: array
+      signatureAlgorithm:
+        type: integer
+      subject:
+        $ref: '#/definitions/pkix.Name'
+      subjectKeyId:
+        items:
+          type: integer
+        type: array
+      unhandledCriticalExtensions:
+        description: |-
+          UnhandledCriticalExtensions contains a list of extension IDs that
+          were not (fully) processed when parsing. Verify will fail if this
+          slice is non-empty, unless verification is delegated to an OS
+          library which understands all the critical extensions.
+
+          Users can access these extensions using Extensions and can remove
+          elements from this slice if they believe that they have been
+          handled.
+        items:
+          items:
+            type: integer
+          type: array
+        type: array
+      unknownExtKeyUsage:
+        description: Encountered extended key usages unknown to this package.
+        items:
+          items:
+            type: integer
+          type: array
+        type: array
+      uris:
+        items:
+          $ref: '#/definitions/url.URL'
+        type: array
+      version:
+        type: integer
+    type: object
+  x509.OID:
+    type: object
+  x509.PolicyMapping:
+    properties:
+      issuerDomainPolicy:
+        allOf:
+        - $ref: '#/definitions/x509.OID'
+        description: |-
+          IssuerDomainPolicy contains a policy OID the issuing certificate considers
+          equivalent to SubjectDomainPolicy in the subject certificate.
+      subjectDomainPolicy:
+        allOf:
+        - $ref: '#/definitions/x509.OID'
+        description: |-
+          SubjectDomainPolicy contains a OID the issuing certificate considers
+          equivalent to IssuerDomainPolicy in the subject certificate.
+    type: object
+host: localhost:8080
 info:
   contact: {}
   description: This is the API documentation for FAS Management System.
@@ -235,12 +1260,12 @@ paths:
           description: Successfully retrieved list of applicants.
           schema:
             items:
-              $ref: '#/definitions/http.ApplicantResponse'
+              $ref: '#/definitions/internal_adapter_handler_http.ApplicantResponse'
             type: array
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/http.ErrorResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
       summary: List All Applicants
       tags:
       - Applicants
@@ -255,22 +1280,22 @@ paths:
         name: CreateApplicantRequest
         required: true
         schema:
-          $ref: '#/definitions/http.CreateApplicantRequest'
+          $ref: '#/definitions/internal_adapter_handler_http.CreateApplicantRequest'
       produces:
       - application/json
       responses:
         "201":
           description: Successfully created applicant.
           schema:
-            $ref: '#/definitions/http.ApplicantResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ApplicantResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/http.ErrorResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/http.ErrorResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
       summary: Create a new Applicant
       tags:
       - Applicants
@@ -295,15 +1320,15 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/http.ErrorResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
         "404":
           description: Applicant Not Found
           schema:
-            $ref: '#/definitions/http.ErrorResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/http.ErrorResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
       summary: Delete an Applicant
       tags:
       - Applicants
@@ -324,19 +1349,19 @@ paths:
         "200":
           description: Successfully retrieved applicant.
           schema:
-            $ref: '#/definitions/http.ApplicantResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ApplicantResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/http.ErrorResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
         "404":
           description: Applicant Not Found
           schema:
-            $ref: '#/definitions/http.ErrorResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/http.ErrorResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
       summary: Retrieve Applicant by ID
       tags:
       - Applicants
@@ -356,26 +1381,26 @@ paths:
         name: UpdateApplicantRequest
         required: true
         schema:
-          $ref: '#/definitions/http.UpdateApplicantRequest'
+          $ref: '#/definitions/internal_adapter_handler_http.UpdateApplicantRequest'
       produces:
       - application/json
       responses:
         "200":
           description: Successfully updated applicant.
           schema:
-            $ref: '#/definitions/http.ApplicantResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ApplicantResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/http.ErrorResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
         "404":
           description: Applicant Not Found
           schema:
-            $ref: '#/definitions/http.ErrorResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/http.ErrorResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
       summary: Update an Applicant
       tags:
       - Applicants
@@ -391,12 +1416,12 @@ paths:
           description: Applications retrieved successfully.
           schema:
             items:
-              $ref: '#/definitions/http.ApplicationsResponse'
+              $ref: '#/definitions/internal_adapter_handler_http.ApplicationsResponse'
             type: array
         "500":
           description: Internal server error.
           schema:
-            $ref: '#/definitions/http.ErrorResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
       summary: List all applications
       tags:
       - Applications
@@ -411,22 +1436,22 @@ paths:
         name: CreateApplicationRequest
         required: true
         schema:
-          $ref: '#/definitions/http.CreateApplicationRequest'
+          $ref: '#/definitions/internal_adapter_handler_http.CreateApplicationRequest'
       produces:
       - application/json
       responses:
         "201":
           description: Application created successfully.
           schema:
-            $ref: '#/definitions/http.ApplicationResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ApplicationResponse'
         "400":
           description: Invalid input data.
           schema:
-            $ref: '#/definitions/http.ErrorResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
         "500":
           description: Internal server error.
           schema:
-            $ref: '#/definitions/http.ErrorResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
       summary: Create a new application
       tags:
       - Applications
@@ -451,15 +1476,15 @@ paths:
         "400":
           description: Invalid UUID or bad input.
           schema:
-            $ref: '#/definitions/http.ErrorResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
         "404":
           description: Application not found.
           schema:
-            $ref: '#/definitions/http.ErrorResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
         "500":
           description: Internal server error.
           schema:
-            $ref: '#/definitions/http.ErrorResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
       summary: Delete an application by ID
       tags:
       - Applications
@@ -479,15 +1504,15 @@ paths:
         "200":
           description: Application retrieved successfully.
           schema:
-            $ref: '#/definitions/http.ApplicationResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ApplicationResponse'
         "400":
           description: Invalid UUID or bad input.
           schema:
-            $ref: '#/definitions/http.ErrorResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
         "404":
           description: Application not found.
           schema:
-            $ref: '#/definitions/http.ErrorResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
       summary: Retrieve application by ID
       tags:
       - Applications
@@ -506,26 +1531,26 @@ paths:
         name: UpdateApplicationRequest
         required: true
         schema:
-          $ref: '#/definitions/http.UpdateApplicationRequest'
+          $ref: '#/definitions/internal_adapter_handler_http.UpdateApplicationRequest'
       produces:
       - application/json
       responses:
         "200":
           description: Application updated successfully.
           schema:
-            $ref: '#/definitions/http.ApplicationResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ApplicationResponse'
         "400":
           description: Invalid input data.
           schema:
-            $ref: '#/definitions/http.ErrorResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
         "404":
           description: Application not found.
           schema:
-            $ref: '#/definitions/http.ErrorResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
         "500":
           description: Internal server error.
           schema:
-            $ref: '#/definitions/http.ErrorResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
       summary: Update an application by ID
       tags:
       - Applications
@@ -541,12 +1566,12 @@ paths:
           description: Successfully retrieved list of schemes
           schema:
             items:
-              $ref: '#/definitions/http.SchemeResponse'
+              $ref: '#/definitions/internal_adapter_handler_http.SchemeResponse'
             type: array
         "500":
           description: Internal server error
           schema:
-            $ref: '#/definitions/http.ErrorResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
       summary: List all schemes
       tags:
       - schemes
@@ -557,25 +1582,25 @@ paths:
       parameters:
       - description: JSON object containing new scheme details
         in: body
-        name: body
+        name: CreateSchemeRequest
         required: true
         schema:
-          $ref: '#/definitions/http.CreateSchemeRequest'
+          $ref: '#/definitions/internal_adapter_handler_http.CreateSchemeRequest'
       produces:
       - application/json
       responses:
         "201":
           description: Successfully created scheme
           schema:
-            $ref: '#/definitions/http.SchemeResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.SchemeResponse'
         "400":
           description: Validation error occurred
           schema:
-            $ref: '#/definitions/http.ErrorResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
         "500":
           description: Internal server error
           schema:
-            $ref: '#/definitions/http.ErrorResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
       summary: Create a new scheme
       tags:
       - schemes
@@ -601,15 +1626,15 @@ paths:
         "400":
           description: Validation error occurred
           schema:
-            $ref: '#/definitions/http.ErrorResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
         "404":
           description: Scheme not found
           schema:
-            $ref: '#/definitions/http.ErrorResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
         "500":
           description: Internal server error
           schema:
-            $ref: '#/definitions/http.ErrorResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
       summary: Delete a scheme
       tags:
       - schemes
@@ -621,7 +1646,7 @@ paths:
       - description: Scheme ID
         format: uuid
         in: path
-        name: id
+        name: scheme_id
         required: true
         type: string
       produces:
@@ -630,19 +1655,19 @@ paths:
         "200":
           description: Successfully retrieved scheme
           schema:
-            $ref: '#/definitions/http.SchemeResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.SchemeResponse'
         "400":
           description: Validation error occurred
           schema:
-            $ref: '#/definitions/http.ErrorResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
         "404":
           description: Scheme not found
           schema:
-            $ref: '#/definitions/http.ErrorResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
         "500":
           description: Internal server error
           schema:
-            $ref: '#/definitions/http.ErrorResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
       summary: Get Scheme by ID
       tags:
       - schemes
@@ -662,30 +1687,260 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/http.UpdateSchemeRequest'
+          $ref: '#/definitions/internal_adapter_handler_http.UpdateSchemeRequest'
       produces:
       - application/json
       responses:
         "200":
           description: Successfully updated scheme
           schema:
-            $ref: '#/definitions/http.SchemeResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.SchemeResponse'
         "400":
           description: Validation error occurred
           schema:
-            $ref: '#/definitions/http.ErrorResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
         "404":
           description: Scheme not found
           schema:
-            $ref: '#/definitions/http.ErrorResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
         "500":
           description: Internal server error
           schema:
-            $ref: '#/definitions/http.ErrorResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
       summary: Update an existing scheme
       tags:
       - schemes
-  /schemes/applicant:
+  /schemes/{scheme_id}/benefits:
+    post:
+      consumes:
+      - application/json
+      description: Attach a new benefit to an existing scheme by specifying the scheme
+        ID.
+      parameters:
+      - description: Scheme ID
+        format: uuid
+        in: path
+        name: scheme_id
+        required: true
+        type: string
+      - description: JSON object with benefit details
+        in: body
+        name: AddSchemeBenefitRequest
+        required: true
+        schema:
+          $ref: '#/definitions/internal_adapter_handler_http.AddSchemeBenefitRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successfully added benefit to scheme
+          schema:
+            $ref: '#/definitions/internal_adapter_handler_http.SchemeBenefitResponse'
+        "400":
+          description: Validation error occurred
+          schema:
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
+        "404":
+          description: Scheme not found
+          schema:
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
+      summary: Add a benefit to a scheme
+      tags:
+      - schemes
+  /schemes/{scheme_id}/criteria:
+    post:
+      consumes:
+      - application/json
+      description: Add a new criteria to an existing scheme by specifying the scheme
+        ID.
+      parameters:
+      - description: Scheme ID
+        format: uuid
+        in: path
+        name: scheme_id
+        required: true
+        type: string
+      - description: JSON object with criteria details
+        in: body
+        name: AddSchemeCriteriaRequest
+        required: true
+        schema:
+          $ref: '#/definitions/internal_adapter_handler_http.AddSchemeCriteriaRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successfully added criteria to scheme
+          schema:
+            $ref: '#/definitions/internal_adapter_handler_http.SchemeCriteriaResponse'
+        "400":
+          description: Validation error occurred
+          schema:
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
+        "404":
+          description: Scheme not found
+          schema:
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
+      summary: Add a criteria to a scheme
+      tags:
+      - schemes
+  /schemes/benefits/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove a benefit from a scheme using its unique identifier.
+      parameters:
+      - description: Benefit ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully deleted benefit
+          schema:
+            $ref: '#/definitions/http.Response'
+        "400":
+          description: Validation error occurred
+          schema:
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
+        "404":
+          description: Benefit not found
+          schema:
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
+      summary: Delete a benefit from a scheme
+      tags:
+      - schemes
+    put:
+      consumes:
+      - application/json
+      description: Modify an existing benefit of a scheme by specifying the scheme
+        ID and benefit ID.
+      parameters:
+      - description: Benefit ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: JSON object with updated benefit details
+        in: body
+        name: UpdateSchemeBenefitRequest
+        required: true
+        schema:
+          $ref: '#/definitions/internal_adapter_handler_http.UpdateSchemeBenefitRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully updated benefit
+          schema:
+            $ref: '#/definitions/internal_adapter_handler_http.SchemeBenefitResponse'
+        "400":
+          description: Validation error occurred
+          schema:
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
+        "404":
+          description: Benefit or Scheme not found
+          schema:
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
+      summary: Update a benefit of a scheme
+      tags:
+      - schemes
+  /schemes/criteria/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove a criteria from a scheme using its unique identifier.
+      parameters:
+      - description: Criteria ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully deleted criteria
+          schema:
+            $ref: '#/definitions/http.Response'
+        "400":
+          description: Validation error occurred
+          schema:
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
+        "404":
+          description: Criteria not found
+          schema:
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
+      summary: Delete a criteria from a scheme
+      tags:
+      - schemes
+    put:
+      consumes:
+      - application/json
+      description: Modify an existing criteria of a scheme by specifying the scheme
+        ID and criteria ID.
+      parameters:
+      - description: Criteria ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: JSON object with updated criteria details
+        in: body
+        name: UpdateSchemeCriteriaRequest
+        required: true
+        schema:
+          $ref: '#/definitions/internal_adapter_handler_http.UpdateSchemeCriteriaRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully updated criteria
+          schema:
+            $ref: '#/definitions/internal_adapter_handler_http.SchemeCriteriaResponse'
+        "400":
+          description: Validation error occurred
+          schema:
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
+        "404":
+          description: Criteria or Scheme not found
+          schema:
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
+      summary: Update a criteria of a scheme
+      tags:
+      - schemes
+  /schemes/eligible:
     get:
       consumes:
       - application/json
@@ -694,7 +1949,7 @@ paths:
       parameters:
       - description: Applicant ID
         format: uuid
-        in: query
+        in: path
         name: applicant
         required: true
         type: string
@@ -705,20 +1960,20 @@ paths:
           description: Successfully retrieved available schemes
           schema:
             items:
-              $ref: '#/definitions/http.SchemeResponse'
+              $ref: '#/definitions/internal_adapter_handler_http.SchemeResponse'
             type: array
         "400":
           description: Validation error occurred
           schema:
-            $ref: '#/definitions/http.ErrorResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
         "404":
           description: Applicant not found
           schema:
-            $ref: '#/definitions/http.ErrorResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
         "500":
           description: Internal server error
           schema:
-            $ref: '#/definitions/http.ErrorResponse'
+            $ref: '#/definitions/internal_adapter_handler_http.ErrorResponse'
       summary: List Applicant Available Schemes
       tags:
       - schemes

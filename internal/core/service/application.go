@@ -31,7 +31,7 @@ func (s *ApplicationService) checkApplicationValidity(ctx context.Context, appli
 		return err
 	}
 
-	scheme, err := s.SchemeRepository.GetSchemeById(ctx, *application.SchemeID)
+	scheme, err := s.SchemeRepository.GetSchemeByID(ctx, *application.SchemeID)
 	if err != nil {
 		return err
 	}
