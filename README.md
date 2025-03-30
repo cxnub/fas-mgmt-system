@@ -1,5 +1,7 @@
 # Financial Assistance Scheme Management System
 
+Coding assessment for GovTech internship.
+
 A backend application designed to enable administrators to manage financial assistance schemes and their applications.
 This project focuses on creating a backend solution to support individuals and families in need of financial assistance.
 
