@@ -62,7 +62,11 @@ builders.
 6. Create a copy of the .env.example file and rename it to .env
 
    ```bash
+   // Linux
    cp .env.example .env
+
+   // Windows
+   copy .env.example .env
    ```
    
    Update the values if neccessary.
