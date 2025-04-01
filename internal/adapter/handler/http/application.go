@@ -18,11 +18,6 @@ func NewApplicationHandler(s port.ApplicationService) *ApplicationHandler {
 	return &ApplicationHandler{s: s}
 }
 
-// GetApplicationRequest represents the request structure for retrieving a specific application by its ID.
-type GetApplicationRequest struct {
-	ID string `uri:"id" binding:"required,uuid" example:"fe897b4f-568b-4ea1-8d95-99a91c97faf2"`
-}
-
 // GetApplication godoc
 //
 // @Summary Retrieve application by ID
@@ -36,16 +31,16 @@ type GetApplicationRequest struct {
 // @Failure 404 {object} ErrorResponse "Application not found."
 // @Router /applications/{id} [get]
 func (h *ApplicationHandler) GetApplication(ctx *gin.Context) {
-	var req GetApplicationRequest
+	var reqUri ApplicationRequestUri
 
-	err := ctx.ShouldBindUri(&req)
+	err := ctx.ShouldBindUri(&reqUri)
 
 	if err != nil {
-		validationError(ctx, err, req)
+		validationError(ctx, err, reqUri)
 		return
 	}
 
-	id, err := uuid.Parse(req.ID)
+	id, err := uuid.Parse(reqUri.ID)
 
 	if err != nil {
 		handleError(ctx, domain.InvalidApplicationError)
@@ -84,12 +79,6 @@ func (h *ApplicationHandler) ListApplications(ctx *gin.Context) {
 	rsp := newApplicationsResponse(applications)
 	handleSuccess(ctx, http.StatusOK, "Successfully retrieved applications.", rsp)
 	return
-}
-
-// CreateApplicationRequest represents a request for creating a new application with mandatory applicant and scheme identifiers.
-type CreateApplicationRequest struct {
-	ApplicantID string `json:"applicant_id" binding:"required"`
-	SchemeID    string `json:"scheme_id" binding:"required"`
 }
 
 // CreateApplication godoc
@@ -144,13 +133,6 @@ func (h *ApplicationHandler) CreateApplication(ctx *gin.Context) {
 	return
 }
 
-// UpdateApplicationRequest represents a request to update an application by its ID, ApplicantID, or SchemeID.
-type UpdateApplicationRequest struct {
-	ID          string  `uri:"id" binding:"required,uuid"`
-	ApplicantID *string `json:"applicant_id"`
-	SchemeID    *string `json:"scheme_id"`
-}
-
 // UpdateApplication godoc
 //
 // @Summary Update an application by ID
@@ -166,10 +148,11 @@ type UpdateApplicationRequest struct {
 // @Failure 500 {object} ErrorResponse "Internal server error."
 // @Router /applications/{id} [put]
 func (h *ApplicationHandler) UpdateApplication(ctx *gin.Context) {
+	var reqUri ApplicationRequestUri
 	var req UpdateApplicationRequest
 
 	err := ctx.ShouldBindUri(&req)
-	id, err := uuid.Parse(req.ID)
+	id, err := uuid.Parse(reqUri.ID)
 	if err != nil {
 		handleError(ctx, domain.InvalidApplicationError)
 		return
@@ -208,11 +191,6 @@ func (h *ApplicationHandler) UpdateApplication(ctx *gin.Context) {
 	return
 }
 
-// DeleteApplicationRequest represents a request to delete an application by ID, which must be a valid UUID.
-type DeleteApplicationRequest struct {
-	ID string `uri:"id" binding:"required,uuid"`
-}
-
 // DeleteApplication godoc
 //
 // @Summary Delete an application by ID
@@ -227,7 +205,7 @@ type DeleteApplicationRequest struct {
 // @Failure 500 {object} ErrorResponse "Internal server error."
 // @Router /applications/{id} [delete]
 func (h *ApplicationHandler) DeleteApplication(ctx *gin.Context) {
-	var req DeleteApplicationRequest
+	var req ApplicationRequestUri
 
 	err := ctx.ShouldBindUri(&req)
 	if err != nil {

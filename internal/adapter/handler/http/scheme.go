@@ -16,10 +16,6 @@ func NewSchemeHandler(s port.SchemeService) *SchemeHandler {
 	return &SchemeHandler{s: s}
 }
 
-type GetSchemeRequest struct {
-	ID string `uri:"scheme_id" binding:"required,uuid"`
-}
-
 // GetScheme godoc
 // @Summary	  Get Scheme by ID
 // @Description  Retrieve a scheme using its unique identifier.
@@ -31,9 +27,9 @@ type GetSchemeRequest struct {
 // @Failure	  400  {object}  ErrorResponse		  "Validation error occurred"
 // @Failure	  404  {object}  ErrorResponse		  "Scheme not found"
 // @Failure	  500  {object}  ErrorResponse		  "Internal server error"
-// @Router	   /schemes/{id} [get]
+// @Router	   /schemes/{scheme_id} [get]
 func (h *SchemeHandler) GetScheme(ctx *gin.Context) {
-	var req GetSchemeRequest
+	var req SchemeRequestUri
 
 	err := ctx.ShouldBindUri(&req)
 
@@ -115,10 +111,6 @@ func (h *SchemeHandler) ListApplicantAvailableSchemes(ctx *gin.Context) {
 	return
 }
 
-type CreateSchemeRequest struct {
-	Name string `json:"name" binding:"required"`
-}
-
 // CreateScheme godoc
 // @Summary	  Create a new scheme
 // @Description  Add a new scheme with the provided details.
@@ -158,29 +150,25 @@ func (h *SchemeHandler) CreateScheme(ctx *gin.Context) {
 	return
 }
 
-type UpdateSchemeRequest struct {
-	ID   string  `uri:"id" binding:"required,uuid"`
-	Name *string `json:"name"`
-}
-
 // UpdateScheme godoc
 // @Summary	  Update an existing scheme
 // @Description  Modify the details of an existing scheme using its unique identifier.
 // @Tags		  schemes
 // @Accept		  json
 // @Produce	  json
-// @Param		  id	   path	string				   true  "Scheme ID" format(uuid)
+// @Param		  scheme_id	   path	string				   true  "Scheme ID" format(uuid)
 // @Param		  body	 body	UpdateSchemeRequest	  true  "JSON object with updates to the scheme"
 // @Success	  200	  {object} SchemeResponse	"Successfully updated scheme"
 // @Failure	  400	  {object} ErrorResponse			"Validation error occurred"
 // @Failure	  404	  {object} ErrorResponse			"Scheme not found"
 // @Failure	  500	  {object} ErrorResponse			"Internal server error"
-// @Router		  /schemes/{id} [put]
+// @Router		  /schemes/{scheme_id} [put]
 func (h *SchemeHandler) UpdateScheme(ctx *gin.Context) {
+	var reqUri SchemeRequestUri
 	var req UpdateSchemeRequest
 
-	err := ctx.ShouldBindUri(&req)
-	id, err := uuid.Parse(req.ID)
+	err := ctx.ShouldBindUri(&reqUri)
+	id, err := uuid.Parse(reqUri.ID)
 	if err != nil {
 		handleError(ctx, domain.InvalidSchemeError)
 		return
@@ -188,7 +176,7 @@ func (h *SchemeHandler) UpdateScheme(ctx *gin.Context) {
 
 	err = ctx.ShouldBindJSON(&req)
 	if err != nil {
-		validationError(ctx, err, req)
+		validationError(ctx, err, reqUri)
 		return
 	}
 
@@ -220,24 +208,20 @@ func (h *SchemeHandler) UpdateScheme(ctx *gin.Context) {
 	return
 }
 
-type DeleteSchemeRequest struct {
-	ID string `uri:"id" binding:"required,uuid"`
-}
-
 // DeleteScheme godoc
 // @Summary	  Delete a scheme
 // @Description  Remove a scheme from the system using its unique identifier.
 // @Tags		 schemes
 // @Accept	   json
 // @Produce	  json
-// @Param		id  path  string  true  "Scheme ID" format(uuid)
+// @Param		scheme_id  path  string  true  "Scheme ID" format(uuid)
 // @Success	  200  {object}  Response  "Successfully deleted scheme"
 // @Failure	  400  {object}  ErrorResponse	"Validation error occurred"
 // @Failure	  404  {object}  ErrorResponse	"Scheme not found"
 // @Failure	  500  {object}  ErrorResponse	"Internal server error"
-// @Router	   /schemes/{id} [delete]
+// @Router	   /schemes/{scheme_id} [delete]
 func (h *SchemeHandler) DeleteScheme(ctx *gin.Context) {
-	var req DeleteSchemeRequest
+	var req SchemeRequestUri
 
 	err := ctx.ShouldBindUri(&req)
 	if err != nil {
@@ -262,12 +246,6 @@ func (h *SchemeHandler) DeleteScheme(ctx *gin.Context) {
 	return
 }
 
-type AddSchemeBenefitRequest struct {
-	SchemeID *string `uri:"scheme_id"`
-	Name     string  `json:"name" binding:"required" example:"CDC Vouchers"`
-	Amount   float64 `json:"amount" binding:"required" example:"100"`
-}
-
 // AddSchemeBenefit godoc
 // @Summary	  Add a benefit to a scheme
 // @Description  Attach a new benefit to an existing scheme by specifying the scheme ID.
@@ -282,9 +260,10 @@ type AddSchemeBenefitRequest struct {
 // @Failure	  500	   {object}  ErrorResponse			  "Internal server error"
 // @Router		  /schemes/{scheme_id}/benefits [post]
 func (h *SchemeHandler) AddSchemeBenefit(ctx *gin.Context) {
+	var reqUri SchemeRequestUri
 	var req AddSchemeBenefitRequest
 
-	err := ctx.ShouldBindUri(&req)
+	err := ctx.ShouldBindUri(&reqUri)
 	if err != nil {
 		handleError(ctx, domain.InvalidSchemeError)
 		return
@@ -296,7 +275,7 @@ func (h *SchemeHandler) AddSchemeBenefit(ctx *gin.Context) {
 		return
 	}
 
-	schemeID, err := uuid.Parse(*req.SchemeID)
+	schemeID, err := uuid.Parse(reqUri.ID)
 
 	if err != nil {
 		handleError(ctx, domain.InvalidSchemeError)
@@ -318,31 +297,25 @@ func (h *SchemeHandler) AddSchemeBenefit(ctx *gin.Context) {
 	handleSuccess(ctx, http.StatusCreated, "Successfully added benefit to scheme.", rsp)
 }
 
-type UpdateSchemeBenefitRequest struct {
-	ID       string   `uri:"id" binding:"required,uuid"`
-	Name     *string  `json:"name"`
-	Amount   *float64 `json:"amount"`
-	SchemeID *string  `json:"scheme_id"`
-}
-
 // UpdateSchemeBenefit godoc
 // @Summary	  Update a benefit of a scheme
 // @Description  Modify an existing benefit of a scheme by specifying the scheme ID and benefit ID.
 // @Tags		 schemes
 // @Accept	   json
 // @Produce	  json
-// @Param		id		 path	  string				  true  "Benefit ID" format(uuid)
+// @Param		benefit_id		 path	  string				  true  "Benefit ID" format(uuid)
 // @Param		UpdateSchemeBenefitRequest body UpdateSchemeBenefitRequest true "JSON object with updated benefit details"
 // @Success	  200		{object}  SchemeBenefitResponse   "Successfully updated benefit"
 // @Failure	  400		{object}  ErrorResponse		   "Validation error occurred"
 // @Failure	  404		{object}  ErrorResponse		   "Benefit or Scheme not found"
 // @Failure	  500		{object}  ErrorResponse		   "Internal server error"
-// @Router	   /schemes/benefits/{id} [put]
+// @Router	   /schemes/benefits/{benefit_id} [put]
 func (h *SchemeHandler) UpdateSchemeBenefit(ctx *gin.Context) {
+	var reqUri BenefitRequestUri
 	var req UpdateSchemeBenefitRequest
 	var benefit *domain.Benefit
 
-	err := ctx.ShouldBindUri(&req)
+	err := ctx.ShouldBindUri(&reqUri)
 	if err != nil {
 		handleError(ctx, domain.InvalidSchemeError)
 		return
@@ -354,7 +327,7 @@ func (h *SchemeHandler) UpdateSchemeBenefit(ctx *gin.Context) {
 		validationError(ctx, err, req)
 	}
 
-	id, err := uuid.Parse(req.ID)
+	id, err := uuid.Parse(reqUri.ID)
 
 	if err != nil {
 		handleError(ctx, domain.InvalidBenefitError)
@@ -385,24 +358,20 @@ func (h *SchemeHandler) UpdateSchemeBenefit(ctx *gin.Context) {
 	handleSuccess(ctx, http.StatusOK, "Successfully updated benefit.", rsp)
 }
 
-type DeleteSchemeBenefitRequest struct {
-	ID string `uri:"id" binding:"required,uuid"`
-}
-
 // DeleteSchemeBenefit godoc
 // @Summary	  Delete a benefit from a scheme
 // @Description  Remove a benefit from a scheme using its unique identifier.
 // @Tags		 schemes
 // @Accept	   json
 // @Produce	  json
-// @Param		id  path  string  true  "Benefit ID" format(uuid)
+// @Param		benefit_id  path  string  true  "Benefit ID" format(uuid)
 // @Success	  200  {object}  Response  "Successfully deleted benefit"
 // @Failure	  400  {object}  ErrorResponse "Validation error occurred"
 // @Failure	  404  {object}  ErrorResponse "Benefit not found"
 // @Failure	  500  {object}  ErrorResponse "Internal server error"
-// @Router	   /schemes/benefits/{id} [delete]
+// @Router	   /schemes/benefits/{benefit_id} [delete]
 func (h *SchemeHandler) DeleteSchemeBenefit(ctx *gin.Context) {
-	var req DeleteSchemeBenefitRequest
+	var req BenefitRequestUri
 
 	err := ctx.ShouldBindUri(&req)
 	if err != nil {
@@ -426,12 +395,6 @@ func (h *SchemeHandler) DeleteSchemeBenefit(ctx *gin.Context) {
 	return
 }
 
-type AddSchemeCriteriaRequest struct {
-	SchemeID *string `uri:"scheme_id" binding:"required,uuid"`
-	Name     string  `json:"name" binding:"required" example:"Age Limit"`
-	Value    string  `json:"value" binding:"required" example:"18-50"`
-}
-
 // AddSchemeCriteria godoc
 // @Summary	  Add a criteria to a scheme
 // @Description  Add a new criteria to an existing scheme by specifying the scheme ID.
@@ -446,10 +409,12 @@ type AddSchemeCriteriaRequest struct {
 // @Failure	  500	   {object}  ErrorResponse			  "Internal server error"
 // @Router		  /schemes/{scheme_id}/criteria [post]
 func (h *SchemeHandler) AddSchemeCriteria(ctx *gin.Context) {
+	var reqUri SchemeCriteriaRequestUri
 	var req AddSchemeCriteriaRequest
-	err := ctx.ShouldBindUri(&req)
+
+	err := ctx.ShouldBindUri(&reqUri)
 	if err != nil {
-		validationError(ctx, err, req)
+		validationError(ctx, err, reqUri)
 		return
 	}
 	err = ctx.ShouldBindJSON(&req)
@@ -457,7 +422,7 @@ func (h *SchemeHandler) AddSchemeCriteria(ctx *gin.Context) {
 		validationError(ctx, err, req)
 		return
 	}
-	schemeID, err := uuid.Parse(*req.SchemeID)
+	schemeID, err := uuid.Parse(reqUri.ID)
 	if err != nil {
 		handleError(ctx, domain.InvalidSchemeError)
 		return
@@ -476,29 +441,24 @@ func (h *SchemeHandler) AddSchemeCriteria(ctx *gin.Context) {
 	handleSuccess(ctx, http.StatusCreated, "Successfully added criteria to scheme.", rsp)
 }
 
-type UpdateSchemeCriteriaRequest struct {
-	ID       string  `uri:"id" binding:"required,uuid"`
-	Name     *string `json:"name"`
-	Value    *string `json:"value"`
-	SchemeID *string `json:"scheme_id"`
-}
-
 // UpdateSchemeCriteria godoc
 // @Summary	  Update a criteria of a scheme
 // @Description  Modify an existing criteria of a scheme by specifying the scheme ID and criteria ID.
 // @Tags		  schemes
 // @Accept		  json
 // @Produce	  json
-// @Param		  id			path	string					true  "Criteria ID" format(uuid)
+// @Param		  scheme_criteria_id			path	string					true  "Scheme Criteria ID" format(uuid)
 // @Param		  UpdateSchemeCriteriaRequest	body	UpdateSchemeCriteriaRequest	true	"JSON object with updated criteria details"
 // @Success	  200		{object}  SchemeCriteriaResponse  "Successfully updated criteria"
 // @Failure	  400		{object}  ErrorResponse		  "Validation error occurred"
 // @Failure	  404		{object}  ErrorResponse		  "Criteria or Scheme not found"
 // @Failure	  500		{object}  ErrorResponse		  "Internal server error"
-// @Router		  /schemes/criteria/{id} [put]
+// @Router		  /schemes/criteria/{scheme_criteria_id} [put]
 func (h *SchemeHandler) UpdateSchemeCriteria(ctx *gin.Context) {
+	var reqUri SchemeCriteriaRequestUri
 	var req UpdateSchemeCriteriaRequest
-	err := ctx.ShouldBindUri(&req)
+
+	err := ctx.ShouldBindUri(&reqUri)
 	if err != nil {
 		handleError(ctx, domain.InvalidSchemeError)
 		return
@@ -513,9 +473,9 @@ func (h *SchemeHandler) UpdateSchemeCriteria(ctx *gin.Context) {
 		handleError(ctx, domain.InvalidSchemeError)
 		return
 	}
-	id, err := uuid.Parse(req.ID)
+	id, err := uuid.Parse(reqUri.ID)
 	if err != nil {
-		handleError(ctx, domain.InvalidSchemeError)
+		handleError(ctx, domain.InvalidSchemeCriteriaError)
 		return
 	}
 	newCriteria := domain.SchemeCriteria{
@@ -533,24 +493,21 @@ func (h *SchemeHandler) UpdateSchemeCriteria(ctx *gin.Context) {
 	handleSuccess(ctx, http.StatusOK, "Successfully updated criteria.", rsp)
 }
 
-type DeleteSchemeCriteriaRequest struct {
-	ID string `uri:"id" binding:"required,uuid"`
-}
-
 // DeleteSchemeCriteria godoc
 // @Summary	  Delete a criteria from a scheme
 // @Description  Remove a criteria from a scheme using its unique identifier.
 // @Tags		  schemes
 // @Accept		  json
 // @Produce	  json
-// @Param		  id  path  string  true  "Criteria ID" format(uuid)
+// @Param		  scheme_criteria_id  path  string  true  "Criteria ID" format(uuid)
 // @Success	  200  {object}  Response  "Successfully deleted criteria"
 // @Failure	  400  {object}  ErrorResponse "Validation error occurred"
 // @Failure	  404  {object}  ErrorResponse "Criteria not found"
 // @Failure	  500  {object}  ErrorResponse "Internal server error"
-// @Router		  /schemes/criteria/{id} [delete]
+// @Router		  /schemes/criteria/{scheme_criteria_id} [delete]
 func (h *SchemeHandler) DeleteSchemeCriteria(ctx *gin.Context) {
-	var req DeleteSchemeCriteriaRequest
+	var req SchemeCriteriaRequestUri
+
 	err := ctx.ShouldBindUri(&req)
 	if err != nil {
 		handleError(ctx, domain.InvalidSchemeCriteriaError)

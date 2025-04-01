@@ -55,21 +55,21 @@ func safeString(s *string) string {
 
 func safeEmploymentStatus(es *domain.EmploymentStatus) EmploymentStatus {
 	if es == nil {
-		return EmploymentStatus("") // Default to empty status
+		return "" // Default to empty status
 	}
 	return EmploymentStatus(*es)
 }
 
 func safeMaritalStatus(ms *domain.MaritalStatus) MaritalStatus {
 	if ms == nil {
-		return MaritalStatus("") // Default to empty status
+		return "" // Default to empty status
 	}
 	return MaritalStatus(*ms)
 }
 
 func safeSex(s *domain.Sex) Sex {
 	if s == nil {
-		return Sex("") // Default to empty sex
+		return "" // Default to empty sex
 	}
 	return Sex(*s)
 }

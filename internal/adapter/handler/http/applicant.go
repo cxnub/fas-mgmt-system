@@ -19,12 +19,6 @@ func NewApplicantHandler(s port.ApplicantService) *ApplicantHandler {
 	return &ApplicantHandler{s: s}
 }
 
-// GetApplicantRequest represents the request payload for retrieving a single applicant by ID.
-// It expects a UUID as the `id` parameter in the URI, which is both required and validated.
-type GetApplicantRequest struct {
-	ID string `uri:"id" binding:"required,uuid" example:"b6c29c96-024b-4e70-834b-8e0dd2c66645"`
-}
-
 // GetApplicant godoc
 // @Summary	  Retrieve Applicant by ID
 // @Description  Retrieves the details of a single applicant using their unique identifier.
@@ -38,7 +32,7 @@ type GetApplicantRequest struct {
 // @Failure	  500  {object}  ErrorResponse	  "Internal Server Error"
 // @Router	   /applicants/{id} [get]
 func (h *ApplicantHandler) GetApplicant(ctx *gin.Context) {
-	var req GetApplicantRequest
+	var req ApplicantRequestUri
 
 	err := ctx.ShouldBindUri(&req)
 
@@ -88,16 +82,6 @@ func (h *ApplicantHandler) ListApplicants(ctx *gin.Context) {
 	return
 }
 
-// CreateApplicantRequest represents the required information to create a new applicant in the system.
-// The struct requires fields for name, employment status, sex, date of birth, and marital status with validation constraints.
-type CreateApplicantRequest struct {
-	Name             string                  `json:"name" binding:"required" example:"John Doe"`
-	EmploymentStatus domain.EmploymentStatus `json:"employment_status" binding:"required,employment_status" example:"employed"`
-	Sex              domain.Sex              `json:"sex" binding:"required,sex" example:"male"`
-	DateOfBirth      string                  `json:"date_of_birth" binding:"required,date" example:"1990-01-01"`
-	MaritalStatus    domain.MaritalStatus    `json:"marital_status" binding:"required,marital_status" example:"married"`
-}
-
 // CreateApplicant godoc
 // @Summary	  Create a new Applicant
 // @Description  Handles the creation of a new applicant by accepting necessary data and storing it in the system.
@@ -143,16 +127,6 @@ func (h *ApplicantHandler) CreateApplicant(ctx *gin.Context) {
 	return
 }
 
-// UpdateApplicantRequest represents a request payload to update an applicant's details.
-type UpdateApplicantRequest struct {
-	ID               string                   `uri:"id" binding:"required,uuid" example:"b6c29c96-024b-4e70-834b-8e0dd2c66645"`
-	Name             *string                  `json:"name" example:"John Doe" binding:"omitempty"`
-	EmploymentStatus *domain.EmploymentStatus `json:"employment_status" binding:"omitempty,employment_status" example:"unemployed"`
-	Sex              *domain.Sex              `json:"sex" binding:"omitempty,sex" example:"male"`
-	DateOfBirth      *string                  `json:"date_of_birth" binding:"omitempty,date" example:"1990-01-01"`
-	MaritalStatus    *domain.MaritalStatus    `json:"marital_status" binding:"omitempty,marital_status" example:"married"`
-}
-
 // UpdateApplicant godoc
 // @Summary	  Update an Applicant
 // @Description  Updates the specified applicant's details based on the provided payload.
@@ -167,10 +141,11 @@ type UpdateApplicantRequest struct {
 // @Failure	  500					 {object}  ErrorResponse	  "Internal Server Error"
 // @Router	   /applicants/{id}		[put]
 func (h *ApplicantHandler) UpdateApplicant(ctx *gin.Context) {
+	var reqUri ApplicantRequestUri
 	var req UpdateApplicantRequest
 
-	err := ctx.ShouldBindUri(&req)
-	id, err := uuid.Parse(req.ID)
+	err := ctx.ShouldBindUri(&reqUri)
+	id, err := uuid.Parse(reqUri.ID)
 	if err != nil {
 		handleError(ctx, domain.InvalidApplicantError)
 		return
@@ -220,12 +195,6 @@ func (h *ApplicantHandler) UpdateApplicant(ctx *gin.Context) {
 	return
 }
 
-// DeleteApplicantRequest represents a request to delete an applicant by their unique identifier.
-// The ID field is required and must be a valid UUID.
-type DeleteApplicantRequest struct {
-	ID string `uri:"id" binding:"required,uuid" example:"b6c29c96-024b-4e70-834b-8e0dd2c66645"`
-}
-
 // DeleteApplicant godoc
 // @Summary	  Delete an Applicant
 // @Description  Deletes the applicant with the specified ID from the system.
@@ -239,7 +208,7 @@ type DeleteApplicantRequest struct {
 // @Failure	  500  {object}  ErrorResponse	"Internal Server Error"
 // @Router	   /applicants/{id} [delete]
 func (h *ApplicantHandler) DeleteApplicant(ctx *gin.Context) {
-	var req DeleteApplicantRequest
+	var req ApplicantRequestUri
 
 	err := ctx.ShouldBindUri(&req)
 	if err != nil {

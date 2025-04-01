@@ -551,7 +551,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/schemes/benefits/{id}": {
+        "/schemes/benefits/{benefit_id}": {
             "put": {
                 "description": "Modify an existing benefit of a scheme by specifying the scheme ID and benefit ID.",
                 "consumes": [
@@ -569,7 +569,7 @@ const docTemplate = `{
                         "type": "string",
                         "format": "uuid",
                         "description": "Benefit ID",
-                        "name": "id",
+                        "name": "benefit_id",
                         "in": "path",
                         "required": true
                     },
@@ -627,7 +627,7 @@ const docTemplate = `{
                         "type": "string",
                         "format": "uuid",
                         "description": "Benefit ID",
-                        "name": "id",
+                        "name": "benefit_id",
                         "in": "path",
                         "required": true
                     }
@@ -660,7 +660,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/schemes/criteria/{id}": {
+        "/schemes/criteria/{scheme_criteria_id}": {
             "put": {
                 "description": "Modify an existing criteria of a scheme by specifying the scheme ID and criteria ID.",
                 "consumes": [
@@ -677,8 +677,8 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "format": "uuid",
-                        "description": "Criteria ID",
-                        "name": "id",
+                        "description": "Scheme Criteria ID",
+                        "name": "scheme_criteria_id",
                         "in": "path",
                         "required": true
                     },
@@ -736,7 +736,7 @@ const docTemplate = `{
                         "type": "string",
                         "format": "uuid",
                         "description": "Criteria ID",
-                        "name": "id",
+                        "name": "scheme_criteria_id",
                         "in": "path",
                         "required": true
                     }
@@ -788,7 +788,7 @@ const docTemplate = `{
                         "format": "uuid",
                         "description": "Applicant ID",
                         "name": "applicant",
-                        "in": "path",
+                        "in": "query",
                         "required": true
                     }
                 ],
@@ -823,7 +823,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/schemes/{id}": {
+        "/schemes/{scheme_id}": {
             "get": {
                 "description": "Retrieve a scheme using its unique identifier.",
                 "consumes": [
@@ -890,7 +890,7 @@ const docTemplate = `{
                         "type": "string",
                         "format": "uuid",
                         "description": "Scheme ID",
-                        "name": "id",
+                        "name": "scheme_id",
                         "in": "path",
                         "required": true
                     },
@@ -948,7 +948,7 @@ const docTemplate = `{
                         "type": "string",
                         "format": "uuid",
                         "description": "Scheme ID",
-                        "name": "id",
+                        "name": "scheme_id",
                         "in": "path",
                         "required": true
                     }
@@ -1368,9 +1368,6 @@ const docTemplate = `{
                 "name": {
                     "type": "string",
                     "example": "CDC Vouchers"
-                },
-                "schemeID": {
-                    "type": "string"
                 }
             }
         },
@@ -1378,16 +1375,12 @@ const docTemplate = `{
             "type": "object",
             "required": [
                 "name",
-                "schemeID",
                 "value"
             ],
             "properties": {
                 "name": {
                     "type": "string",
                     "example": "Age Limit"
-                },
-                "schemeID": {
-                    "type": "string"
                 },
                 "value": {
                     "type": "string",
@@ -1567,6 +1560,10 @@ const docTemplate = `{
                     "type": "number",
                     "example": 1000000
                 },
+                "id": {
+                    "type": "string",
+                    "example": "00000000-0000-0000-0000-000000000000"
+                },
                 "name": {
                     "type": "string",
                     "example": "CDC Vouchers"
@@ -1605,6 +1602,10 @@ const docTemplate = `{
         "internal_adapter_handler_http.SchemeCriteriaListResponse": {
             "type": "object",
             "properties": {
+                "id": {
+                    "type": "string",
+                    "example": "00000000-0000-0000-0000-000000000000"
+                },
                 "name": {
                     "type": "string",
                     "example": "employment_status"
@@ -1671,9 +1672,6 @@ const docTemplate = `{
         },
         "internal_adapter_handler_http.UpdateApplicantRequest": {
             "type": "object",
-            "required": [
-                "id"
-            ],
             "properties": {
                 "date_of_birth": {
                     "type": "string",
@@ -1686,10 +1684,6 @@ const docTemplate = `{
                         }
                     ],
                     "example": "unemployed"
-                },
-                "id": {
-                    "type": "string",
-                    "example": "b6c29c96-024b-4e70-834b-8e0dd2c66645"
                 },
                 "marital_status": {
                     "allOf": [
@@ -1715,14 +1709,8 @@ const docTemplate = `{
         },
         "internal_adapter_handler_http.UpdateApplicationRequest": {
             "type": "object",
-            "required": [
-                "id"
-            ],
             "properties": {
                 "applicant_id": {
-                    "type": "string"
-                },
-                "id": {
                     "type": "string"
                 },
                 "scheme_id": {
@@ -1732,15 +1720,9 @@ const docTemplate = `{
         },
         "internal_adapter_handler_http.UpdateSchemeBenefitRequest": {
             "type": "object",
-            "required": [
-                "id"
-            ],
             "properties": {
                 "amount": {
                     "type": "number"
-                },
-                "id": {
-                    "type": "string"
                 },
                 "name": {
                     "type": "string"
@@ -1752,13 +1734,7 @@ const docTemplate = `{
         },
         "internal_adapter_handler_http.UpdateSchemeCriteriaRequest": {
             "type": "object",
-            "required": [
-                "id"
-            ],
             "properties": {
-                "id": {
-                    "type": "string"
-                },
                 "name": {
                     "type": "string"
                 },
@@ -1772,13 +1748,7 @@ const docTemplate = `{
         },
         "internal_adapter_handler_http.UpdateSchemeRequest": {
             "type": "object",
-            "required": [
-                "id"
-            ],
             "properties": {
-                "id": {
-                    "type": "string"
-                },
                 "name": {
                     "type": "string"
                 }

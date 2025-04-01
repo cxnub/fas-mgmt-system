@@ -71,14 +71,14 @@ func NewRouter(
 
 			benefitsRoutes := schemes.Group("/benefits")
 			{
-				benefitsRoutes.PUT("/:id", schemeHandler.UpdateSchemeBenefit)
-				benefitsRoutes.DELETE("/:id", schemeHandler.DeleteSchemeBenefit)
+				benefitsRoutes.PUT("/:benefit_id", schemeHandler.UpdateSchemeBenefit)
+				benefitsRoutes.DELETE("/:benefit_id", schemeHandler.DeleteSchemeBenefit)
 			}
 
 			schemeCriteriaRoutes := schemes.Group("/criteria")
 			{
-				schemeCriteriaRoutes.PUT("/:id", schemeHandler.UpdateSchemeCriteria)
-				schemeCriteriaRoutes.DELETE("/:id", schemeHandler.DeleteSchemeCriteria)
+				schemeCriteriaRoutes.PUT("/:scheme_criteria_id", schemeHandler.UpdateSchemeCriteria)
+				schemeCriteriaRoutes.DELETE("/:scheme_criteria_id", schemeHandler.DeleteSchemeCriteria)
 			}
 
 			schemes.GET("/", schemeHandler.ListSchemes)

@@ -380,8 +380,6 @@ definitions:
       name:
         example: CDC Vouchers
         type: string
-      schemeID:
-        type: string
     required:
     - amount
     - name
@@ -391,14 +389,11 @@ definitions:
       name:
         example: Age Limit
         type: string
-      schemeID:
-        type: string
       value:
         example: 18-50
         type: string
     required:
     - name
-    - schemeID
     - value
     type: object
   internal_adapter_handler_http.ApplicantResponse:
@@ -517,6 +512,9 @@ definitions:
       amount:
         example: 1000000
         type: number
+      id:
+        example: 00000000-0000-0000-0000-000000000000
+        type: string
       name:
         example: CDC Vouchers
         type: string
@@ -544,6 +542,9 @@ definitions:
     type: object
   internal_adapter_handler_http.SchemeCriteriaListResponse:
     properties:
+      id:
+        example: 00000000-0000-0000-0000-000000000000
+        type: string
       name:
         example: employment_status
         type: string
@@ -598,9 +599,6 @@ definitions:
         allOf:
         - $ref: '#/definitions/github_com_cxnub_fas-mgmt-system_internal_core_domain.EmploymentStatus'
         example: unemployed
-      id:
-        example: b6c29c96-024b-4e70-834b-8e0dd2c66645
-        type: string
       marital_status:
         allOf:
         - $ref: '#/definitions/github_com_cxnub_fas-mgmt-system_internal_core_domain.MaritalStatus'
@@ -612,54 +610,36 @@ definitions:
         allOf:
         - $ref: '#/definitions/github_com_cxnub_fas-mgmt-system_internal_core_domain.Sex'
         example: male
-    required:
-    - id
     type: object
   internal_adapter_handler_http.UpdateApplicationRequest:
     properties:
       applicant_id:
         type: string
-      id:
-        type: string
       scheme_id:
         type: string
-    required:
-    - id
     type: object
   internal_adapter_handler_http.UpdateSchemeBenefitRequest:
     properties:
       amount:
         type: number
-      id:
-        type: string
       name:
         type: string
       scheme_id:
         type: string
-    required:
-    - id
     type: object
   internal_adapter_handler_http.UpdateSchemeCriteriaRequest:
     properties:
-      id:
-        type: string
       name:
         type: string
       scheme_id:
         type: string
       value:
         type: string
-    required:
-    - id
     type: object
   internal_adapter_handler_http.UpdateSchemeRequest:
     properties:
-      id:
-        type: string
       name:
         type: string
-    required:
-    - id
     type: object
   multipart.FileHeader:
     properties:
@@ -1604,7 +1584,7 @@ paths:
       summary: Create a new scheme
       tags:
       - schemes
-  /schemes/{id}:
+  /schemes/{scheme_id}:
     delete:
       consumes:
       - application/json
@@ -1613,7 +1593,7 @@ paths:
       - description: Scheme ID
         format: uuid
         in: path
-        name: id
+        name: scheme_id
         required: true
         type: string
       produces:
@@ -1679,7 +1659,7 @@ paths:
       - description: Scheme ID
         format: uuid
         in: path
-        name: id
+        name: scheme_id
         required: true
         type: string
       - description: JSON object with updates to the scheme
@@ -1792,7 +1772,7 @@ paths:
       summary: Add a criteria to a scheme
       tags:
       - schemes
-  /schemes/benefits/{id}:
+  /schemes/benefits/{benefit_id}:
     delete:
       consumes:
       - application/json
@@ -1801,7 +1781,7 @@ paths:
       - description: Benefit ID
         format: uuid
         in: path
-        name: id
+        name: benefit_id
         required: true
         type: string
       produces:
@@ -1835,7 +1815,7 @@ paths:
       - description: Benefit ID
         format: uuid
         in: path
-        name: id
+        name: benefit_id
         required: true
         type: string
       - description: JSON object with updated benefit details
@@ -1866,7 +1846,7 @@ paths:
       summary: Update a benefit of a scheme
       tags:
       - schemes
-  /schemes/criteria/{id}:
+  /schemes/criteria/{scheme_criteria_id}:
     delete:
       consumes:
       - application/json
@@ -1875,7 +1855,7 @@ paths:
       - description: Criteria ID
         format: uuid
         in: path
-        name: id
+        name: scheme_criteria_id
         required: true
         type: string
       produces:
@@ -1906,10 +1886,10 @@ paths:
       description: Modify an existing criteria of a scheme by specifying the scheme
         ID and criteria ID.
       parameters:
-      - description: Criteria ID
+      - description: Scheme Criteria ID
         format: uuid
         in: path
-        name: id
+        name: scheme_criteria_id
         required: true
         type: string
       - description: JSON object with updated criteria details
@@ -1949,7 +1929,7 @@ paths:
       parameters:
       - description: Applicant ID
         format: uuid
-        in: path
+        in: query
         name: applicant
         required: true
         type: string
