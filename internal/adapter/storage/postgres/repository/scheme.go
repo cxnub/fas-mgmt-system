@@ -43,7 +43,7 @@ func (r *SchemeRepository) GetSchemeByID(ctx context.Context, id uuid.UUID) (*do
 	err = row.Scan(&scheme.ID, &scheme.Name, &scheme.CreatedAt, &scheme.UpdatedAt)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
-			return nil, domain.NotFoundError
+			return nil, domain.SchemeNotFoundError
 		}
 		return nil, err
 	}
@@ -69,41 +69,22 @@ func (r *SchemeRepository) GetSchemeByID(ctx context.Context, id uuid.UUID) (*do
 // ListSchemes retrieves a list of schemes available.
 func (r *SchemeRepository) ListSchemes(ctx context.Context) ([]domain.Scheme, error) {
 	// Get all schemes
-	schemesQuery := r.db.QueryBuilder.
-		Select("id", "name", "created_at", "updated_at").
-		From("schemes").
-		Where("deleted_at IS NULL")
-
-	sql, args, err := schemesQuery.ToSql()
-	if err != nil {
-		return nil, fmt.Errorf("failed to build schemes query: %w", err)
-	}
-
-	rows, err := r.db.Query(ctx, sql, args...)
+	schemesList, err := r.q.ListSchemes(ctx)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
-			return nil, domain.NotFoundError
+			return nil, domain.SchemeNotFoundError
 		}
 		return nil, err
 	}
-	defer rows.Close()
 
 	// Store schemes in a map
 	schemesMap := make(map[uuid.UUID]*domain.Scheme)
 
-	for rows.Next() {
-		var scheme domain.Scheme
-		err = rows.Scan(&scheme.ID, &scheme.Name, &scheme.CreatedAt, &scheme.UpdatedAt)
-		if err != nil {
-			return nil, err
-		}
+	for _, dbScheme := range schemesList {
+		scheme := dbScheme.ToEntity()
 		scheme.Benefits = &[]domain.Benefit{}
 		scheme.Criteria = &[]domain.SchemeCriteria{}
-		schemesMap[*scheme.ID] = &scheme
-	}
-
-	if rows.Err() != nil {
-		return nil, rows.Err()
+		schemesMap[*scheme.ID] = scheme
 	}
 
 	// Fetch benefits and map them to schemes

@@ -26,7 +26,7 @@ func (r *ApplicationRepository) ListApplications(ctx context.Context) ([]domain.
 	dbApplications, err := r.q.ListApplications(ctx)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
-			return nil, domain.NotFoundError
+			return nil, domain.ApplicationNotFoundError
 		}
 
 		return nil, err
@@ -41,7 +41,7 @@ func (r *ApplicationRepository) ListApplications(ctx context.Context) ([]domain.
 }
 
 // GetApplicationById retrieves an Application entity by its unique identifier from the database.
-// Returns domain.NotFoundError if no matching record is found.
+// Returns domain.ApplicationNotFoundError if no matching record is found.
 func (r *ApplicationRepository) GetApplicationById(ctx context.Context, id uuid.UUID) (*domain.Application, error) {
 	dbApplication, err := r.q.GetApplication(ctx, id)
 	if err != nil {

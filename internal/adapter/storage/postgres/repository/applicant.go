@@ -110,7 +110,7 @@ func (r *ApplicantRepository) ListApplicants(ctx context.Context) (applicants []
 	dbApplicants, err := r.q.ListApplicants(ctx)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
-			return nil, domain.NotFoundError
+			return nil, domain.ApplicantNotFoundError
 		}
 
 		return nil, err
