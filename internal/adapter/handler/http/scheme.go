@@ -409,7 +409,7 @@ func (h *SchemeHandler) DeleteSchemeBenefit(ctx *gin.Context) {
 // @Failure	  500	   {object}  ErrorResponse			  "Internal server error"
 // @Router		  /schemes/{scheme_id}/criteria [post]
 func (h *SchemeHandler) AddSchemeCriteria(ctx *gin.Context) {
-	var reqUri SchemeCriteriaRequestUri
+	var reqUri SchemeRequestUri
 	var req AddSchemeCriteriaRequest
 
 	err := ctx.ShouldBindUri(&reqUri)
