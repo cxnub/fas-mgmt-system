@@ -417,26 +417,31 @@ func (h *SchemeHandler) AddSchemeCriteria(ctx *gin.Context) {
 		validationError(ctx, err, reqUri)
 		return
 	}
+
 	err = ctx.ShouldBindJSON(&req)
 	if err != nil {
 		validationError(ctx, err, req)
 		return
 	}
+
 	schemeID, err := uuid.Parse(reqUri.ID)
 	if err != nil {
 		handleError(ctx, domain.InvalidSchemeError)
 		return
 	}
+
 	newCriteria := domain.SchemeCriteria{
 		Name:     &req.Name,
 		Value:    &req.Value,
 		SchemeID: &schemeID,
 	}
+
 	criteria, err := h.s.AddSchemeCriteria(ctx, &newCriteria)
 	if err != nil {
 		handleError(ctx, err)
 		return
 	}
+
 	rsp := newSchemeCriteriaResponse(*criteria)
 	handleSuccess(ctx, http.StatusCreated, "Successfully added criteria to scheme.", rsp)
 }
@@ -463,27 +468,32 @@ func (h *SchemeHandler) UpdateSchemeCriteria(ctx *gin.Context) {
 		handleError(ctx, domain.InvalidSchemeError)
 		return
 	}
+
 	err = ctx.ShouldBindJSON(&req)
 	if err != nil {
 		validationError(ctx, err, req)
 		return
 	}
+
 	schemeID, err := uuid.Parse(*req.SchemeID)
 	if err != nil {
 		handleError(ctx, domain.InvalidSchemeError)
 		return
 	}
+
 	id, err := uuid.Parse(reqUri.ID)
 	if err != nil {
 		handleError(ctx, domain.InvalidSchemeCriteriaError)
 		return
 	}
+
 	newCriteria := domain.SchemeCriteria{
 		ID:       &id,
 		Name:     req.Name,
 		Value:    req.Value,
 		SchemeID: &schemeID,
 	}
+
 	updatedCriteria, err := h.s.UpdateSchemeCriteria(ctx, &newCriteria)
 	if err != nil {
 		handleError(ctx, err)
@@ -513,15 +523,18 @@ func (h *SchemeHandler) DeleteSchemeCriteria(ctx *gin.Context) {
 		handleError(ctx, domain.InvalidSchemeCriteriaError)
 		return
 	}
+
 	id, err := uuid.Parse(req.ID)
 	if err != nil {
 		handleError(ctx, domain.InvalidSchemeCriteriaError)
 		return
 	}
+
 	err = h.s.DeleteSchemeCriteria(ctx, id)
 	if err != nil {
 		handleError(ctx, err)
 		return
 	}
+
 	handleSuccess(ctx, http.StatusOK, "Successfully deleted criteria.", nil)
 }

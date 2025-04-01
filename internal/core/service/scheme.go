@@ -107,6 +107,12 @@ func (s *SchemeService) DeleteSchemeBenefit(ctx context.Context, benefitID uuid.
 }
 
 func (s *SchemeService) AddSchemeCriteria(ctx context.Context, criteria *domain.SchemeCriteria) (newCriteria *domain.SchemeCriteria, err error) {
+	// Check if criteria is valid
+	invalidCriteriaErr := util.IsValidCriteria(criteria)
+	if invalidCriteriaErr != nil {
+		return nil, *invalidCriteriaErr
+	}
+
 	// Check if scheme exists
 	_, err = s.SchemeRepository.GetSchemeByID(ctx, *criteria.SchemeID)
 	if err != nil {
@@ -117,6 +123,12 @@ func (s *SchemeService) AddSchemeCriteria(ctx context.Context, criteria *domain.
 }
 
 func (s *SchemeService) UpdateSchemeCriteria(ctx context.Context, criteria *domain.SchemeCriteria) (newCriteria *domain.SchemeCriteria, err error) {
+	// Check if criteria is valid
+	invalidCriteriaErr := util.IsValidCriteria(criteria)
+	if invalidCriteriaErr != nil {
+		return nil, *invalidCriteriaErr
+	}
+
 	// Check if scheme exists
 	_, err = s.SchemeRepository.GetSchemeByID(ctx, *criteria.SchemeID)
 	if err != nil {

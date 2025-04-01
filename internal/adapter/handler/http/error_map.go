@@ -46,6 +46,30 @@ var errorMap = map[error]struct {
 		StatusCode: http.StatusNotFound,
 		Message:    "Scheme criteria not found.",
 	},
+	domain.InvalidSchemeCriteriaNameError: {
+		StatusCode: http.StatusBadRequest,
+		Message:    "Invalid scheme criteria name, only employment_status, marital_status, has_children, or age are allowed.",
+	},
+	domain.InvalidSchemeCriteriaAgeValueError: {
+		StatusCode: http.StatusBadRequest,
+		Message:    "Invalid scheme criteria age value, must start with an operator and ends with a number. Valid operators are: >, >=, <, <=, and ==. (e.g. >25, >=25, <25, <=25, ==25).",
+	},
+	domain.InvalidSchemeCriteriaEmploymentStatusValueError: {
+		StatusCode: http.StatusBadRequest,
+		Message:    "Invalid scheme criteria employment status value, must be either employed or unemployed.",
+	},
+	domain.InvalidSchemeCriteriaMaritalStatusValueError: {
+		StatusCode: http.StatusBadRequest,
+		Message:    "Invalid scheme criteria marital status value, must be either single, married, widowed or divorced.",
+	},
+	domain.InvalidSchemeCriteriaHasChildrenValueError: {
+		StatusCode: http.StatusBadRequest,
+		Message:    "Invalid scheme criteria has children value, must be either true or false.",
+	},
+	domain.InvalidSchemeCriteriaError: {
+		StatusCode: http.StatusBadRequest,
+		Message:    "Invalid scheme criteria.",
+	},
 	domain.BenefitNotFoundError: {
 		StatusCode: http.StatusNotFound,
 		Message:    "Benefit not found.",
