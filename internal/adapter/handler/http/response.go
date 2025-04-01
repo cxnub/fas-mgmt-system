@@ -153,12 +153,22 @@ type SchemeResponse struct {
 }
 
 func newSchemeResponse(scheme domain.Scheme) SchemeResponse {
-	return SchemeResponse{
-		ID:       scheme.ID.String(),
-		Name:     *scheme.Name,
-		Criteria: newSchemeCriteriaListResponse(*scheme.Criteria),
-		Benefits: newSchemeBenefitListResponse(*scheme.Benefits),
+	response := SchemeResponse{
+		ID:   scheme.ID.String(),
+		Name: *scheme.Name,
 	}
+
+	// Check if criteria is not empty
+	if scheme.Criteria != nil {
+		response.Criteria = newSchemeCriteriaListResponse(*scheme.Criteria)
+	}
+
+	// Check if benefits is not empty
+	if scheme.Benefits != nil {
+		response.Benefits = newSchemeBenefitListResponse(*scheme.Benefits)
+	}
+
+	return response
 }
 
 // SchemesResponse represents the response structure containing a list of schemes with their respective details.
